@@ -1,0 +1,82 @@
+* {
+    padding: 0px;
+    border: 0px;
+    margin: 0px;
+    font-size: 62.5%;
+    line-height: 1.6rem;
+    box-sizing: border-box !important;
+    font-family: Helvetica, Arial, sans-serif;
+}
+
+.container {
+    position: fixed;
+    background-image: url('https://png.pngtree.com/thumb_back/fw800/background/20231221/pngtree-blue-technology-photosensitive-chip-background-image_15547010.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+}
+
+#forget-form {
+    background-color: #fff;
+    border: 0.1rem solid #ccc;
+    display: block;
+    border-radius: 0.5rem;
+    padding: 0rem 3rem;
+    width: 40rem;
+    position: absolute;
+    top: 16rem;
+    right: 14rem;
+}
+
+.forget-form-header {
+    width: 100%;
+    padding: 5rem 0rem 1.4rem;
+}
+
+.header-text-wrapper {
+    width: 100%;
+}
+
+.header-text {
+    font-size: 2.5rem;
+}
+
+.forget-form-content {
+    padding-bottom: 5rem;
+}
+
+.content-text {
+    border-radius: 0.8rem;
+    border: 0.1rem solid #ccc;
+    font-size: 1.7rem;
+    padding: 1.4rem 1.6rem;
+    width: 100%;
+}
+
+.content-text-wrapper {
+    margin-top: 1.6rem;
+}
+
+.forget-btn-wrapper {
+    width: 100%;
+}
+
+.forget-btn {
+    width: 100%;
+    background-color: #1877f2;
+    border: none;
+    border-radius: 0.6rem;
+    font-size: 2rem;
+    line-height: 4.8rem;
+    margin-top: 2rem;
+    color: white;
+    display: inline-block;
+}
+
+.forget-btn:hover {
+    cursor: pointer;
+    opacity: 0.7;
+}
