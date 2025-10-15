@@ -1,6 +1,6 @@
 from django.db import models
 from users.models import User
-from inventory.models import Warehouse, Product
+from inventory.models import Product
 from partners.models import Supplier, Customer
 
 
