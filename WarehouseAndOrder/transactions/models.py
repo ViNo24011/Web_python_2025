@@ -5,7 +5,7 @@ from partners.models import Supplier, Customer
 
 
 class ImportReceipt(models.Model):
-    warehouse = models.ForeignKey(Warehouse, on_delete=models.CASCADE)
+    
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE)
     import_date = models.DateTimeField(auto_now_add=True)
@@ -26,7 +26,7 @@ class ImportDetail(models.Model):
 
 
 class ExportReceipt(models.Model):
-    warehouse = models.ForeignKey(Warehouse, on_delete=models.CASCADE)
+    
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     export_date = models.DateTimeField(auto_now_add=True)
