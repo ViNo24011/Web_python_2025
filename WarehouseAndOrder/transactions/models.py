@@ -5,11 +5,6 @@ from partners.models import Supplier, Customer
 
 
 class ImportReceipt(models.Model):
-<<<<<<< HEAD
-    
-=======
-
->>>>>>> origin/main
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE)
     import_date = models.DateTimeField(auto_now_add=True)
