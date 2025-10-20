@@ -1,0 +1,72 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sửa Khách Hàng</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/customer.css' %}">
+</head>
+<body>
+    <div class="main">
+        <div class="navbar">
+            <a href="{% url 'users:home_page' %}" class="navbar__header">
+                <p class="navbar__header-logo">Warehouse</p>
+                <div class="navbar__header-wrapper"><p class="navbar__header-text">Quản lý kho hàng</p></div>
+            </a>
+            <div class="navbar__content">
+                <div class="navbar__content-item">
+                    <a href="{% url 'users:home_page' %}" class="navbar__content-item-link">
+                        <i class="fa-solid fa-chart-pie navbar__content-icon"></i><p class="navbar__content-text">Thống kê</p>
+                    </a>
+                </div>
+                <div class="navbar__content-item">
+                    <a href="#" class="navbar__content-item-link">
+                        <i class="fa-solid fa-user-group navbar__content-icon"></i><p class="navbar__content-text">Quản lý người dùng</p>
+                    </a>
+                </div>
+                <div class="navbar__content-item">
+                    <a href="{% url 'partners:customer_page' %}" class="navbar__content-item-link navbar__content-item-choose">
+                        <i class="fa-solid fa-users navbar__content-icon"></i><p class="navbar__content-text">Quản lý khách hàng</p>
+                    </a>
+                </div>
+                </div>
+        </div>
+
+        <div class="content">
+            <div class="content__wrapper">
+                <div class="content__header">
+                    <p class="content__header-text">Sửa thông tin khách hàng: {{ customer.name }}</p>
+                </div>
+
+                <form action="{% url 'partners:edit_customer' customer.id %}" method="post" class="add__form" style="padding: 2.5rem;">
+                    {% csrf_token %}
+                    <div class="add_product-infor">
+                        <div class="add__customer-wrapper">
+                            <label for="name" class="add__customer-text-wrapper"><p class="add__customer-text">Tên khách hàng</p></label>
+                            <input id="name" name="name" type="text" required value="{{ customer.name }}" class="add__customer-input">
+                        </div>
+                        <div class="add__customer-wrapper">
+                            <label for="phone" class="add__customer-text-wrapper"><p class="add__customer-text">Số điện thoại</p></label>
+                            <input id="phone" name="phone" type="text" value="{{ customer.phone|default:'' }}" class="add__customer-input">
+                        </div>
+                        <div class="add__customer-wrapper">
+                            <label for="email" class="add__customer-text-wrapper"><p class="add__customer-text">Email</p></label>
+                            <input id="email" name="email" type="email" value="{{ customer.email|default:'' }}" class="add__customer-input">
+                        </div>
+                        <div class="add__customer-address">
+                            <label for="address" class="add__customer-text-wrapper"><p class="add__customer-text">Địa chỉ</p></label>
+                            <textarea id="address" name="address" rows="3" class="add__supplier-address-input">{{ customer.address|default:'' }}</textarea>
+                        </div>
+                    </div>
+                    <div class="add__submit">
+                        <button type="submit" class="add__submit-btn"><p class="add__submit-text">Cập nhật</p></button>
+                        <a href="{% url 'partners:customer_page' %}" style="text-decoration: none; font-size: 1.6rem; margin-left: 20px;">Hủy</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -24,6 +24,7 @@ urlpatterns = [
     path('users/', include('users.urls')),
     path('partners/', include('partners.urls')),
     path('inventory/', include('inventory.urls', namespace='inventory')),
+    path('partners/', include('partners.urls')),
 ]
  
 from django.conf import settings

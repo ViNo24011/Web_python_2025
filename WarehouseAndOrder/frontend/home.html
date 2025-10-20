@@ -32,10 +32,10 @@
                     </a>
                 </div>
                 <div class="navbar__content-item">
-                    <a href="#" class="navbar__content-item-link">
-                        <i class="fa-solid fa-users navbar__content-icon"></i>
-                        <p class="navbar__content-text">Quản lý khách hàng</p>
-                    </a>
+                  <a href="{% url 'partners:customer_page' %}" class="navbar__content-item-link">
+                     <i class="fa-solid fa-users navbar__content-icon"></i>
+                     <p class="navbar__content-text">Quản lý khách hàng</p>
+                   </a>
                 </div>
                 <div class="navbar__content-item">
                     <a href="#" class="navbar__content-item-link navbar__content-item-parent">
@@ -90,9 +90,9 @@
                     </div>
                     
                     <div class="content__navbar-account-sub">
-                        <a href="#" class="content__navbar-account-item">
+                        <a href="{% url 'users:logout' %}" class="content__navbar-account-item">
                             <i class="fa-solid fa-right-from-bracket content__navbar-account-icon"></i>
-                            <p class="navbar__content-text">Đăng xuất</p>
+                            <p class="content__navbar-account-text">Đăng xuất</p>
                         </a>
                     </div>
                 </div>

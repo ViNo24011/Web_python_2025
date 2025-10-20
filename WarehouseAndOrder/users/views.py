@@ -1,7 +1,8 @@
 # users/views.py
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout
 from django.db import models
 from inventory.models import Product
 from partners.models import Customer
@@ -63,3 +64,8 @@ def home_page(request):
 # Render forget password page
 def forget_page(request):
     return render(request, 'forget.html')
+
+# Thêm hàm mới để đăng xuất
+def logout_view(request):
+    logout(request)
+    return redirect('users:login_page')
