@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Export</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/themify-icons@0.1.2/css/themify-icons.css">
+    <link rel="stylesheet" href="./assets/css/export.css">
+</head>
+<body>
+    <div class="main">
+        <div class="navbar">
+            <a href="http://127.0.0.1:5500/frontend-python/home.html" class="navbar__header">
+                <p class="navbar__header-logo">Warehourse</p>
+                <div class="navbar__header-wrapper">
+                    <p class="navbar__header-text">Quản lý kho hàng</p>
+                </div>
+            </a>
+            <div class="navbar__content">
+                <div class="navbar__content-item">
+                    <a href="http://127.0.0.1:5500/frontend-python/home.html" class="navbar__content-item-link">
+                        <i class="fa-solid fa-chart-pie navbar__content-icon"></i>
+                        <p class="navbar__content-text">Thống kê</p>
+                    </a>
+                </div>
+
+                <div class="navbar__content-item">
+                    <a href="http://127.0.0.1:5500/frontend-python/user.html" class="navbar__content-item-link">
+                        <i class="fa-solid fa-user-group navbar__content-icon"></i>
+                        <p class="navbar__content-text">Quản lý người dùng</p>
+                    </a>
+                </div>
+
+                <div class="navbar__content-item">
+                    <a href="http://127.0.0.1:5500/frontend-python/customer.html" class="navbar__content-item-link">
+                        <i class="fa-solid fa-users navbar__content-icon"></i>
+                        <p class="navbar__content-text">Quản lý khách hàng</p>
+                    </a>
+                </div>
+
+                <div class="navbar__content-item">
+                    <div class="navbar__content-item-link  navbar__content-item-parent">
+                        <i class="fa-solid fa-boxes-stacked navbar__content-icon"></i>
+                        <p class="navbar__content-text">Quản lý sản phẩm</p>
+                        <i class="fa-solid fa-angle-down navbar__content-sub-icon"></i>
+                    </div>
+
+                    <div class="navbar__content-sub">
+                        <a href="http://127.0.0.1:5500/frontend-python/supplier.html" class="navbar__content-item-link">
+                            <i class="fa-solid fa-truck-field navbar__content-icon"></i>
+                            <p class="navbar__content-text">Nhà cung cấp</p>
+                        </a>
+
+                        <a href="http://127.0.0.1:5500/frontend-python/product.html" class="navbar__content-item-link">
+                            <i class="fa-solid fa-box navbar__content-icon"></i>
+                            <p class="navbar__content-text">Sản phẩm</p>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="navbar__content-item">
+                    <div class="navbar__content-item-link navbar__content-item-parent">
+                        <i class="fa-solid fa-warehouse navbar__content-icon"></i>
+                        <p class="navbar__content-text">Quản lý kho</p>
+                        <i class="fa-solid fa-angle-down navbar__content-sub-icon"></i>
+                    </div>
+
+                    <div class="navbar__content-sub">
+                        <a href="http://127.0.0.1:5500/frontend-python/import.html" class="navbar__content-item-link">
+                            <i class="fa-solid fa-file-import fa-user-groug navbar__content-icon"></i>
+                            <p class="navbar__content-text">Phiếu xuất hàng</p>
+                        </a>
+
+                        <a href="http://127.0.0.1:5500/frontend-python/export.html" class="navbar__content-item-link  navbar__content-item-choose">
+                            <i class="fa-solid fa-file-export navbar__content-icon"></i>
+                            <p class="navbar__content-text">Phiếu xuất hàng</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="content__navbar">
+                <a href="" class="content__navbar-notify">
+                    <i class="fa-solid fa-bell content__navbar-notify-icon"></i>
+                </a>
+
+                <div class="content__navbar-account">                   
+                    <div class="content__navbar-account-name">
+                        <div class="content_navbar-img-wrapper">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTr3jhpAFYpzxx39DRuXIYxNPXc0zI5F6IiMQ&s" class="content__navbar-account-img"></img>
+                        </div>
+                        <p class="content__navbar-account-text">Nguyễn Văn A</p>
+                        <i class="fa-solid fa-chevron-down content__navbar-account-icon"></i>
+                    </div>
+                    
+                    <div class="content__navbar-account-sub">
+                        <a href="#" class="content__navbar-account-item">
+                            <i class="fa-solid fa-user content__navbar-account-icon"></i>
+                            <p class="content__navbar-account-text">Tài khoản</p>
+                        </a>
+
+                        <a href="#" class="content__navbar-account-item">
+                            <i class="fa-solid fa-lock content__navbar-account-icon"></i>
+                            <p class="content__navbar-account-text">Đổi mật khẩu</p>
+                        </a>
+
+                        <a href="#" class="content__navbar-account-item">
+                            <i class="fa-solid fa-right-from-bracket content__navbar-account-icon"></i>
+                            <p class="content__navbar-account-text">Đăng xuất</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content__wrapper">
+                <div class="content__header">
+                    <p class="content__header-text">Phiếu xuất hàng</p>
+                    <button type="button" class="content__header-add">
+                        <div class="fa-solid fa-plus content__header-add-icon"></div>
+                        <div class="content__header-add-text">Thêm phiếu xuất hàng</div>
+                    </button>
+                </div>
+
+                <div class="content__export">
+                    <table class="content__export-table">
+                        <tr class="content__export-header">
+                            <th class="content__export-stt">STT</th>
+                            <th class="content__export-operation">Thao tác</th>
+                            <th class="content__export-id">Mã phiếu xuất</th>
+                            <th class="content__export-customer">Khách hàng</th>
+                            <th class="content__export-date">Ngày xuất</th>
+                            <th class="content__export-address">Địa chỉ</th>
+                            <th class="content__export-money">Tổng tiền</th>
+                            <th class="content__export-status">Trạng thái</th>
+                        </tr>
+                        <tr class="content__export-item">
+                            <td class="content__export-stt">1</td>
+                            <td class="content__export-operation">
+                               <button type="button" class="content__export-see">
+                                    <i class="fa-solid fa-eye content__export-see-icon"></i>
+                                </button>
+                                <button type="button" class="content__export-fix">
+                                    <i class="fa-solid fa-pen content__export-fix-icon"></i>
+                                </button>
+                                <button type="button" class="content__export-del">
+                                    <i class="fa-solid fa-trash content__export-del-icon"></i>
+                                </button>
+                            </td>
+                            <td class="content__export-id">O001</td>
+                            <td class="content__export-supplier">Nhà cung cấp 1</td>
+                            <td class="content__export-date">01/01/2002</td>
+                            <td class="content__export-address">Hà Đông</td>
+                            <td class="content__export-money">100000 VNĐ</td>
+                            <td class="content__export-status">
+                                <button type="button" class="content__export-status-not">
+                                    <p class="content__export-not-text">Xác nhận</p>
+                                </button>
+
+                                <button type="button" class="content__export-status-tran">
+                                    <p class="content__export-tran-text">Đang giao hàng</p>
+                                </button>
+
+                                <div class="content__export-status-confirm">
+                                    <p class="content__export-confirm-text">Hoàn thành</p>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="content__export-item">
+                            <td class="content__export-stt">2</td>
+                            <td class="content__export-operation">
+                                <button type="button" class="content__export-see">
+                                    <i class="fa-solid fa-eye content__export-see-icon"></i>
+                                </button>
+                                <button type="button" class="content__export-fix">
+                                    <i class="fa-solid fa-pen content__export-fix-icon"></i>
+                                </button>
+                                <button type="button" class="content__export-del">
+                                    <i class="fa-solid fa-trash content__export-del-icon"></i>
+                                </button>
+                            </td>
+                            <td class="content__export-id">O002</td>
+                            <td class="content__export-supplier">Nhà cung cấp 2</td>
+                            <td class="content__export-date">01/01/2002</td>
+                            <td class="content__export-address">Số 1 đại lộ Hòa Bình, Phường Tân An, thành phố Cần Thơ</td>
+                            <td class="content__export-money">100000 VNĐ</td>
+                            <td class="content__export-status">
+                                <button type="button" class="content__export-status-not">
+                                    <p class="content__export-not-text">Xác nhận</p>
+                                </button>
+
+                                <button type="button" class="content__export-status-tran">
+                                    <p class="content__export-tran-text">Đang giao hàng</p>
+                                </button>
+
+                                <div class="content__export-status-confirm">
+                                    <p class="content__export-confirm-text">Hoàn thành</p>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- see -->
+     <div class="see js-see">
+        <div class="see__container js-see-container">
+            <div class="see__close js-see-close">
+                <i class="fa-solid fa-xmark see__close-icon"></i>
+            </div>
+
+            <header class="see__header">Phiếu xuất hàng</header>
+
+            <form action="/import" method="post" class="see__form">
+                <div class="see_import-infor">
+                    <div class="see__export-wrapper">
+                        <label for="id" class="see__export-text-wrapper">
+                            <p class="see__export-compulsory">*</p>
+                            <p class="see__export-text">Mã phiếu xuất hàng</p>
+                        </label>
+                        <div class="see__export-input-wrapper">
+                            <input id="id" type="text" required placeholder="Nhập mã phiếu xuất hàng" class="see__export-input">
+                        </div>
+                    </div>
+
+                    <div class="see__export-wrapper">
+                        <label for="name" class="see__export-text-wrapper">
+                            <p class="see__export-compulsory">*</p>
+                            <p class="see__export-text">Tên khách hàng</p>
+                        </label>
+                        <div class="see__export-input-wrapper">
+                            <input id="name" type="text" required placeholder="Nhập tên khách hàng" class="add__export-input">
+                        </div>
+                    </div>
+
+                    <div class="see__export-wrapper">
+                        <label for="date" class="see__export-text-wrapper">
+                            <p class="see__export-compulsory">*</p>
+                            <p class="see__export-text">Ngày xuất</p>
+                        </label>
+                        <div class="see__export-input-wrapper">
+                            <input id="date" type="date" required placeholder="Nhập ngày xuất" class="see__export-input">
+                        </div>
+                    </div>
+
+                    <div class="see__export-wrapper">
+                        <label for="address" class="see__export-text-wrapper">
+                            <p class="see__export-compulsory">*</p>
+                            <p class="see__export-text">Địa chỉ</p>
+                        </label>
+                        <div class="see__export-input-wrapper">
+                            <input id="address" type="text" required placeholder="Nhập địa chỉ" class="see__export-input">
+                        </div>
+                    </div>
+
+                    <div class="see__export-product">
+                        <div class="see__export-header">
+                            <p class="see__export-product-text">Danh sách sản phẩm xuất</p>
+                        </div>
+                        <div class="see__export-content">
+                            <table class="see__export-table">
+                                <tr class="see__export-table-header">
+                                    <th class="see__export-product-stt">STT</th>
+                                    <th class="see__export-product-name">Tên sản phẩm</th>
+                                    <th class="see__export-product-unit">Đơn vị tính</th>
+                                    <th class="see__export-product-quantity">Số lượng xuất</th>
+                                    <th class="see__export-product-price">Giá xuất</th>
+                                    <th class="see__export-product-money">Thành tiền</th>
+                                    <th class="see__export-product-operation">Thao tác</th>
+                                </tr>
+
+                                <tr class="see__export-product-item">
+                                    <td class="see__export-product-stt">1</td>
+                                    <td class="see__export-product-name">
+                                        <select class="see__export-product-select">
+                                            <option value="" class="product-option">-- Chọn sản phẩm --</option>
+                                            <option value="1" class="product-option">Bút bi</option>
+                                            <option value="2" class="product-option">Bút chì</option>
+                                        </select>
+                                    </td>
+                                    <td class="see__export-product-unit">
+                                        <input type="text" class="see__export-product-input">
+                                    </td>
+                                    <td class="see__export-product-quantity">
+                                        <input type="number" min="1" class="see__export-product-input">
+                                    </td>
+                                    <td class="see__export-product-price">
+                                        <input type="number" min="0" class="see__export-product-input">
+                                        <p class="see__export-price-unit">VNĐ</p>
+                                    </td>
+                                    <td class="see__export-product-money">10000 VNĐ</td>
+                                    <td class="see__export-product-operation">
+                                        <button type="button" class="content__export-del">
+                                            <i class="fa-solid fa-trash content__export-del-icon"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+
+                                <tr class="see__export-product-item">
+                                    <td class="see__export-product-stt">2</td>
+                                    <td class="see__export-product-name">
+                                        <select class="see__export-product-select">
+                                            <option value="" class="product-option">-- Chọn sản phẩm --</option>
+                                            <option value="1" class="product-option">Bút bi</option>
+                                            <option value="2" class="product-option">Bút chì</option>
+                                        </select>
+                                    </td>
+                                    <td class="see__export-product-unit">
+                                        <input type="text" class="see__export-product-input">
+                                    </td>
+                                    <td class="see__export-product-quantity">
+                                        <input type="number" min="1" class="see__export-product-input">
+                                    </td>
+                                    <td class="see__export-product-price">
+                                        <input type="number" min="0" class="see__export-product-input">
+                                        <p class="see__export-price-unit">VNĐ</p>
+                                    </td>
+                                    <td class="see__export-product-money">10000 VNĐ</td>
+                                    <td class="see__export-product-operation">
+                                        <button type="button" class="content__export-del">
+                                            <i class="fa-solid fa-trash content__export-del-icon"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+
+                                <tr class="see__export-product-item">
+                                    <td class="see__export-product-stt">3</td>
+                                    <td class="see__export-product-name">
+                                        <select class="see__export-product-select">
+                                            <option value="" class="product-option">-- Chọn sản phẩm --</option>
+                                            <option value="1" class="product-option">Bút bi</option>
+                                            <option value="2" class="product-option">Bút chì</option>
+                                        </select>
+                                    </td>
+                                    <td class="see__export-product-unit">
+                                        <input type="text" min="1" class="see__export-product-input">
+                                    </td>
+                                    <td class="see__export-product-quantity">
+                                        <input type="number" min="0" class="see__export-product-input">
+                                    </td>
+                                    <td class="see__export-product-price">
+                                        <input type="number" class="see__export-product-input">
+                                        <p class="see__export-price-unit">VNĐ</p>
+                                    </td>
+                                    <td class="see__export-product-money">10000 VNĐ</td>
+                                    <td class="see__export-product-operation">
+                                        <button type="button" class="content__export-del">
+                                            <i class="fa-solid fa-trash content__export-del-icon"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="see__export-money">
+                        <p class="see__export-money-text">Tổng tiền hàng:</p>
+                        <p class="see__export-money-value">100000 VNĐ</p>
+                    </div>
+
+                    <div class="see__export-note">
+                        <label for="seeress" class="see__export-text-wrapper">
+                            <p class="see__export-text">Ghi chú</p>
+                        </label>
+                        <div class="see__export-input-wrapper">
+                            <textarea id="seeress" rows="4" cols="50" placeholder="Nhập ghi chú" class="see__export-note-input"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- add -->
+    <div class="add js-add">
+        <div class="add__container js-add-container">
+            <div class="add__close js-add-close">
+                <i class="fa-solid fa-xmark add__close-icon"></i>
+            </div>
+
+            <header class="add__header">Thêm phiếu xuất hàng</header>
+
+            <form action="/import" method="post" class="add__form">
+                <div class="add_import-infor">
+                    <div class="add__export-wrapper">
+                        <label for="aid" class="add__export-text-wrapper">
+                            <p class="add__export-compulsory">*</p>
+                            <p class="add__export-text">Mã phiếu xuất hàng</p>
+                        </label>
+                        <div class="add__export-input-wrapper">
+                            <input id="aid" type="text" required placeholder="Nhập mã phiếu xuất hàng" class="add__export-input">
+                        </div>
+                    </div>
+
+                    <div class="add__export-wrapper">
+                        <label for="aname" class="add__export-text-wrapper">
+                            <p class="add__export-compulsory">*</p>
+                            <p class="add__export-text">Tên khách hàng</p>
+                        </label>
+                        <div class="add__export-input-wrapper">
+                            <input id="aname" type="text" required placeholder="Nhập tên khách hàng" class="add__export-input">
+                        </div>
+                    </div>
+
+                    <div class="add__export-wrapper">
+                        <label for="adate" class="add__export-text-wrapper">
+                            <p class="add__export-compulsory">*</p>
+                            <p class="add__export-text">Ngày xuất</p>
+                        </label>
+                        <div class="add__export-input-wrapper">
+                            <input id="adate" type="date" required placeholder="Nhập ngày xuất" class="add__export-input">
+                        </div>
+                    </div>
+
+                    <div class="add__export-wrapper">
+                        <label for="aadress" class="add__export-text-wrapper">
+                            <p class="add__export-compulsory">*</p>
+                            <p class="add__export-text">Địa chỉ</p>
+                        </label>
+                        <div class="add__export-input-wrapper">
+                            <input id="aadress" type="text" required placeholder="Nhập địa chỉ" class="add__export-input">
+                        </div>
+                    </div>
+
+                    <div class="add__export-product">
+                        <div class="add__export-header">
+                            <p class="add__export-product-text">Danh sách sản phẩm xuất</p>
+                        </div>
+                        <div class="add__export-content">
+                            <table class="add__export-table">
+                                <tr class="add__export-table-header">
+                                    <th class="add__export-product-stt">STT</th>
+                                    <th class="add__export-product-name">Tên sản phẩm</th>
+                                    <th class="add__export-product-unit">Đơn vị tính</th>
+                                    <th class="add__export-product-quantity">Số lượng xuất</th>
+                                    <th class="add__export-product-price">Giá xuất</th>
+                                    <th class="add__export-product-money">Thành tiền</th>
+                                    <th class="add__export-product-operation">Thao tác</th>
+                                </tr>
+
+                                <tr class="add__export-product-item">
+                                    <td class="add__export-product-stt">1</td>
+                                    <td class="add__export-product-name">
+                                        <select class="add__export-product-select">
+                                            <option value="" class="product-option">-- Chọn sản phẩm --</option>
+                                            <option value="1" class="product-option">Bút bi</option>
+                                            <option value="2" class="product-option">Bút chì</option>
+                                        </select>
+                                    </td>
+                                    <td class="add__export-product-unit">
+                                        <input type="text" class="add__export-product-input">
+                                    </td>
+                                    <td class="add__export-product-quantity">
+                                        <input type="number" min="1" class="add__export-product-input">
+                                    </td>
+                                    <td class="add__export-product-price">
+                                        <input type="number" min="0" class="add__export-product-input">
+                                        <p class="add__export-price-unit">VNĐ</p>
+                                    </td>
+                                    <td class="add__export-product-money">10000 VNĐ</td>
+                                    <td class="add__export-product-operation">
+                                        <button type="button" class="content__export-del">
+                                            <i class="fa-solid fa-trash content__export-del-icon"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+
+                                <tr class="add__export-product-item">
+                                    <td class="add__export-product-stt">2</td>
+                                    <td class="add__export-product-name">
+                                        <select class="add__export-product-select">
+                                            <option value="" class="product-option">-- Chọn sản phẩm --</option>
+                                            <option value="1" class="product-option">Bút bi</option>
+                                            <option value="2" class="product-option">Bút chì</option>
+                                        </select>
+                                    </td>
+                                    <td class="add__export-product-unit">
+                                        <input type="text" class="add__export-product-input">
+                                    </td>
+                                    <td class="add__export-product-quantity">
+                                        <input type="number" min="1" class="add__export-product-input">
+                                    </td>
+                                    <td class="add__export-product-price">
+                                        <input type="number" min="0" class="add__export-product-input">
+                                        <p class="add__export-price-unit">VNĐ</p>
+                                    </td>
+                                    <td class="add__export-product-money">10000 VNĐ</td>
+                                    <td class="add__export-product-operation">
+                                        <button type="button" class="content__export-del">
+                                            <i class="fa-solid fa-trash content__export-del-icon"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+
+                                <tr class="add__export-product-item">
+                                    <td class="add__export-product-stt">3</td>
+                                    <td class="add__export-product-name">
+                                        <select class="add__export-product-select">
+                                            <option value="" class="product-option">-- Chọn sản phẩm --</option>
+                                            <option value="1" class="product-option">Bút bi</option>
+                                            <option value="2" class="product-option">Bút chì</option>
+                                        </select>
+                                    </td>
+                                    <td class="add__export-product-unit">
+                                        <input type="text" min="1" class="add__export-product-input">
+                                    </td>
+                                    <td class="add__export-product-quantity">
+                                        <input type="number" min="0" class="add__export-product-input">
+                                    </td>
+                                    <td class="add__export-product-price">
+                                        <input type="number" class="add__export-product-input">
+                                        <p class="add__export-price-unit">VNĐ</p>
+                                    </td>
+                                    <td class="add__export-product-money">10000 VNĐ</td>
+                                    <td class="add__export-product-operation">
+                                        <button type="button" class="content__export-del">
+                                            <i class="fa-solid fa-trash content__export-del-icon"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </table>
+                            <button type="button" class="add__export-add">
+                                <div class="fa-solid fa-plus content__header-add-icon"></div>
+                                <div class="content__header-add-text">Thêm sản phẩm</div>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="add__export-money">
+                        <p class="add__export-money-text">Tổng tiền hàng:</p>
+                        <p class="add__export-money-value">100000 VNĐ</p>
+                    </div>
+
+                    <div class="add__export-note">
+                        <label for="address" class="add__export-text-wrapper">
+                            <p class="add__export-text">Ghi chú</p>
+                        </label>
+                        <div class="add__export-input-wrapper">
+                            <textarea id="address" rows="4" cols="50" placeholder="Nhập ghi chú" class="add__export-note-input"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="add__submit">
+                    <button type="submit" class=add__submit-btn>
+                        <p class="add__submit-text">Lưu</p>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- fix -->
+    <div class="fix js-fix">
+        <div class="fix__container js-fix-container">
+            <div class="fix__close js-fix-close">
+                <i class="fa-solid fa-xmark fix__close-icon"></i>
+            </div>
+
+            <header class="fix__header">Sửa phiếu xuất hàng</header>
+
+            <form action="/import" method="post" class="fix__form">
+                <div class="fix_import-infor">
+                    <div class="fix__export-wrapper">
+                        <label for="fid" class="fix__export-text-wrapper">
+                            <p class="fix__export-compulsory">*</p>
+                            <p class="fix__export-text">Mã phiếu xuất hàng</p>
+                        </label>
+                        <div class="fix__export-input-wrapper">
+                            <input id="fid" type="text" required placeholder="Nhập mã phiếu xuất hàng" class="fix__export-input">
+                        </div>
+                    </div>
+
+                    <div class="fix__export-wrapper">
+                        <label for="fname" class="fix__export-text-wrapper">
+                            <p class="fix__export-compulsory">*</p>
+                            <p class="fix__export-text">Tên khách hàng</p>
+                        </label>
+                        <div class="fix__export-input-wrapper">
+                            <input id="fname" type="text" required placeholder="Nhập tên khách hàng" class="add__export-input">
+                        </div>
+                    </div>
+
+                    <div class="fix__export-wrapper">
+                        <label for="fdate" class="fix__export-text-wrapper">
+                            <p class="fix__export-compulsory">*</p>
+                            <p class="fix__export-text">Ngày xuất</p>
+                        </label>
+                        <div class="fix__export-input-wrapper">
+                            <input id="fdate" type="date" required placeholder="Nhập ngày xuất" class="fix__export-input">
+                        </div>
+                    </div>
+
+                    <div class="fix__export-wrapper">
+                        <label for="faddress" class="fix__export-text-wrapper">
+                            <p class="fix__export-compulsory">*</p>
+                            <p class="fix__export-text">Địa chỉ</p>
+                        </label>
+                        <div class="fix__export-input-wrapper">
+                            <input id="faddress" type="text" required placeholder="Nhập địa chỉ" class="fix__export-input">
+                        </div>
+                    </div>
+
+                    <div class="fix__export-product">
+                        <div class="fix__export-header">
+                            <p class="fix__export-product-text">Danh sách sản phẩm xuất</p>
+                        </div>
+                        <div class="fix__export-content">
+                            <table class="fix__export-table">
+                                <tr class="fix__export-table-header">
+                                    <th class="fix__export-product-stt">STT</th>
+                                    <th class="fix__export-product-name">Tên sản phẩm</th>
+                                    <th class="fix__export-product-unit">Đơn vị tính</th>
+                                    <th class="fix__export-product-quantity">Số lượng xuất</th>
+                                    <th class="fix__export-product-price">Giá xuất</th>
+                                    <th class="fix__export-product-money">Thành tiền</th>
+                                    <th class="fix__export-product-operation">Thao tác</th>
+                                </tr>
+
+                                <tr class="fix__export-product-item">
+                                    <td class="fix__export-product-stt">1</td>
+                                    <td class="fix__export-product-name">
+                                        <select class="fix__export-product-select">
+                                            <option value="" class="product-option">-- Chọn sản phẩm --</option>
+                                            <option value="1" class="product-option">Bút bi</option>
+                                            <option value="2" class="product-option">Bút chì</option>
+                                        </select>
+                                    </td>
+                                    <td class="fix__export-product-unit">
+                                        <input type="text" class="fix__export-product-input">
+                                    </td>
+                                    <td class="fix__export-product-quantity">
+                                        <input type="number" min="1" class="fix__export-product-input">
+                                    </td>
+                                    <td class="fix__export-product-price">
+                                        <input type="number" min="0" class="fix__export-product-input">
+                                        <p class="fix__export-price-unit">VNĐ</p>
+                                    </td>
+                                    <td class="fix__export-product-money">10000 VNĐ</td>
+                                    <td class="fix__export-product-operation">
+                                        <button type="button" class="content__export-del">
+                                            <i class="fa-solid fa-trash content__export-del-icon"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+
+                                <tr class="fix__export-product-item">
+                                    <td class="fix__export-product-stt">2</td>
+                                    <td class="fix__export-product-name">
+                                        <select class="fix__export-product-select">
+                                            <option value="" class="product-option">-- Chọn sản phẩm --</option>
+                                            <option value="1" class="product-option">Bút bi</option>
+                                            <option value="2" class="product-option">Bút chì</option>
+                                        </select>
+                                    </td>
+                                    <td class="fix__export-product-unit">
+                                        <input type="text" class="fix__export-product-input">
+                                    </td>
+                                    <td class="fix__export-product-quantity">
+                                        <input type="number" min="1" class="fix__export-product-input">
+                                    </td>
+                                    <td class="fix__export-product-price">
+                                        <input type="number" min="0" class="fix__export-product-input">
+                                        <p class="fix__export-price-unit">VNĐ</p>
+                                    </td>
+                                    <td class="fix__export-product-money">10000 VNĐ</td>
+                                    <td class="fix__export-product-operation">
+                                        <button type="button" class="content__export-del">
+                                            <i class="fa-solid fa-trash content__export-del-icon"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+
+                                <tr class="fix__export-product-item">
+                                    <td class="fix__export-product-stt">3</td>
+                                    <td class="fix__export-product-name">
+                                        <select class="fix__export-product-select">
+                                            <option value="" class="product-option">-- Chọn sản phẩm --</option>
+                                            <option value="1" class="product-option">Bút bi</option>
+                                            <option value="2" class="product-option">Bút chì</option>
+                                        </select>
+                                    </td>
+                                    <td class="fix__export-product-unit">
+                                        <input type="text" min="1" class="fix__export-product-input">
+                                    </td>
+                                    <td class="fix__export-product-quantity">
+                                        <input type="number" min="0" class="fix__export-product-input">
+                                    </td>
+                                    <td class="fix__export-product-price">
+                                        <input type="number" class="fix__export-product-input">
+                                        <p class="fix__export-price-unit">VNĐ</p>
+                                    </td>
+                                    <td class="fix__export-product-money">10000 VNĐ</td>
+                                    <td class="fix__export-product-operation">
+                                        <button type="button" class="content__export-del">
+                                            <i class="fa-solid fa-trash content__export-del-icon"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </table>
+                            <button type="button" class="fix__export-add">
+                                <div class="fa-solid fa-plus content__header-add-icon"></div>
+                                <div class="content__header-add-text">Thêm sản phẩm</div>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="fix__export-money">
+                        <p class="fix__export-money-text">Tổng tiền hàng:</p>
+                        <p class="fix__export-money-value">100000 VNĐ</p>
+                    </div>
+
+                    <div class="fix__export-note">
+                        <label for="fixress" class="fix__export-text-wrapper">
+                            <p class="fix__export-text">Ghi chú</p>
+                        </label>
+                        <div class="fix__export-input-wrapper">
+                            <textarea id="fixress" rows="4" cols="50" placeholder="Nhập ghi chú" class="fix__export-note-input"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="fix__submit">
+                    <button type="submit" class=fix__submit-btn>
+                        <p class="fix__submit-text">Lưu</p>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.querySelectorAll(".navbar__content-item .navbar__content-item-parent").forEach((title, index) => {
+            const key = "menuOpen" + index;
+            const child = title.nextElementSibling;
+            title.addEventListener("click", function() {
+                const isOpen = child.style.display === "block";
+                child.style.display = isOpen ? "none" : "block";
+                this.classList.toggle("active", !isOpen);
+                localStorage.setItem(key, !isOpen);
+            })
+            if (localStorage.getItem(key) === "true") {
+                child.style.display = "block";
+                title.classList.add("active");
+            }
+        })
+
+        const see = document.querySelector('.js-see')
+        const seeContainer = document.querySelector('.js-see-container')
+        const seeClose = document.querySelector('.js-see-close')
+        function showSee(){
+            see.classList.add('open')
+        }
+        function hideSee(){
+            see.classList.remove('open')
+        }
+        document.querySelectorAll('.content__export-see').forEach(seeBtn => {
+            seeBtn.addEventListener('click', showSee)
+        });
+        seeClose.addEventListener('click', hideSee)
+        see.addEventListener('click', hideSee);
+        seeContainer.addEventListener('click', function(event){
+            event.stopPropagation()
+        })
+
+
+        const addBtn = document.querySelector('.content__header-add')
+        const add = document.querySelector('.js-add')
+        const addContainer = document.querySelector('.js-add-container')
+        const addClose = document.querySelector('.js-add-close')
+        function showAdd(){
+            add.classList.add('open')
+        }
+        function hideAdd(){
+            add.classList.remove('open')
+        }
+        addBtn.addEventListener('click', showAdd)
+        addClose.addEventListener('click', hideAdd)
+        add.addEventListener('click', hideAdd);
+        addContainer.addEventListener('click', function(event){
+            event.stopPropagation()
+        })
+
+        const fix = document.querySelector('.js-fix')
+        const fixContainer = document.querySelector('.js-fix-container')
+        const fixClose = document.querySelector('.js-fix-close')
+        function showFix(){
+            fix.classList.add('open')
+        }
+        function hideFix(){
+            fix.classList.remove('open')
+        }
+        document.querySelectorAll('.content__export-fix').forEach(fixBtn => {
+            fixBtn.addEventListener('click', showFix)
+        });
+        fixClose.addEventListener('click', hideFix)
+        fix.addEventListener('click', hideFix);
+        fixContainer.addEventListener('click', function(event){
+            event.stopPropagation()
+        })
+    </script>
+</body>
+</html>
