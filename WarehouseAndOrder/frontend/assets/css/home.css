@@ -5,7 +5,6 @@
     font-size: 62.5%;
     line-height: 1.6rem;
     box-sizing: border-box !important;
-    font-family: Helvetica, Arial, sans-serif;
     line-height: 1.3;
 }
 
@@ -231,9 +230,7 @@
     padding-bottom: 2rem;
 }
 
-.content__statistic {
 
-}
 
 .content__statistic-list {
     display: flex;
@@ -314,7 +311,7 @@
     border-bottom: 0.1rem solid #ccc;
 }
 
-.content__warn-id {
+.content__warn-stt {
     width: 20%;
     font-size: 1.6rem;
     text-align: center;
@@ -331,9 +328,7 @@
     text-align: center;
 }
 
-.content__warn-product {
 
-}
 
 .content__warn-product-item {
     display: flex;

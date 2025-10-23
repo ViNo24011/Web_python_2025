@@ -1,0 +1,243 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nhà cung cấp</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/themify-icons@0.1.2/css/themify-icons.css">
+    <link rel="stylesheet" href="{% static 'css/supplier.css' %}">
+</head>
+<body>
+    <div class="main">
+        <div class="navbar">
+             <a href="{% url 'users:home_page' %}" class="navbar__header">
+                <p class="navbar__header-logo">Warehouse</p>
+                <div class="navbar__header-wrapper"><p class="navbar__header-text">Quản lý kho hàng</p></div>
+            </a>
+            <div class="navbar__content">
+                <div class="navbar__content-item">
+                    <a href="{% url 'users:home_page' %}" class="navbar__content-item-link">
+                        <i class="fa-solid fa-chart-pie navbar__content-icon"></i><p class="navbar__content-text">Thống kê</p>
+                    </a>
+                </div>
+                <div class="navbar__content-item">
+                    <a href="#" class="navbar__content-item-link">
+                        <i class="fa-solid fa-user-group navbar__content-icon"></i><p class="navbar__content-text">Quản lý người dùng</p>
+                    </a>
+                </div>
+                <div class="navbar__content-item">
+                    <a href="{% url 'partners:customer_page' %}" class="navbar__content-item-link">
+                        <i class="fa-solid fa-users navbar__content-icon"></i><p class="navbar__content-text">Quản lý khách hàng</p>
+                    </a>
+                </div>
+                <div class="navbar__content-item">
+                    <a href="#" class="navbar__content-item-link navbar__content-item-parent active"> <i class="fa-solid fa-boxes-stacked navbar__content-icon"></i><p class="navbar__content-text">Quản lý sản phẩm</p>
+                        <i class="fa-solid fa-angle-down navbar__content-sub-icon"></i>
+                    </a>
+                    <div class="navbar__content-sub" style="display: block;"> <a href="{% url 'partners:supplier_page' %}" class="navbar__content-item-link navbar__content-item-choose"> <i class="fa-solid fa-truck-field navbar__content-icon"></i><p class="navbar__content-text">Nhà cung cấp</p>
+                        </a>
+                        <a href="{% url 'inventory:product_page' %}" class="navbar__content-item-link">
+                            <i class="fa-solid fa-box navbar__content-icon"></i><p class="navbar__content-text">Sản phẩm</p>
+                        </a>
+                    </div>
+                </div>
+                 <div class="navbar__content-item">
+                    <a href="#" class="navbar__content-item-link navbar__content-item-parent">
+                        <i class="fa-solid fa-warehouse navbar__content-icon"></i><p class="navbar__content-text">Quản lý kho</p>
+                        <i class="fa-solid fa-angle-down navbar__content-sub-icon"></i>
+                    </a>
+                    <div class="navbar__content-sub">
+                        <a href="{% url 'transactions:import_receipt_page' %}" class="navbar__content-item-link"><i class="fa-solid fa-file-import fa-user-groug navbar__content-icon"></i><p class="navbar__content-text">Phiếu nhập hàng</p></a>
+                        <a href="{% url 'transactions:export_receipt_page' %}" class="navbar__content-item-link"><i class="fa-solid fa-file-export navbar__content-icon"></i><p class="navbar__content-text">Phiếu xuất hàng</p></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content">
+             <div class="content__navbar">
+                 <a href="" class="content__navbar-notify"><i class="fa-solid fa-bell content__navbar-notify-icon"></i></a>
+                <div class="content__navbar-account">                   
+                    <div class="content__navbar-account-name">
+                        <div class="content_navbar-img-wrapper"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTr3jhpAFYpzxx39DRuXIYxNPXc0zI5F6IiMQ&s" class="content__navbar-account-img"></div>
+                        <p class="content__navbar-account-text">{{ user.get_full_name|default:user.username }}</p>
+                        <i class="fa-solid fa-chevron-down content__navbar-account-icon"></i>
+                    </div>
+                    <div class="content__navbar-account-sub">
+                        <a href="{% url 'users:logout' %}" class="content__navbar-account-item"><i class="fa-solid fa-right-from-bracket content__navbar-account-icon"></i><p class="content__navbar-account-text">Đăng xuất</p></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content__wrapper">
+                <div class="content__header">
+                    <p class="content__header-text">Nhà cung cấp</p>
+                    <button type="button" class="content__header-add">
+                        <div class="fa-solid fa-plus content__header-add-icon"></div>
+                        <div class="content__header-add-text">Thêm nhà cung cấp</div>
+                    </button>
+                </div>
+
+                <div class="content__supplier">
+                    <table class="content__supplier-table">
+                         <thead>
+                            <tr class="content__supplier-header">
+                                <th class="content__supplier-stt">STT</th>
+                                <th class="content__supplier-operation">Thao tác</th>
+                                <th class="content__supplier-id">Mã NCC</th>
+                                <th class="content__supplier-name">Tên nhà cung cấp</th>
+                                <th class="content__supplier-phone">Số điện thoại</th>
+                                <th class="content__supplier-email">Email</th>
+                                <th class="content__supplier-address">Địa chỉ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for supplier in suppliers %}
+                            <tr class="content__supplier-item">
+                                <td class="content__supplier-stt">{{ forloop.counter }}</td>
+                                <td class="content__supplier-operation">
+                                    <a href="{% url 'partners:edit_supplier' supplier.id %}" class="content__supplier-fix">
+                                        <i class="fa-solid fa-pen content__supplier-fix-icon"></i>
+                                    </a>
+                                    <form action="{% url 'partners:delete_supplier' supplier.id %}" method="post" style="display: inline;">
+                                        {% csrf_token %}
+                                        <button type="submit" class="content__supplier-del" onclick="return confirm('Bạn có chắc muốn xóa nhà cung cấp này?');">
+                                            <i class="fa-solid fa-trash content__supplier-del-icon"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                                <td class="content__supplier-id">NCC{{ supplier.id|stringformat:"03d" }}</td>
+                                <td class="content__supplier-name">{{ supplier.supplier_name }}</td>
+                                <td class="content__supplier-phone">{{ supplier.phone|default:"" }}</td>
+                                <td class="content__supplier-email">{{ supplier.email|default:"" }}</td>
+                                <td class="content__supplier-address">{{ supplier.address|default:"" }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr><td colspan="7" style="text-align: center; padding: 20px;">Chưa có nhà cung cấp nào.</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="add js-add">
+        <div class="add__container js-add-container">
+            <div class="add__close js-add-close"><i class="fa-solid fa-xmark add__close-icon"></i></div>
+            <header class="add__header">Thêm nhà cung cấp</header>
+            <form action="{% url 'partners:add_supplier' %}" method="post" class="add__form">
+                {% csrf_token %}
+                <div class="add_supplier-infor">
+                    <div class="add__supplier-wrapper">
+                        <label for="name-add" class="add__supplier-text-wrapper"><p class="add__supplier-text">Tên nhà cung cấp</p></label>
+                        <input id="name-add" name="name" type="text" required placeholder="Nhập tên nhà cung cấp" class="add__supplier-input">
+                    </div>
+                    <div class="add__supplier-wrapper">
+                        <label for="phone-add" class="add__supplier-text-wrapper"><p class="add__supplier-text">Số điện thoại</p></label>
+                        <input id="phone-add" name="phone" type="text" placeholder="Nhập số điện thoại" class="add__supplier-input">
+                    </div>
+                    <div class="add__supplier-wrapper">
+                        <label for="email-add" class="add__supplier-text-wrapper"><p class="add__supplier-text">Email</p></label>
+                        <input id="email-add" name="email" type="email" placeholder="xyz@gmail.com" class="add__supplier-input">
+                    </div>
+                    <div class="add__supplier-address">
+                        <label for="address-add" class="add__supplier-text-wrapper"><p class="add__supplier-text">Địa chỉ</p></label>
+                        <textarea id="address-add" name="address" rows="4" placeholder="Nhập địa chỉ" class="add__supplier-address-input"></textarea>
+                    </div>
+                </div>
+                <div class="add__submit">
+                    <button type="submit" class="add__submit-btn"><p class="add__submit-text">Lưu</p></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="fix js-fix">
+        <div class="fix__container js-fix-container">
+            <div class="fix__close js-fix-close">
+                <i class="fa-solid fa-xmark fix__close-icon"></i>
+            </div>
+            <header class="fix__header">Sửa nhà cung cấp</header>
+            <form action="#" method="post" class="fix__form">
+                <div class="fix_supplier-infor">
+                    <div class="fix__supplier-wrapper">
+                        <label for="fid" class="fix__supplier-text-wrapper"><p class="fix__supplier-text">Mã nhà cung cấp</p></label>
+                        <div class="fix__supplier-input-wrapper"><input id="fid" type="text" readonly class="fix__supplier-input"></div>
+                    </div>
+                    <div class="fix__supplier-wrapper">
+                        <label for="fname" class="fix__supplier-text-wrapper"><p class="fix__supplier-text">Tên nhà cung cấp</p></label>
+                        <div class="fix__supplier-input-wrapper"><input id="fname" name="name" type="text" required class="fix__supplier-input"></div>
+                    </div>
+                    <div class="fix__supplier-wrapper">
+                        <label for="fphone" class="fix__supplier-text-wrapper"><p class="fix__supplier-text">Số điện thoại</p></label>
+                        <div class="fix__supplier-input-wrapper"><input id="fphone" name="phone" type="text" class="fix__supplier-input"></div>
+                    </div>
+                    <div class="fix__supplier-wrapper">
+                        <label for="femail" class="fix__supplier-text-wrapper"><p class="fix__supplier-text">Email</p></label>
+                        <div class="fix__supplier-input-wrapper"><input id="femail" name="email" type="email" class="fix__supplier-input"></div>
+                    </div>
+                    <div class="fix__supplier-address">
+                        <label for="faddress" class="fix__supplier-text-wrapper"><p class="fix__supplier-text">Địa chỉ</p></label>
+                        <div class="fix__supplier-input-wrapper"><textarea id="faddress" name="address" rows="3" class="fix__supplier-address-input"></textarea></div>
+                    </div>
+                </div>
+                <div class="fix__submit">
+                    <button type="submit" class="fix__submit-btn"><p class="fix__submit-text">Lưu</p></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // JS cho menu
+        document.querySelectorAll(".navbar__content-item .navbar__content-item-parent").forEach((title) => {
+            const child = title.nextElementSibling;
+            const menuKey = "menuOpen_" + title.querySelector('.navbar__content-text').innerText; // Dùng tên menu làm key
+
+            // Kiểm tra trạng thái lưu trữ hoặc trạng thái active của trang
+            if (localStorage.getItem(menuKey) === 'true' || title.classList.contains('active')) {
+                child.style.display = 'block';
+                title.classList.add('active'); // Đảm bảo class active được thêm vào
+            } else {
+                 child.style.display = 'none';
+             }
+
+            title.addEventListener("click", function(e) {
+                e.preventDefault();
+                const isOpen = child.style.display === "block";
+                child.style.display = isOpen ? "none" : "block";
+                this.classList.toggle("active", !isOpen);
+                localStorage.setItem(menuKey, !isOpen);
+            });
+        });
+
+        // JS cho modal Thêm
+        const addBtn = document.querySelector('.content__header-add');
+        const addModal = document.querySelector('.js-add');
+        const addContainer = document.querySelector('.js-add-container');
+        const addClose = document.querySelector('.js-add-close');
+
+        function showAdd(){ addModal.classList.add('open'); }
+        function hideAdd(){ addModal.classList.remove('open'); }
+
+        addBtn.addEventListener('click', showAdd);
+        addClose.addEventListener('click', hideAdd);
+        addModal.addEventListener('click', hideAdd);
+        addContainer.addEventListener('click', (event) => event.stopPropagation());
+
+        // JS cho modal Sửa (Chỉ để đóng, nút Sửa thực tế là link <a>)
+        const fixModal = document.querySelector('.js-fix');
+        const fixClose = document.querySelector('.js-fix-close');
+        if (fixModal && fixClose) {
+             const fixContainer = document.querySelector('.js-fix-container');
+             function hideFix(){ fixModal.classList.remove('open'); }
+             fixClose.addEventListener('click', hideFix);
+             fixModal.addEventListener('click', hideFix);
+             if(fixContainer) fixContainer.addEventListener('click', (event) => event.stopPropagation());
+        }
+    </script>
+</body>
+</html>

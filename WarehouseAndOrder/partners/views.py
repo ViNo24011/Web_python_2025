@@ -2,7 +2,7 @@
 # Nơi viết hàm hoặc class xử lý request từ client
 # Create your views here.
 from rest_framework import viewsets # tạo các view api dựa trên các model đã có sẵn
-from .models import Supplier
+from .models import Supplier, Customer
 from .serializers import SupplierSerializer
 
 class SupplierViewSet(viewsets.ModelViewSet):  # Bằng cách kế thừa từ ModelViewSet, lớp sẽ tự động được cung cấp một bộ "hành động" (actions) đầy đủ, tương ứng với các thao tác CRUD.
@@ -12,7 +12,6 @@ class SupplierViewSet(viewsets.ModelViewSet):  # Bằng cách kế thừa từ M
 
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .models import Customer
 
 # === Template Views (Dùng cho các trang HTML) ===
 
@@ -59,3 +58,50 @@ def delete_customer(request, customer_id):
         customer.delete()
         return redirect('partners:customer_page')
     return redirect('partners:customer_page')
+
+
+@login_required
+def supplier_page(request):
+    """Hiển thị danh sách tất cả nhà cung cấp."""
+    suppliers = Supplier.objects.all()
+    context = {'suppliers': suppliers}
+    return render(request, 'supplier.html', context)
+
+@login_required
+def add_supplier(request):
+    """Xử lý việc thêm nhà cung cấp mới."""
+    if request.method == 'POST':
+        Supplier.objects.create(
+            supplier_name=request.POST.get('name'), # Lưu ý tên trường là 'supplier_name'
+            phone=request.POST.get('phone'),
+            email=request.POST.get('email'),
+            address=request.POST.get('address'),
+        )
+        return redirect('partners:supplier_page')
+    # Nếu không phải POST thì không làm gì cả hoặc quay về trang supplier
+    return redirect('partners:supplier_page')
+
+@login_required
+def edit_supplier(request, supplier_id):
+    """Hiển thị form sửa và xử lý cập nhật nhà cung cấp."""
+    supplier = get_object_or_404(Supplier, id=supplier_id)
+    if request.method == 'POST':
+        supplier.supplier_name = request.POST.get('name') # Lưu ý tên trường là 'supplier_name'
+        supplier.phone = request.POST.get('phone')
+        supplier.email = request.POST.get('email')
+        supplier.address = request.POST.get('address')
+        supplier.save()
+        return redirect('partners:supplier_page')
+    
+    context = {'supplier': supplier}
+    return render(request, 'edit_supplier.html', context)
+
+@login_required
+def delete_supplier(request, supplier_id):
+    """Xử lý việc xóa nhà cung cấp."""
+    supplier = get_object_or_404(Supplier, id=supplier_id)
+    if request.method == 'POST':
+        supplier.delete()
+        return redirect('partners:supplier_page')
+    # Chống xóa bằng GET request
+    return redirect('partners:supplier_page')

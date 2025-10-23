@@ -38,7 +38,7 @@
                         <i class="fa-solid fa-angle-down navbar__content-sub-icon"></i>
                     </a>
                      <div class="navbar__content-sub">
-                        <a href="#" class="navbar__content-item-link"><i class="fa-solid fa-truck-field navbar__content-icon"></i><p class="navbar__content-text">Nhà cung cấp</p></a>
+                        <a href="{% url 'partners:supplier_page' %}" class="navbar__content-item-link"><i class="fa-solid fa-truck-field navbar__content-icon"></i><p class="navbar__content-text">Nhà cung cấp</p></a>
                         <a href="{% url 'inventory:product_page' %}" class="navbar__content-item-link"><i class="fa-solid fa-box navbar__content-icon"></i><p class="navbar__content-text">Sản phẩm</p></a>
                     </div>
                 </div>
@@ -48,8 +48,8 @@
                         <i class="fa-solid fa-angle-down navbar__content-sub-icon"></i>
                     </a>
                     <div class="navbar__content-sub">
-                        <a href="#" class="navbar__content-item-link"><i class="fa-solid fa-file-import fa-user-groug navbar__content-icon"></i><p class="navbar__content-text">Phiếu nhập hàng</p></a>
-                        <a href="#" class="navbar__content-item-link"><i class="fa-solid fa-file-export navbar__content-icon"></i><p class="navbar__content-text">Phiếu xuất hàng</p></a>
+                        <a href="{% url 'transactions:import_receipt_page' %}" class="navbar__content-item-link"><i class="fa-solid fa-file-import fa-user-groug navbar__content-icon"></i><p class="navbar__content-text">Phiếu nhập hàng</p></a>
+                        <a href="{% url 'transactions:export_receipt_page' %}" class="navbar__content-item-link"><i class="fa-solid fa-file-export navbar__content-icon"></i><p class="navbar__content-text">Phiếu xuất hàng</p></a>
                     </div>
                 </div>
             </div>

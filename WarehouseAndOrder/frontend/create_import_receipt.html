@@ -1,0 +1,267 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tạo phiếu nhập</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/themify-icons@0.1.2/css/themify-icons.css">
+    <link rel="stylesheet" href="{% static 'css/product.css' %}">
+    <link rel="stylesheet" href="{% static 'css/import.css' %}"> </head>
+<body>
+    <div class="main">
+        <div class="navbar">
+             <a href="{% url 'users:home_page' %}" class="navbar__header">
+                <p class="navbar__header-logo">Warehouse</p>
+                <div class="navbar__header-wrapper">
+                    <p class="navbar__header-text">Quản lý kho hàng</p>
+                </div>
+            </a>
+            <div class="navbar__content">
+                <div class="navbar__content-item">
+                    <a href="{% url 'users:home_page' %}" class="navbar__content-item-link">
+                        <i class="fa-solid fa-chart-pie navbar__content-icon"></i>
+                        <p class="navbar__content-text">Thống kê</p>
+                    </a>
+                </div>
+                <div class="navbar__content-item">
+                    <a href="#" class="navbar__content-item-link">
+                        <i class="fa-solid fa-user-group navbar__content-icon"></i>
+                        <p class="navbar__content-text">Quản lý người dùng</p>
+                    </a>
+                </div>
+                <div class="navbar__content-item">
+                    <a href="{% url 'partners:customer_page' %}" class="navbar__content-item-link">
+                        <i class="fa-solid fa-users navbar__content-icon"></i>
+                        <p class="navbar__content-text">Quản lý khách hàng</p>
+                    </a>
+                </div>
+                <div class="navbar__content-item">
+                    <a href="#" class="navbar__content-item-link navbar__content-item-parent">
+                        <i class="fa-solid fa-boxes-stacked navbar__content-icon"></i>
+                        <p class="navbar__content-text">Quản lý sản phẩm</p>
+                        <i class="fa-solid fa-angle-down navbar__content-sub-icon"></i>
+                    </a>
+                    <div class="navbar__content-sub">
+                        <a href="#" class="navbar__content-item-link">
+                            <i class="fa-solid fa-truck-field navbar__content-icon"></i>
+                            <p class="navbar__content-text">Nhà cung cấp</p>
+                        </a>
+                        <a href="{% url 'inventory:product_page' %}" class="navbar__content-item-link">
+                            <i class="fa-solid fa-box navbar__content-icon"></i>
+                            <p class="navbar__content-text">Sản phẩm</p>
+                        </a>
+                    </div>
+                </div>
+                <div class="navbar__content-item">
+                    <a href="#" class="navbar__content-item-link navbar__content-item-parent active">
+                        <i class="fa-solid fa-warehouse navbar__content-icon"></i>
+                        <p class="navbar__content-text">Quản lý kho</p>
+                        <i class="fa-solid fa-angle-down navbar__content-sub-icon"></i>
+                    </a>
+                    <div class="navbar__content-sub" style="display: block;">
+                         <a href="{% url 'transactions:import_receipt_page' %}" class="navbar__content-item-link navbar__content-item-choose">
+                            <i class="fa-solid fa-file-import fa-user-groug navbar__content-icon"></i>
+                            <p class="navbar__content-text">Nhập hàng</p>
+                        </a>
+                        <a href="{% url 'transactions:export_receipt_page' %}" class="navbar__content-item-link">
+                            <i class="fa-solid fa-file-export navbar__content-icon"></i>
+                            <p class="navbar__content-text">Xuất hàng</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="content__wrapper">
+                <div class="content__header">
+                    <p class="content__header-text">📝 Tạo phiếu nhập hàng mới</p>
+                </div>
+
+                <form method="POST" action="{% url 'transactions:add_import_receipt' %}" id="importForm" class="form-container">
+                    {% csrf_token %}
+
+                    <div class="modal__product-wrapper">
+                         <label for="supplier" class="modal__product-text-wrapper"><p class="modal__product-text">Nhà cung cấp</p><span class="modal__product-compulsory">*</span></label>
+                        <select name="supplier" id="supplier" required class="modal__product-select modal__product-input">
+                            <option value="">-- Chọn nhà cung cấp --</option>
+                            {% for supplier in suppliers %}
+                            <option value="{{ supplier.id }}">{{ supplier.supplier_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="modal__product-wrapper">
+                        <label for="note" class="modal__product-text-wrapper"><p class="modal__product-text">Ghi chú</p></label>
+                        <textarea name="note" id="note" placeholder="Nhập ghi chú cho phiếu nhập..." class="modal__product-textarea"></textarea>
+                    </div>
+
+                    <div class="products-section">
+                        <h3 class="form-section-title">📦 Danh sách sản phẩm</h3>
+                        <div id="productList"></div>
+                        <button type="button" class="btn btn-secondary" onclick="addProductRow()">
+                            ➕ Thêm sản phẩm
+                        </button>
+
+                        <div class="total-section">
+                            <span class="total-label">Tổng tiền:</span>
+                            <span class="total-value" id="totalAmount">0 đ</span>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <a href="{% url 'transactions:import_receipt_page' %}" class="btn btn-back">← Quay lại</a>
+                        <button type="submit" class="btn btn-primary">💾 Tạo phiếu nhập</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let productIndex = 0;
+
+        const productsData = [
+            {% for product in products %}
+            {
+                id: {{ product.id }},
+                code: 'SP{{ product.id|stringformat:"03d" }}',
+                name: '{{ product.name|escapejs }}',
+                price: {{ product.price }},
+                unit: '{{ product.unit }}',
+                category: '{{ product.category_name }}',
+                quantity: {{ product.quantity }} // Số lượng tồn kho hiện tại
+            },
+            {% endfor %}
+        ];
+
+        function addProductRow() {
+            productIndex++;
+            const productList = document.getElementById('productList');
+            
+            const row = document.createElement('div');
+            row.className = 'product-row';
+            row.id = 'product-row-' + productIndex;
+            
+            // Cập nhật class input/select
+            row.innerHTML = `
+                <div>
+                    <label>STT</label>
+                    <input type="text" value="${productIndex}" readonly class="modal__product-input form-input-readonly">
+                </div>
+                <div>
+                    <label>Sản phẩm <span class="modal__product-compulsory">*</span></label>
+                    <select name="product_id[]" required onchange="updateProductInfo(this, ${productIndex})" class="modal__product-select modal__product-input">
+                        <option value="">-- Chọn sản phẩm --</option>
+                        ${productsData.map(p => 
+                            `<option value="${p.id}">${p.code} - ${p.name}</option>`
+                        ).join('')}
+                    </select>
+                    <div class="product-info" id="info-${productIndex}"></div>
+                </div>
+                <div>
+                    <label>Giá nhập</label>
+                    <input type="text" id="price-${productIndex}" readonly class="modal__product-input form-input-readonly">
+                </div>
+                <div>
+                    <label>Số lượng <span class="modal__product-compulsory">*</span></label>
+                    <input type="number" name="quantity[]" id="quantity-${productIndex}" min="1" required onchange="calculateTotal()" class="modal__product-input">
+                </div>
+                <div>
+                    <label>Thành tiền</label>
+                    <input type="text" id="subtotal-${productIndex}" readonly class="modal__product-input form-input-readonly">
+                </div>
+                <div>
+                    <label>&nbsp;</label>
+                    <button type="button" class="btn-danger" onclick="removeProductRow(${productIndex})">🗑️</button>
+                </div>
+            `;
+            
+            productList.appendChild(row);
+        }
+
+        function updateProductInfo(selectElement, index) {
+            const productId = selectElement.value;
+            const product = productsData.find(p => p.id == productId);
+            
+            if (product) {
+                document.getElementById('price-' + index).value = formatNumber(product.price) + ' đ';
+                 // Hiển thị tồn kho hiện tại, không phải giá bán
+                document.getElementById('info-' + index).innerHTML = 
+                    `Tồn kho: <strong>${product.quantity}</strong> ${product.unit} | Danh mục: ${product.category}`;
+                calculateTotal();
+            } else {
+                document.getElementById('price-' + index).value = '';
+                document.getElementById('info-' + index).innerHTML = '';
+            }
+        }
+
+        function removeProductRow(index) {
+            const row = document.getElementById('product-row-' + index);
+            if (row) {
+                row.remove();
+                calculateTotal();
+            }
+        }
+
+        function calculateTotal() {
+            let total = 0;
+            
+            for (let i = 1; i <= productIndex; i++) {
+                const row = document.getElementById('product-row-' + i);
+                if (!row) continue;
+                
+                const selectElement = row.querySelector('select[name="product_id[]"]');
+                const quantityInput = document.getElementById('quantity-' + i);
+                const subtotalInput = document.getElementById('subtotal-' + i);
+                
+                if (selectElement && quantityInput) {
+                    const productId = selectElement.value;
+                    const quantity = parseInt(quantityInput.value) || 0;
+                    const product = productsData.find(p => p.id == productId);
+                    
+                    if (product && quantity > 0) {
+                        const subtotal = product.price * quantity; // Giá nhập * số lượng
+                        subtotalInput.value = formatNumber(subtotal) + ' đ';
+                        total += subtotal;
+                    } else {
+                        subtotalInput.value = '';
+                    }
+                }
+            }
+            
+            document.getElementById('totalAmount').textContent = formatNumber(total) + ' đ';
+        }
+
+        function formatNumber(num) {
+            return Math.round(num).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+
+        // Dùng DOMContentLoaded thay vì window.onload
+        document.addEventListener('DOMContentLoaded', function() {
+            addProductRow();
+        });
+
+         // Script cho menu xổ xuống
+        document.querySelectorAll(".navbar__content-item .navbar__content-item-parent").forEach((title) => {
+            title.addEventListener("click", function(event) {
+                event.preventDefault();
+                const child = this.nextElementSibling;
+                const isOpen = child.style.display === "block";
+                
+                document.querySelectorAll(".navbar__content-sub").forEach(sub => {
+                    if (sub !== child) {
+                        sub.style.display = "none";
+                        sub.previousElementSibling.classList.remove("active");
+                    }
+                });
+
+                child.style.display = isOpen ? "none" : "block";
+                this.classList.toggle("active", !isOpen);
+            });
+        });
+    </script>
+</body>
+</html>

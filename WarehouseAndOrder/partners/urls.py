@@ -21,4 +21,10 @@ urlpatterns = [
     path('customers/add/', views.add_customer, name='add_customer'),
     path('customers/<int:customer_id>/edit/', views.edit_customer, name='edit_customer'),
     path('customers/<int:customer_id>/delete/', views.delete_customer, name='delete_customer'),
+
+    # URL cho các trang HTML của nhà cung cấp
+    path('suppliers/', views.supplier_page, name='supplier_page'),
+    path('suppliers/add/', views.add_supplier, name='add_supplier'),
+    path('suppliers/<int:supplier_id>/edit/', views.edit_supplier, name='edit_supplier'),
+    path('suppliers/<int:supplier_id>/delete/', views.delete_supplier, name='delete_supplier'),
 ]

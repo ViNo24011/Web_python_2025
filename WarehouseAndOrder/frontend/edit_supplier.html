@@ -1,0 +1,75 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sửa Nhà cung cấp</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/themify-icons@0.1.2/css/themify-icons.css">
+    <link rel="stylesheet" href="{% static 'css/supplier.css' %}"> </head>
+<body>
+    <div class="main">
+        <div class="navbar"> <a href="{% url 'users:home_page' %}" class="navbar__header">
+                <p class="navbar__header-logo">Warehouse</p>
+                <div class="navbar__header-wrapper"><p class="navbar__header-text">Quản lý kho hàng</p></div>
+            </a>
+            <div class="navbar__content">
+                 <div class="navbar__content-item">
+                    <a href="{% url 'users:home_page' %}" class="navbar__content-item-link">...</a>
+                 </div>
+                 <div class="navbar__content-item">
+                     <a href="#" class="navbar__content-item-link">...</a>
+                 </div>
+                 <div class="navbar__content-item">
+                     <a href="{% url 'partners:customer_page' %}" class="navbar__content-item-link">...</a>
+                 </div>
+                 <div class="navbar__content-item">
+                    <a href="#" class="navbar__content-item-link navbar__content-item-parent active"> <i class="fa-solid fa-boxes-stacked navbar__content-icon"></i><p class="navbar__content-text">Quản lý sản phẩm</p>
+                        <i class="fa-solid fa-angle-down navbar__content-sub-icon"></i>
+                    </a>
+                    <div class="navbar__content-sub" style="display: block;"> <a href="{% url 'partners:supplier_page' %}" class="navbar__content-item-link navbar__content-item-choose"> <i class="fa-solid fa-truck-field navbar__content-icon"></i><p class="navbar__content-text">Nhà cung cấp</p>
+                        </a>
+                        <a href="{% url 'inventory:product_page' %}" class="navbar__content-item-link">
+                            <i class="fa-solid fa-box navbar__content-icon"></i><p class="navbar__content-text">Sản phẩm</p>
+                        </a>
+                    </div>
+                </div>
+                 </div>
+        </div>
+
+        <div class="content">
+            <div class="content__wrapper">
+                <div class="content__header">
+                    <p class="content__header-text">Sửa thông tin nhà cung cấp</p>
+                </div>
+                <form action="{% url 'partners:edit_supplier' supplier.id %}" method="post" class="add__form" style="padding: 2.5rem;">
+                    {% csrf_token %}
+                    <div class="add_supplier-infor">
+                        <div class="add__supplier-wrapper">
+                            <label for="name" class="add__supplier-text-wrapper"><p class="add__supplier-text">Tên nhà cung cấp</p></label>
+                            <input id="name" name="name" type="text" required value="{{ supplier.supplier_name }}" class="add__supplier-input">
+                        </div>
+                        <div class="add__supplier-wrapper">
+                            <label for="phone" class="add__supplier-text-wrapper"><p class="add__supplier-text">Số điện thoại</p></label>
+                            <input id="phone" name="phone" type="text" value="{{ supplier.phone|default:'' }}" class="add__supplier-input">
+                        </div>
+                         <div class="add__supplier-wrapper">
+                            <label for="email" class="add__supplier-text-wrapper"><p class="add__supplier-text">Email</p></label>
+                            <input id="email" name="email" type="email" value="{{ supplier.email|default:'' }}" class="add__supplier-input">
+                        </div>
+                        <div class="add__supplier-address">
+                            <label for="address" class="add__supplier-text-wrapper"><p class="add__supplier-text">Địa chỉ</p></label>
+                            <textarea id="address" name="address" rows="4" class="add__supplier-address-input">{{ supplier.address|default:'' }}</textarea>
+                        </div>
+                    </div>
+                    <div class="add__submit">
+                        <button type="submit" class="add__submit-btn"><p class="add__submit-text">Cập nhật</p></button>
+                        <a href="{% url 'partners:supplier_page' %}" style="text-decoration: none; font-size: 1.6rem; margin-left: 10px;">Hủy</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

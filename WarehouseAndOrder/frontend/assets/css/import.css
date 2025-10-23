@@ -1,0 +1,222 @@
+/* static/css/import.css */
+/* Kế thừa và bổ sung cho product.css */
+
+/* ===========
+   FORM STYLING (Cho trang Create/Edit)
+   Sử dụng lại các lớp từ product.css và export.css
+   =========== */
+
+.form-container {
+    padding: 0rem 2.5rem 2.5rem;
+}
+
+.form-section-title {
+    font-size: 2.2rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #1678ff;
+}
+
+/* Ghi đè lại để dùng cho form toàn trang */
+.modal_product-infor {
+    margin-top: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.modal__product-wrapper {
+    width: 100%; /* Cho supplier và note rộng hết */
+    margin-top: 1.5rem;
+}
+.modal__product-text-wrapper {
+    display: flex;
+    margin-bottom: 8px;
+}
+.modal__product-text {
+    font-size: 1.6rem;
+    font-weight: bold;
+}
+.modal__product-compulsory {
+    font-size: 1.6rem;
+    color: rgb(237, 14, 14);
+    margin-left: 0.32rem;
+}
+
+.modal__product-input,
+.modal__product-select, /* Thêm select */
+.modal__product-textarea {
+    flex: 1;
+    font-size: 1.6rem;
+    height: 3.5rem;
+    padding-left: 0.8rem;
+    border: 0.1rem solid #ccc;
+    border-radius: 0.4rem;
+    width: 100%;
+    box-sizing: border-box !important;
+}
+
+.modal__product-textarea {
+    height: 8rem;
+    padding-top: 0.5rem;
+    resize: vertical;
+}
+
+
+/* ===========
+   PRODUCT ROW (Cho trang Create/Edit - Import)
+   =========== */
+
+.products-section {
+    margin-top: 30px;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.product-row {
+    display: grid;
+    /* STT | Sản phẩm | Giá nhập | SL | Thành tiền | Xóa */
+    grid-template-columns: 40px 1fr 120px 80px 120px 50px;
+    gap: 10px;
+    margin-bottom: 15px;
+    align-items: flex-end;
+}
+
+.product-row label {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #555;
+    display: block;
+    margin-bottom: 5px;
+}
+
+/* Dùng lại class của product.css cho tiện */
+.product-row .modal__product-input,
+.product-row .modal__product-select {
+    height: 3.5rem;
+    font-size: 1.4rem; /* Nhỏ hơn một chút cho vừa hàng */
+}
+
+.product-row .form-input-readonly {
+    background: #eee;
+    font-weight: bold;
+    text-align: center;
+}
+
+.product-row .product-info {
+    font-size: 1.2rem;
+    color: #666;
+    margin-top: 5px;
+}
+
+.product-row .btn-danger {
+    background-color: #ff020f;
+    color: white;
+    padding: 0.4rem;
+    border-radius: 0.4rem;
+    width: 100%;
+    height: 3.5rem;
+    font-size: 1.6rem;
+    cursor: pointer;
+}
+.product-row .btn-danger:hover {
+    opacity: 0.7;
+}
+
+.total-section {
+    margin-top: 20px;
+    padding: 20px;
+    background: white;
+    border: 2px solid #1678ff;
+    border-radius: 5px;
+    text-align: right;
+}
+
+.total-label {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.total-value {
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: #ff020f;
+    margin-left: 15px;
+}
+
+/* ===========
+   ACTION BUTTONS (Chung)
+   =========== */
+
+.form-actions {
+    margin-top: 30px;
+    display: flex;
+    gap: 10px;
+}
+
+/* Dùng chung class với modal cho tiện */
+.btn {
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 0.4rem;
+    cursor: pointer;
+    font-size: 1.6rem;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s;
+    color: white;
+    text-align: center;
+}
+.btn-primary { background: #1678ff; }
+.btn-primary:hover { opacity: 0.8; }
+
+.btn-secondary { background: #00bcd4; }
+.btn-secondary:hover { background: #0097a7; }
+
+.btn-back { background: #9e9e9e; }
+.btn-back:hover { background: #757575; }
+
+/* ===========
+   TABLE BUTTONS & BADGES (Trang List)
+   =========== */
+
+.content__product-operation .btn {
+    padding: 0.4rem 0.8rem;
+    font-size: 1.4rem;
+    margin: 2px;
+}
+
+.btn-warning { background: #ff9800; }
+.btn-warning:hover { background: #e68900; }
+
+.btn-danger { background: #ff020f; }
+.btn-danger:hover { opacity: 0.7; }
+
+.btn-success { background: #4CAF50; }
+.btn-success:hover { background: #45a049; }
+
+.btn-info { background: #9C27B0; }
+.btn-info:hover { background: #7B1FA2; }
+
+.btn-confirmed { background: #9e9e9e; cursor: not-allowed; }
+
+.status-badge {
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 1.2rem;
+    font-weight: 500;
+    display: inline-block;
+    color: white;
+}
+
+.status-confirmed { background: #4CAF50; }
+.status-pending { background: #ff9800; }
+/* Có thể thêm các status khác nếu cần */
+
+.price {
+    color: #ff020f;
+    font-weight: 500;
+}
