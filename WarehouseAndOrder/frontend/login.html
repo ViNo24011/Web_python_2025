@@ -1,4 +1,3 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,11 +6,11 @@
     <title>Login</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/themify-icons@0.1.2/css/themify-icons.css">
-    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    <link rel="stylesheet" href="./assets/css/login.css">
 </head>
 <body>
     <div class="container">
-        <form id="login-form"> 
+        <form action="./login" id="login-form">
             <div class="login-form-header">
                 <div class="header-text-wrapper">
                     <p class="header-text">Đăng nhập</p>
@@ -19,64 +18,20 @@
             </div>
             <div class="login-form-content">
                 <div class="content-text-wrapper">
-                    <input name="username" type="text" placeholder="Tên đăng nhập" class="content-text" required>
+                    <input name="phone" type="text" placeholder="Tên đăng nhập" class="content-text">
                 </div>
                 <div class="content-text-wrapper">
-                    <input name="password" type="password" placeholder="Mật khẩu" class="content-text" required>
+                    <input name="password" type="password" placeholder="Mật khẩu" class="content-text">
                 </div>
                 <div class="content-container">
-                    <p id="error-message" class="content-message" style="display: none; color: red;">Tên đăng nhập hoặc mật khẩu không đúng!</p>
-                    <a href="{% url 'users:forget_page' %}" class="forget-password">Quên mật khẩu?</a>
+                    <p class="content-message" style="display: none">Đăng nhập thất bại</p>
+                    <a href="http://127.0.0.1:5500/frontend-python/forget.html" class="forget-password">Quên mật khẩu?</a>
                 </div>
                 <div class="login-btn-wrapper">
-                    <button type="submit" class="login-btn">Đăng nhập</button>
+                    <button class="login-btn">Đăng nhập</button>
                 </div>
             </div>
         </form>
     </div>
-
-    <script>
-        document.getElementById('login-form').addEventListener('submit', async function(event) {
-            // 1. Ngăn chặn form gửi đi theo cách truyền thống (tải lại trang)
-            event.preventDefault();
-
-            const form = event.target;
-            const formData = new FormData(form);
-            const data = Object.fromEntries(formData.entries());
-            const errorMessage = document.getElementById('error-message');
-
-            // Ẩn thông báo lỗi cũ
-            errorMessage.style.display = 'none';
-
-            try {
-                // 2. Gửi yêu cầu POST tới API login của bạn
-                const response = await fetch("{% url 'users:login_api' %}", {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(data)
-                });
-
-                // 3. Xử lý kết quả trả về
-                if (response.ok) {
-                    // Nếu response.ok là true (status 200-299), đăng nhập thành công
-                    const result = await response.json();
-                    console.log('Login successful:', result);
-                    // Chuyển hướng tới trang home
-                    window.location.href = "{% url 'users:home_page' %}";
-                } else {
-                    // Nếu response.ok là false, đăng nhập thất bại
-                    console.log('Login failed');
-                    // Hiển thị thông báo lỗi
-                    errorMessage.style.display = 'block';
-                }
-            } catch (error) {
-                console.error('An error occurred:', error);
-                errorMessage.textContent = 'Đã có lỗi xảy ra. Vui lòng thử lại.';
-                errorMessage.style.display = 'block';
-            }
-        });
-    </script>
 </body>
 </html>

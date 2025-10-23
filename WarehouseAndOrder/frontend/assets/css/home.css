@@ -314,7 +314,7 @@
     border-bottom: 0.1rem solid #ccc;
 }
 
-.content__warn-stt {
+.content__warn-id {
     width: 20%;
     font-size: 1.6rem;
     text-align: center;
@@ -355,5 +355,4 @@
     width: 20%;
     font-size: 1.6rem;
     text-align: center;
-
 }
