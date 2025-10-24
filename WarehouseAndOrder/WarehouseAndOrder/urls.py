@@ -18,7 +18,6 @@ from django.contrib import admin
 from django.urls import path, include
 from django.shortcuts import redirect
 
-
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', lambda request: redirect('/users/login-page/')),
@@ -34,4 +33,5 @@ from django.conf.urls.static import static
 
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS[0])
+
 
