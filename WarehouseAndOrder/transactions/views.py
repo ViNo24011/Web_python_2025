@@ -10,7 +10,7 @@ from partners.models import Supplier, Customer
 from decimal import Decimal
 
 # ============= IMPORT API VIEWS =============
-class ImportReceiptViewSet(viewsets.ModelViewSet):
+class ImportReceiptViewSet(viewsets.ModelViewSet):  
     queryset = ImportReceipt.objects.all().order_by('-import_date')
     serializer_class = ImportReceiptSerializer
 
@@ -42,7 +42,6 @@ def create_import_receipt_page(request):
         'products': products
     }
     return render(request, 'create_import_receipt.html', context)
-
 
 # @login_required
 @transaction.atomic
