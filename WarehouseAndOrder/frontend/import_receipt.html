@@ -122,9 +122,9 @@
                         <tbody>
                             {% for receipt in import_receipts %}
                             <tr class="content__product-item">
-                                <td style="text-align: center;"><strong>#{{ receipt.import_id }}</strong></td>
+                                <td style="text-align: center;">#{{ receipt.import_id }}</td>
                                 <td style="padding: 0 1rem;">{{ receipt.supplier.supplier_name|default:"N/A" }}</td>
-                                <td style="padding: 0 1rem;"><strong>{{ receipt.warehouse.name|default:"N/A" }}</strong></td>
+                                <td style="padding: 0 1rem;">{{ receipt.warehouse.name|default:"N/A" }}</td>
                                 <td style="text-align: center;">{{ receipt.import_date|timezone:"Asia/Ho_Chi_Minh"|date:"d/m/Y H:i" }}</td>
                                 <td class="price" style="text-align: center;">{{ receipt.total_import_order|floatformat:0 }} đ</td>
                                 <td style="text-align: center;">

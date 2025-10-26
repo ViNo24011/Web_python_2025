@@ -125,11 +125,11 @@
                         <tbody>
                             {% for receipt in export_receipts %}
                             <tr class="content__product-item">
-                                <td style="text-align: center;"><strong>#{{ receipt.export_id }}</strong></td>
+                                <td style="text-align: center;">#{{ receipt.export_id }}</td>
                                 <td style="padding: 0 1rem;">{{ receipt.customer_name }}</td>
                                 <td style="text-align: center;">{{ receipt.customer_phone }}</td>
                                 <td style="padding: 0 1rem;">{{ receipt.customer_address|truncatewords:5 }}</td>
-                                <td style="padding: 0 1rem;"><strong>{{ receipt.warehouse.name|default:"N/A" }}</strong></td>
+                                <td style="padding: 0 1rem;">{{ receipt.warehouse.name|default:"N/A" }}</td>
                                 <td style="text-align: center;">{{ receipt.export_date|timezone:"Asia/Ho_Chi_Minh"|date:"d/m/Y H:i" }}</td>
                                 <td class="price" style="text-align: center;">{{ receipt.total_export_order|floatformat:0 }} đ</td>
                                 <td style="text-align: center;">
