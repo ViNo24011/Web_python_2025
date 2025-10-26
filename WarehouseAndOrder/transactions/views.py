@@ -276,7 +276,7 @@ def add_export_receipt(request):
                 try:
                     product = Product.objects.get(id=product_id)
                     # Giá bán = giá gốc * 1.5 (150%)
-                    selling_price = product.price * Decimal('1.5')
+                    selling_price = product.price * Decimal('1.2')
                     
                     ExportDetail.objects.create(
                         export_receipt=export_receipt,
@@ -350,7 +350,7 @@ def update_export_receipt(request, export_id):
             if product_id and quantity:
                 try:
                     product = Product.objects.get(id=product_id)
-                    selling_price = product.price * Decimal('1.5')
+                    selling_price = product.price * Decimal('1.2')
                     
                     ExportDetail.objects.create(
                         export_receipt=export_receipt,
@@ -453,7 +453,7 @@ def get_product_info(request):
     try:
         product = Product.objects.get(id=product_id)
         # Tính giá bán = giá gốc * 1.5
-        selling_price = float(product.price) * 1.5
+        selling_price = float(product.price) * 1.2
         
         return JsonResponse({
             'success': True,
