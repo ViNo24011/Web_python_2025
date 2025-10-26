@@ -5,12 +5,13 @@ from django.db import transaction
 from rest_framework import viewsets
 from .models import ImportReceipt, ImportDetail, ExportReceipt, ExportDetail
 from .serializers import ImportReceiptSerializer, ExportReceiptSerializer
-from inventory.models import Product
+# CẬP NHẬT: Import thêm Warehouse
+from inventory.models import Product, Warehouse
 from partners.models import Supplier, Customer
 from decimal import Decimal
 
 # ============= IMPORT API VIEWS =============
-class ImportReceiptViewSet(viewsets.ModelViewSet):  
+class ImportReceiptViewSet(viewsets.ModelViewSet):
     queryset = ImportReceipt.objects.all().order_by('-import_date')
     serializer_class = ImportReceiptSerializer
 
@@ -37,9 +38,15 @@ def create_import_receipt_page(request):
     """Trang tạo phiếu nhập mới"""
     suppliers = Supplier.objects.all()
     products = Product.objects.all()
+    
+    # --- DÒNG MỚI ---
+    warehouses = Warehouse.objects.all() # Lấy danh sách kho
+    # --- KẾT THÚC DÒNG MỚI ---
+
     context = {
         'suppliers': suppliers,
-        'products': products
+        'products': products,
+        'warehouses': warehouses # Truyền kho vào template
     }
     return render(request, 'create_import_receipt.html', context)
 
@@ -49,15 +56,23 @@ def add_import_receipt(request):
     """Xử lý thêm phiếu nhập mới"""
     if request.method == 'POST':
         supplier_id = request.POST.get('supplier')
+        
+        # --- DÒNG MỚI ---
+        warehouse_id = request.POST.get('warehouse') # Lấy warehouse_id
+        # --- KẾT THÚC DÒNG MỚI ---
+        
         note = request.POST.get('note', '')
         product_ids = request.POST.getlist('product_id[]')
         quantities = request.POST.getlist('quantity[]')
         
-        if not supplier_id:
+        # --- CẬP NHẬT VALIDATION ---
+        if not all([supplier_id, warehouse_id]):
+        # --- KẾT THÚC CẬP NHẬT ---
             return redirect('transactions:create_import_receipt_page')
         
         import_receipt = ImportReceipt.objects.create(
             supplier_id=supplier_id,
+            warehouse_id=warehouse_id, # Thêm vào
             note=note,
             is_confirmed=False
         )
@@ -92,10 +107,16 @@ def edit_import_receipt_page(request, import_id):
     
     suppliers = Supplier.objects.all()
     products = Product.objects.all()
+    
+    # --- DÒNG MỚI ---
+    warehouses = Warehouse.objects.all() # Lấy danh sách kho
+    # --- KẾT THÚC DÒNG MỚI ---
+
     context = {
         'import_receipt': import_receipt,
         'suppliers': suppliers,
-        'products': products
+        'products': products,
+        'warehouses': warehouses # Truyền kho vào template
     }
     return render(request, 'edit_import_receipt.html', context)
 
@@ -112,6 +133,13 @@ def update_import_receipt(request, import_id):
     if request.method == 'POST':
         import_receipt.supplier_id = request.POST.get('supplier')
         import_receipt.note = request.POST.get('note', '')
+        
+        # --- LƯU Ý ---
+        # Warehouse không được cập nhật, vì nó đến từ
+        # input 'disabled' và 'hidden'.
+        # Điều này là đúng logic nghiệp vụ (không đổi kho khi sửa).
+        # --- KẾT THÚC LƯU Ý ---
+        
         import_receipt.save()
         
         import_receipt.import_details.all().delete()
@@ -164,6 +192,9 @@ def confirm_import_receipt(request, import_id):
         return redirect('transactions:import_receipt_page')
     
     if request.method == 'POST':
+        # Logic này vẫn đúng VỚI GIẢ ĐỊNH
+        # Product đã được lọc theo đúng kho ở frontend
+        # và Product.quantity là tồn kho của kho đó.
         for detail in import_receipt.import_details.all():
             product = detail.product
             product.quantity += detail.quantity
@@ -190,8 +221,14 @@ def export_receipt_page(request):
 def create_export_receipt_page(request):
     """Trang tạo phiếu xuất mới"""
     products = Product.objects.all()
+    
+    # --- DÒNG MỚI ---
+    warehouses = Warehouse.objects.all() # Lấy danh sách kho
+    # --- KẾT THÚC DÒNG MỚI ---
+
     context = {
-        'products': products
+        'products': products,
+        'warehouses': warehouses # Truyền kho vào template
     }
     return render(request, 'create_export_receipt.html', context)
 
@@ -201,6 +238,10 @@ def create_export_receipt_page(request):
 def add_export_receipt(request):
     """Xử lý thêm phiếu xuất mới"""
     if request.method == 'POST':
+        # --- DÒNG MỚI ---
+        warehouse_id = request.POST.get('warehouse') # Lấy warehouse_id
+        # --- KẾT THÚC DÒNG MỚI ---
+
         # Lấy thông tin khách hàng
         customer_name = request.POST.get('customer_name')
         customer_phone = request.POST.get('customer_phone')
@@ -212,11 +253,14 @@ def add_export_receipt(request):
         product_ids = request.POST.getlist('product_id[]')
         quantities = request.POST.getlist('quantity[]')
         
-        if not all([customer_name, customer_phone, customer_address]):
+        # --- CẬP NHẬT VALIDATION ---
+        if not all([warehouse_id, customer_name, customer_phone, customer_address]):
+        # --- KẾT THÚC CẬP NHẬT ---
             return redirect('transactions:create_export_receipt_page')
         
         # Tạo phiếu xuất
         export_receipt = ExportReceipt.objects.create(
+            warehouse_id=warehouse_id, # Thêm vào
             customer_name=customer_name,
             customer_phone=customer_phone,
             customer_email=customer_email,
@@ -261,9 +305,15 @@ def edit_export_receipt_page(request, export_id):
         return redirect('transactions:export_receipt_page')
     
     products = Product.objects.all()
+    
+    # --- DÒNG MỚI ---
+    warehouses = Warehouse.objects.all() # Lấy danh sách kho
+    # --- KẾT THÚC DÒNG MỚI ---
+    
     context = {
         'export_receipt': export_receipt,
-        'products': products
+        'products': products,
+        'warehouses': warehouses # Truyền kho vào template
     }
     return render(request, 'edit_export_receipt.html', context)
 
@@ -284,6 +334,9 @@ def update_export_receipt(request, export_id):
         export_receipt.customer_email = request.POST.get('customer_email', '')
         export_receipt.customer_address = request.POST.get('customer_address')
         export_receipt.note = request.POST.get('note', '')
+        
+        # Warehouse không được cập nhật (logic đúng)
+        
         export_receipt.save()
         
         # Xóa chi tiết cũ
@@ -343,6 +396,8 @@ def confirm_export_receipt(request, export_id):
     
     if request.method == 'POST':
         # Kiểm tra tồn kho trước khi xuất
+        # Logic này vẫn đúng VỚI GIẢ ĐỊNH
+        # Product.quantity là tồn kho của kho tương ứng.
         for detail in export_receipt.export_details.all():
             product = detail.product
             if product.quantity < detail.quantity:

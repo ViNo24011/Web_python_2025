@@ -23,25 +23,25 @@
 .modal_product-infor {
     margin-top: 1rem;
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
+    flex-wrap: wrap;
+    justify-content: space-between;
 }
 .modal__product-wrapper {
     width: 100%; /* Cho supplier và note rộng hết */
     margin-top: 1.5rem;
 }
 .modal__product-text-wrapper {
-    display: flex;
+    display: flex;
     margin-bottom: 8px;
 }
 .modal__product-text {
-    font-size: 1.6rem;
-    font-weight: bold;
+    font-size: 1.6rem;
+    font-weight: bold;
 }
 .modal__product-compulsory {
-    font-size: 1.6rem;
-    color: rgb(237, 14, 14);
-    margin-left: 0.32rem;
+    font-size: 1.6rem;
+    color: rgb(237, 14, 14);
+    margin-left: 0.32rem;
 }
 
 .modal__product-input,

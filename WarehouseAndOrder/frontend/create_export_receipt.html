@@ -62,7 +62,7 @@
                         <i class="fa-solid fa-angle-down navbar__content-sub-icon"></i>
                     </a>
                     <div class="navbar__content-sub" style="display: block;">
-                        <a href="#" class="navbar__content-item-link">
+                        <a href="{% url 'transactions:import_receipt_page' %}" class="navbar__content-item-link">
                             <i class="fa-solid fa-file-import fa-user-groug navbar__content-icon"></i>
                             <p class="navbar__content-text">Nhập hàng</p>
                         </a>
@@ -84,7 +84,16 @@
                 <form method="POST" action="{% url 'transactions:add_export_receipt' %}" id="exportForm" class="form-container">
                     {% csrf_token %}
 
-                    <h3 class="form-section-title">📋 Thông tin khách hàng</h3>
+                    <h3 class="form-section-title">🏭 Chọn kho xuất</h3>
+                    <div class="modal__product-wrapper" style="width: 100%;">
+                        <label for="warehouse" class="modal__product-text-wrapper"><p class="modal__product-text">Nhà kho</p><span class="modal__product-compulsory">*</span></label>
+                        <select name="warehouse" id="warehouse" required class="modal__product-select modal__product-input" onchange="onWarehouseChange()">
+                            <option value="">-- Chọn nhà kho --</option>
+                            {% for wh in warehouses %} <option value="{{ wh.id }}">{{ wh.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <h3 class="form-section-title" style="margin-top: 20px;">📋 Thông tin khách hàng</h3>
                     
                     <div class="modal_product-infor">
                         <div class="modal__product-wrapper">
@@ -143,6 +152,9 @@
             {% for product in products %}
             {
                 id: {{ product.id }},
+                // --- TRƯỜNG MỚI ---
+                warehouse_id: {{ product.warehouse.id|default:"null" }},
+                
                 code: 'SP{{ product.id|stringformat:"03d" }}',
                 name: '{{ product.name|escapejs }}',
                 price: {{ product.price }},
@@ -154,15 +166,54 @@
             {% endfor %}
         ];
 
+        // --- HÀM MỚI ---
+        function onWarehouseChange() {
+            document.getElementById('productList').innerHTML = ''; // Xóa sạch list
+            productIndex = 0; // Reset bộ đếm
+            calculateTotal(); // Tính lại tổng tiền (về 0)
+            
+            const warehouseId = document.getElementById('warehouse').value;
+            const addProductBtn = document.querySelector('button[onclick="addProductRow()"]');
+            
+            if (warehouseId) {
+                addProductBtn.disabled = false; // Kích hoạt nút
+                addProductRow(); // Tự động thêm 1 dòng mới
+            } else {
+                addProductBtn.disabled = true; // Vô hiệu hóa nút
+            }
+        }
+
+        // --- HÀM CẬP NHẬT ---
         function addProductRow() {
+            const selectedWarehouseId = document.getElementById('warehouse').value;
+            
+            if (!selectedWarehouseId) {
+                alert('Vui lòng chọn nhà kho trước khi thêm sản phẩm.');
+                return;
+            }
+
+            // Lọc sản phẩm chỉ thuộc kho đã chọn
+            const filteredProducts = productsData.filter(p => 
+                p.warehouse_id == selectedWarehouseId
+            );
+
+            if (filteredProducts.length === 0 && productIndex === 0) {
+                 alert('Không có sản phẩm nào được cấu hình cho nhà kho này.');
+                 return;
+            }
+
             productIndex++;
             const productList = document.getElementById('productList');
             
             const row = document.createElement('div');
             row.className = 'product-row';
             row.id = 'product-row-' + productIndex;
+
+            // Tạo HTML cho các <option> từ danh sách đã lọc
+            const productOptions = filteredProducts.map(p => 
+                `<option value="${p.id}">${p.code} - ${p.name}</option>`
+            ).join('');
             
-            // Đã cập nhật để dùng class CSS thay vì style inline
             row.innerHTML = `
                 <div>
                     <label>STT</label>
@@ -172,9 +223,7 @@
                     <label>Sản phẩm <span class="modal__product-compulsory">*</span></label>
                     <select name="product_id[]" required onchange="updateProductInfo(this, ${productIndex})" class="modal__product-select modal__product-input">
                         <option value="">-- Chọn sản phẩm --</option>
-                        ${productsData.map(p => 
-                            `<option value="${p.id}">${p.code} - ${p.name}</option>`
-                        ).join('')}
+                        ${productOptions}
                     </select>
                     <div class="product-info" id="info-${productIndex}"></div>
                 </div>
@@ -205,9 +254,11 @@
 
         function updateProductInfo(selectElement, index) {
             const productId = selectElement.value;
+            // Dùng productsData (toàn bộ) để tra cứu
             const product = productsData.find(p => p.id == productId);
             
             if (product) {
+                // Kiểm tra tồn kho (từ kho đã chọn)
                 if (product.quantity <= 0) {
                     alert(`Sản phẩm "${product.name}" đã hết hàng!`);
                     selectElement.value = '';
@@ -255,10 +306,13 @@
                     const product = productsData.find(p => p.id == productId);
                     
                     if (product && quantity > 0) {
+                        // Kiểm tra tồn kho khi tính toán
                         if (quantity > product.quantity) {
                             alert(`Số lượng vượt quá tồn kho! (Tồn kho: ${product.quantity})`);
                             quantityInput.value = product.quantity;
-                            return;
+                            // Cần tính toán lại sau khi tự động sửa
+                            calculateTotal();
+                            return; 
                         }
                         
                         const subtotal = product.sellingPrice * quantity;
@@ -274,10 +328,19 @@
         }
 
         function formatNumber(num) {
-            return Math.round(num).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            // Sửa dấu "," thành "." ở đây
+            return Math.round(num).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
         }
 
         document.getElementById('exportForm').addEventListener('submit', function(e) {
+            // Kiểm tra nhà kho đã được chọn
+            const warehouseId = document.getElementById('warehouse').value;
+            if (!warehouseId) {
+                e.preventDefault();
+                alert('Vui lòng chọn nhà kho!');
+                return false;
+            }
+
             const productRows = document.querySelectorAll('.product-row');
             if (productRows.length === 0) {
                 e.preventDefault();
@@ -294,6 +357,11 @@
                     const product = productsData.find(p => p.id == select.value);
                     const quantity = parseInt(quantityInput.value) || 0;
                     
+                    if (quantity <= 0) {
+                        alert(`Sản phẩm "${product.name}" có số lượng không hợp lệ!`);
+                        hasError = true;
+                    }
+
                     if (quantity > product.quantity) {
                         alert(`Sản phẩm "${product.name}": Số lượng xuất (${quantity}) vượt quá tồn kho (${product.quantity})!`);
                         hasError = true;
@@ -307,11 +375,14 @@
             }
         });
 
+        // --- CẬP NHẬT DOMContentLoaded ---
         document.addEventListener('DOMContentLoaded', function() {
-            addProductRow();
+            // Vô hiệu hóa nút thêm sản phẩm ban đầu
+            document.querySelector('button[onclick="addProductRow()"]').disabled = true;
+            // Không tự động thêm dòng, đợi người dùng chọn kho
         });
 
-        // Script cho menu xổ xuống (thêm từ product.html)
+        // Script cho menu xổ xuống (giữ nguyên)
         document.querySelectorAll(".navbar__content-item .navbar__content-item-parent").forEach((title) => {
             title.addEventListener("click", function(event) {
                 event.preventDefault();

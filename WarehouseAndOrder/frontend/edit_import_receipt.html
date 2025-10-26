@@ -84,6 +84,17 @@
                     {% csrf_token %}
 
                     <div class="modal__product-wrapper">
+                        <label for="warehouse" class="modal__product-text-wrapper"><p class="modal__product-text">Nhà kho</p><span class="modal__product-compulsory">*</span></label>
+                        <select name="warehouse_disabled" id="warehouse" required class="modal__product-select modal__product-input" disabled>
+                            {% for wh in warehouses %} 
+                            <option value="{{ wh.id }}" {% if import_receipt.warehouse.id == wh.id %}selected{% endif %}>
+                                {{ wh.name }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                         <input type="hidden" name="warehouse" value="{{ import_receipt.warehouse.id }}">
+                    </div>
+                    <div class="modal__product-wrapper">
                          <label for="supplier" class="modal__product-text-wrapper"><p class="modal__product-text">Nhà cung cấp</p><span class="modal__product-compulsory">*</span></label>
                         <select name="supplier" id="supplier" required class="modal__product-select modal__product-input">
                             <option value="">-- Chọn nhà cung cấp --</option>
@@ -129,6 +140,9 @@
             {% for product in products %}
             {
                 id: {{ product.id }},
+                // --- TRƯỜNG MỚI ---
+                warehouse_id: {{ product.warehouse.id|default:"null" }},
+                
                 code: 'SP{{ product.id|stringformat:"03d" }}',
                 name: '{{ product.name|escapejs }}',
                 price: {{ product.price }}, // Giá nhập
@@ -148,7 +162,16 @@
             {% endfor %}
         ];
 
+        // --- HÀM CẬP NHẬT ---
         function addProductRow(presetProductId = null, presetQuantity = null) {
+            // Lấy ID kho từ dropdown (đang bị khóa)
+            const selectedWarehouseId = document.getElementById('warehouse').value;
+            
+            // Lọc sản phẩm chỉ thuộc kho đã chọn
+            const filteredProducts = productsData.filter(p => 
+                p.warehouse_id == selectedWarehouseId
+            );
+
             productIndex++;
             const productList = document.getElementById('productList');
             
@@ -156,7 +179,11 @@
             row.className = 'product-row';
             row.id = 'product-row-' + productIndex;
             
-            // Cập nhật class input/select
+            // Tạo HTML cho các <option> từ danh sách đã lọc
+            const productOptions = filteredProducts.map(p => 
+                `<option value="${p.id}" ${presetProductId == p.id ? 'selected' : ''}>${p.code} - ${p.name}</option>`
+            ).join('');
+
             row.innerHTML = `
                 <div>
                     <label>STT</label>
@@ -166,9 +193,7 @@
                     <label>Sản phẩm <span class="modal__product-compulsory">*</span></label>
                     <select name="product_id[]" required onchange="updateProductInfo(this, ${productIndex})" class="modal__product-select modal__product-input">
                         <option value="">-- Chọn sản phẩm --</option>
-                        ${productsData.map(p => 
-                            `<option value="${p.id}" ${presetProductId == p.id ? 'selected' : ''}>${p.code} - ${p.name}</option>`
-                        ).join('')}
+                        ${productOptions}
                     </select>
                     <div class="product-info" id="info-${productIndex}"></div>
                 </div>
@@ -192,6 +217,7 @@
             
             productList.appendChild(row);
             
+            // Nếu có sản phẩm cũ, trigger update để hiển thị giá, tồn kho...
             if (presetProductId) {
                 const select = row.querySelector('select[name="product_id[]"]');
                 updateProductInfo(select, productIndex);
@@ -200,11 +226,11 @@
 
         function updateProductInfo(selectElement, index) {
             const productId = selectElement.value;
+            // Dùng productsData (toàn bộ) để tra cứu
             const product = productsData.find(p => p.id == productId);
             
             if (product) {
                 document.getElementById('price-' + index).value = formatNumber(product.price) + ' đ';
-                // Hiển thị tồn kho hiện tại
                 document.getElementById('info-' + index).innerHTML = 
                      `Tồn kho: <strong>${product.quantity}</strong> ${product.unit} | Danh mục: ${product.category}`;
                 calculateTotal();
@@ -252,17 +278,19 @@
         }
 
         function formatNumber(num) {
-             return Math.round(num).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            // Sửa dấu "," thành "." ở đây
+            return Math.round(num).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
         }
 
         // Dùng DOMContentLoaded thay vì window.onload
         document.addEventListener('DOMContentLoaded', function() {
+            // Tải các sản phẩm đã có trong phiếu nhập
             if (existingDetails.length > 0) {
                 existingDetails.forEach(detail => {
                     addProductRow(detail.productId, detail.quantity);
                 });
             } else {
-                // Chỉ thêm dòng mới nếu không có dữ liệu cũ
+                // Nếu là phiếu cũ nhưng không có sản phẩm nào, vẫn thêm 1 dòng trống
                 addProductRow();
             }
         });

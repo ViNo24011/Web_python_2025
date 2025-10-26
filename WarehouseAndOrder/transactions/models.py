@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
-from inventory.models import Product
+# CẬP NHẬT: Import thêm Warehouse
+from inventory.models import Product, Warehouse 
 from partners.models import Supplier, Customer
 
 # --- IMPORT RECEIPT MODEL ---
@@ -12,6 +13,16 @@ class ImportReceipt(models.Model):
         null=True,
         related_name='import_receipts'
     )
+    
+    # --- DÒNG MỚI ---
+    # Thêm liên kết đến kho
+    warehouse = models.ForeignKey(
+        Warehouse,
+        on_delete=models.PROTECT, # Không cho xóa kho nếu có phiếu nhập
+        related_name='import_receipts'
+    )
+    # --- KẾT THÚC DÒNG MỚI ---
+
     import_date = models.DateTimeField(default=timezone.now)
     total_import_order = models.DecimalField(
         max_digits=15, 
@@ -26,7 +37,8 @@ class ImportReceipt(models.Model):
 
     def __str__(self):
         supplier_name = self.supplier.supplier_name if self.supplier else "N/A"
-        return f"Import #{self.import_id} - {supplier_name}"
+        warehouse_name = self.warehouse.name if self.warehouse else "N/A"
+        return f"Import #{self.import_id} - {supplier_name} ({warehouse_name})"
 
     def calculate_total(self):
         """Tính tổng tiền của phiếu nhập"""
@@ -72,6 +84,16 @@ class ExportReceipt(models.Model):
     )
 
     export_id = models.AutoField(primary_key=True)
+    
+    # --- DÒNG MỚI ---
+    # Thêm liên kết đến kho
+    warehouse = models.ForeignKey(
+        Warehouse,
+        on_delete=models.PROTECT, # Không cho xóa kho nếu có phiếu xuất
+        related_name='export_receipts'
+    )
+    # --- KẾT THÚC DÒNG MỚI ---
+
     customer_name = models.CharField(max_length=100)
     customer_phone = models.CharField(max_length=20)
     customer_email = models.EmailField(blank=True, null=True)
@@ -94,7 +116,8 @@ class ExportReceipt(models.Model):
         ordering = ['-export_date']
 
     def __str__(self):
-        return f"Export #{self.export_id} - {self.customer_name}"
+        warehouse_name = self.warehouse.name if self.warehouse else "N/A"
+        return f"Export #{self.export_id} - {self.customer_name} ({warehouse_name})"
 
     def calculate_total(self):
         """Tính tổng tiền của phiếu xuất"""

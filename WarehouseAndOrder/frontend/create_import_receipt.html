@@ -84,6 +84,14 @@
                     {% csrf_token %}
 
                     <div class="modal__product-wrapper">
+                        <label for="warehouse" class="modal__product-text-wrapper"><p class="modal__product-text">Nhà kho</p><span class="modal__product-compulsory">*</span></label>
+                        <select name="warehouse" id="warehouse" required class="modal__product-select modal__product-input" onchange="onWarehouseChange()">
+                            <option value="">-- Chọn nhà kho --</option>
+                            {% for wh in warehouses %} <option value="{{ wh.id }}">{{ wh.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="modal__product-wrapper">
                          <label for="supplier" class="modal__product-text-wrapper"><p class="modal__product-text">Nhà cung cấp</p><span class="modal__product-compulsory">*</span></label>
                         <select name="supplier" id="supplier" required class="modal__product-select modal__product-input">
                             <option value="">-- Chọn nhà cung cấp --</option>
@@ -127,6 +135,9 @@
             {% for product in products %}
             {
                 id: {{ product.id }},
+                // --- TRƯỜNG MỚI ---
+                warehouse_id: {{ product.warehouse.id|default:"null" }}, 
+                
                 code: 'SP{{ product.id|stringformat:"03d" }}',
                 name: '{{ product.name|escapejs }}',
                 price: {{ product.price }},
@@ -137,7 +148,44 @@
             {% endfor %}
         ];
 
+        // --- HÀM MỚI ---
+        // Khi người dùng thay đổi kho, xóa các sản phẩm đã chọn
+        function onWarehouseChange() {
+            document.getElementById('productList').innerHTML = ''; // Xóa sạch list
+            productIndex = 0; // Reset bộ đếm
+            calculateTotal(); // Tính lại tổng tiền (về 0)
+            
+            const warehouseId = document.getElementById('warehouse').value;
+            const addProductBtn = document.querySelector('button[onclick="addProductRow()"]');
+            
+            if (warehouseId) {
+                addProductBtn.disabled = false; // Kích hoạt nút
+                addProductRow(); // Tự động thêm 1 dòng mới
+            } else {
+                addProductBtn.disabled = true; // Vô hiệu hóa nút
+            }
+        }
+
+        // --- HÀM CẬP NHẬT ---
         function addProductRow() {
+            const selectedWarehouseId = document.getElementById('warehouse').value;
+            
+            // Bắt buộc chọn kho trước
+            if (!selectedWarehouseId) {
+                alert('Vui lòng chọn nhà kho trước khi thêm sản phẩm.');
+                return;
+            }
+
+            // Lọc sản phẩm chỉ thuộc kho đã chọn
+            const filteredProducts = productsData.filter(p => 
+                p.warehouse_id == selectedWarehouseId
+            );
+
+            if (filteredProducts.length === 0 && productIndex === 0) {
+                 alert('Không có sản phẩm nào được cấu hình cho nhà kho này.');
+                 return;
+            }
+            
             productIndex++;
             const productList = document.getElementById('productList');
             
@@ -145,7 +193,11 @@
             row.className = 'product-row';
             row.id = 'product-row-' + productIndex;
             
-            // Cập nhật class input/select
+            // Tạo HTML cho các <option> từ danh sách đã lọc
+            const productOptions = filteredProducts.map(p => 
+                `<option value="${p.id}">${p.code} - ${p.name}</option>`
+            ).join('');
+
             row.innerHTML = `
                 <div>
                     <label>STT</label>
@@ -155,9 +207,7 @@
                     <label>Sản phẩm <span class="modal__product-compulsory">*</span></label>
                     <select name="product_id[]" required onchange="updateProductInfo(this, ${productIndex})" class="modal__product-select modal__product-input">
                         <option value="">-- Chọn sản phẩm --</option>
-                        ${productsData.map(p => 
-                            `<option value="${p.id}">${p.code} - ${p.name}</option>`
-                        ).join('')}
+                        ${productOptions}
                     </select>
                     <div class="product-info" id="info-${productIndex}"></div>
                 </div>
@@ -184,11 +234,11 @@
 
         function updateProductInfo(selectElement, index) {
             const productId = selectElement.value;
-            const product = productsData.find(p => p.id == productId);
+            // Dùng productsData (toàn bộ) để tra cứu thông tin
+            const product = productsData.find(p => p.id == productId); 
             
             if (product) {
                 document.getElementById('price-' + index).value = formatNumber(product.price) + ' đ';
-                 // Hiển thị tồn kho hiện tại, không phải giá bán
                 document.getElementById('info-' + index).innerHTML = 
                     `Tồn kho: <strong>${product.quantity}</strong> ${product.unit} | Danh mục: ${product.category}`;
                 calculateTotal();
@@ -220,10 +270,11 @@
                 if (selectElement && quantityInput) {
                     const productId = selectElement.value;
                     const quantity = parseInt(quantityInput.value) || 0;
+                    // Dùng productsData (toàn bộ) để tra cứu
                     const product = productsData.find(p => p.id == productId);
                     
                     if (product && quantity > 0) {
-                        const subtotal = product.price * quantity; // Giá nhập * số lượng
+                        const subtotal = product.price * quantity;
                         subtotalInput.value = formatNumber(subtotal) + ' đ';
                         total += subtotal;
                     } else {
@@ -236,12 +287,14 @@
         }
 
         function formatNumber(num) {
-            return Math.round(num).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            // Sửa dấu "," thành "." ở đây
+            return Math.round(num).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
         }
 
-        // Dùng DOMContentLoaded thay vì window.onload
         document.addEventListener('DOMContentLoaded', function() {
-            addProductRow();
+            // Vô hiệu hóa nút thêm sản phẩm ban đầu
+            document.querySelector('button[onclick="addProductRow()"]').disabled = true;
+            // Không tự động thêm dòng, đợi người dùng chọn kho
         });
 
          // Script cho menu xổ xuống

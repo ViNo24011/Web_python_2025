@@ -27,6 +27,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+USE_TZ = True
+TIME_ZONE = 'Asia/Ho_Chi_Minh' # Hoặc múi giờ GMT+7 phù hợp khác
 
 # Application definition
 
@@ -39,7 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'rest_framework',
-
+    'django.contrib.humanize',
     # cac module cua ung dung
     'app',
     'users',
@@ -129,6 +131,9 @@ USE_I18N = True
 
 USE_TZ = True
 
+# CẤU HÌNH ĐỂ DÙNG DẤU CHẤM NGĂN CÁCH
+# USE_THOUSAND_SEPARATOR = True
+# THOUSAND_SEPARATOR = '.'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
