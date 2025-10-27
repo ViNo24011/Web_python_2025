@@ -1,10 +1,10 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi"> {# Changed lang to "vi" for consistency #}
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+    <title>Trang chủ</title> {# Changed title #}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/themify-icons@0.1.2/css/themify-icons.css">
     <link rel="stylesheet" href="{% static 'css/home.css' %}">
@@ -32,10 +32,10 @@
                     </a>
                 </div>
                 <div class="navbar__content-item">
-                  <a href="{% url 'partners:customer_page' %}" class="navbar__content-item-link">
-                     <i class="fa-solid fa-users navbar__content-icon"></i>
-                     <p class="navbar__content-text">Quản lý khách hàng</p>
-                   </a>
+                    <a href="{% url 'partners:customer_page' %}" class="navbar__content-item-link">
+                       <i class="fa-solid fa-users navbar__content-icon"></i>
+                       <p class="navbar__content-text">Quản lý khách hàng</p>
+                    </a>
                 </div>
                 <div class="navbar__content-item">
                     <a href="#" class="navbar__content-item-link navbar__content-item-parent">
@@ -80,10 +80,10 @@
                     <i class="fa-solid fa-bell content__navbar-notify-icon"></i>
                 </a>
 
-                <div class="content__navbar-account">                   
+                <div class="content__navbar-account">                    
                     <div class="content__navbar-account-name">
                         <div class="content_navbar-img-wrapper">
-                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTr3jhpAFYpzxx39DRuXIYxNPXc0zI5F6IiMQ&s" class="content__navbar-account-img"></img>
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTr3jhpAFYpzxx39DRuXIYxNPXc0zI5F6IiMQ&s" class="content__navbar-account-img">
                         </div>
                         <p class="content__navbar-account-text">{{ user.get_full_name|default:user.username }}</p>
                         <i class="fa-solid fa-chevron-down content__navbar-account-icon"></i>
@@ -100,7 +100,7 @@
 
             <div class="content__wrapper">
                 <div class="content__header">
-                    <p class="content__header-text">Thống kê</p>
+                    <p class="content__header-text">Thống kê tổng quan</p> {# Changed text #}
                 </div>
 
                 <div class="content__statistic-container">
@@ -131,41 +131,60 @@
                             </div>
 
                             <div class="content__statistic-item-1">
-                                <p class="content__statistic-item-text">Sản phẩm sắp hết</p>
-                                <div class="content__statistic-item-infor" style="color: #e9010d">
-                                    <i class="fa-solid fa-triangle-exclamation content__statistic-item-icon"></i>
-                                    <p class="content__statistic-item-value">{{ products_nearing_out_of_stock }}</p>
+                                <p class="content__statistic-item-text">Tổng số kho</p>
+                                <div class="content__statistic-item-infor" style="color: #ff9800"> {# Example color #}
+                                    <i class="fa-solid fa-warehouse content__statistic-item-icon"></i>
+                                    <p class="content__statistic-item-value">{{ total_warehouses }}</p>
                                 </div>
                             </div>
-                        </div>
+                            </div>
 
                         <div class="content__warn-wrapper">
                             <div class="content__warn">
                                 <div class="content__warn-header">
                                     <i class="fa-solid fa-triangle-exclamation content__warn-icon" style="color: #f74e56"></i>
-                                    <p class="content__warn-text">Cảnh báo sản phẩm sắp hết hàng</p>
+                                    {# Changed text and added total count #}
+                                    <p class="content__warn-text">
+                                        Cảnh báo sản phẩm sắp hết hàng (Tổng: {{ products_nearing_out_of_stock }})
+                                    </p>
                                 </div>
                                 
-                                <div class="content__warn-sub-header">
-                                    <p class="content__warn-stt content__warn-bold">STT</p>
-                                    <p class="content__warn-name content__warn-bold">Tên sản phẩm</p>
-                                    <p class="content__warn-remain content__warn-bold">Tồn kho</p>
-                                </div>
+                                <div class="warehouse-low-stock-list">
+                                    {% for warehouse in warehouses_with_low_stock %}
+                                    <div class="warehouse-item">
+                                        {# Clickable warehouse header #}
+                                        <div class="warehouse-toggle" data-target="#warehouse-{{ warehouse.id }}-products">
+                                            <i class="fa-solid fa-warehouse warehouse-icon"></i>
+                                            <span class="warehouse-name">{{ warehouse.name }}</span>
+                                            <span class="low-stock-count">({{ warehouse.low_stock_products_in_warehouse|length }} SP sắp hết)</span>
+                                            <i class="fa-solid fa-chevron-down toggle-icon"></i>
+                                        </div>
 
-                                <div class="content__warn-product">
-                                    {% for product in low_stock_products %}
-                                    <div class="content__warn-product-item">
-                                        <p class="content__warn-stt">{{ forloop.counter }}</p>
-                                        <p class="content__warn-name">{{ product.name }}</p>
-                                        <p class="content__warn-remain" style="color: #e9010d">{{ product.quantity }}</p>
+                                        {# Hidden product list for this warehouse #}
+                                        <div class="low-stock-product-list" id="warehouse-{{ warehouse.id }}-products">
+                                             <div class="content__warn-sub-header">
+                                                <p class="content__warn-stt content__warn-bold">STT</p>
+                                                <p class="content__warn-name content__warn-bold">Tên sản phẩm</p>
+                                                <p class="content__warn-remain content__warn-bold">Tồn kho</p>
+                                             </div>
+                                             <div class="content__warn-product">
+                                                {% for product in warehouse.low_stock_products_in_warehouse %}
+                                                <div class="content__warn-product-item">
+                                                    <p class="content__warn-stt">{{ forloop.counter }}</p>
+                                                    <p class="content__warn-name">{{ product.name }}</p>
+                                                    <p class="content__warn-remain" style="color: #e9010d">{{ product.quantity }}</p>
+                                                </div>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
                                     </div>
                                     {% empty %}
-                                    <div style="padding: 10px; text-align: center;">
-                                        <p>Không có sản phẩm nào sắp hết hàng.</p>
+                                    <div style="padding: 20px; text-align: center; font-size: 1.6rem;">
+                                        <p>🎉 Tuyệt vời! Không có sản phẩm nào sắp hết hàng trong bất kỳ kho nào.</p>
                                     </div>
                                     {% endfor %}
                                 </div>
-                            </div>
+                                </div>
                         </div>
                     </div>
                 </div>
@@ -174,26 +193,97 @@
     </div>
 
     <script>
+        // --- SCRIPT FOR NAVBAR (Keep the existing one) ---
         document.querySelectorAll(".navbar__content-item .navbar__content-item-parent").forEach((title, index) => {
-            const key = "menuOpen" + index;
-            const child = title.nextElementSibling;
-            
-            // Kiểm tra trạng thái đã lưu để hiển thị menu con
-            if (localStorage.getItem(key) === "true") {
-                child.style.display = "block";
-                title.classList.add("active");
-            } else {
-                child.style.display = "none";
-            }
+            // ... (your existing navbar script) ...
+             const key = "menuOpen" + index;
+             const child = title.nextElementSibling;
+             
+             // Kiểm tra trạng thái đã lưu để hiển thị menu con
+             if (localStorage.getItem(key) === "true") {
+                 child.style.display = "block";
+                 title.classList.add("active");
+             } else {
+                 child.style.display = "none";
+             }
 
-            // Thêm sự kiện click
-            title.addEventListener("click", function(event) {
-                event.preventDefault();
-                const isOpen = child.style.display === "block";
-                child.style.display = isOpen ? "none" : "block";
-                this.classList.toggle("active", !isOpen);
-                });
+             // Thêm sự kiện click
+             title.addEventListener("click", function(event) {
+                 event.preventDefault();
+                 const isOpen = child.style.display === "block";
+                 
+                 // Close all other submenus first
+                 document.querySelectorAll(".navbar__content-sub").forEach((sub, subIndex) => {
+                    const subKey = "menuOpen" + subIndex;
+                    if (sub !== child) {
+                        sub.style.display = "none";
+                        sub.previousElementSibling.classList.remove("active");
+                        localStorage.setItem(subKey, "false"); 
+                    }
+                 });
+
+                 // Toggle current submenu
+                 child.style.display = isOpen ? "none" : "block";
+                 this.classList.toggle("active", !isOpen);
+                 // Save state
+                 localStorage.setItem(key, !isOpen); 
+             });
         });
+        
+        // --- SCRIPT FOR ACCOUNT DROPDOWN (Keep the existing one) ---
+        const accountName = document.querySelector(".content__navbar-account-name");
+        const accountSub = document.querySelector(".content__navbar-account-sub");
+        if (accountName && accountSub) {
+             accountName.addEventListener("click", function() {
+                 const isOpen = accountSub.style.display === "block";
+                 accountSub.style.display = isOpen ? "none" : "block";
+             });
+             // Close dropdown if clicking outside
+             document.addEventListener('click', function(event) {
+                if (!accountName.contains(event.target) && !accountSub.contains(event.target)) {
+                    accountSub.style.display = 'none';
+                }
+            });
+        }
+
+
+        // --- NEW SCRIPT FOR WAREHOUSE TOGGLE ---
+        document.querySelectorAll('.warehouse-toggle').forEach(button => {
+            button.addEventListener('click', function() {
+                const targetId = this.getAttribute('data-target');
+                const targetElement = document.querySelector(targetId);
+                const icon = this.querySelector('.toggle-icon');
+
+                if (targetElement) {
+                    const isVisible = targetElement.style.display === 'block';
+                    
+                    // --- Accordion Logic: Close all others first ---
+                    document.querySelectorAll('.low-stock-product-list').forEach(list => {
+                        if (list !== targetElement) {
+                           list.style.display = 'none';
+                           // Reset other icons and active states
+                           const otherButton = document.querySelector(`[data-target="#${list.id}"]`);
+                           if (otherButton) {
+                               otherButton.classList.remove('active');
+                               const otherIcon = otherButton.querySelector('.toggle-icon');
+                               if(otherIcon) otherIcon.classList.remove('fa-chevron-up');
+                               if(otherIcon) otherIcon.classList.add('fa-chevron-down');
+                           }
+                        }
+                    });
+                    // --- End Accordion Logic ---
+
+                    // Toggle the current one
+                    targetElement.style.display = isVisible ? 'none' : 'block';
+                    this.classList.toggle('active', !isVisible); // Add/remove active class on the button
+                    if (icon) {
+                        icon.classList.toggle('fa-chevron-down', isVisible);
+                        icon.classList.toggle('fa-chevron-up', !isVisible);
+                    }
+                }
+            });
+        });
+
     </script>
 </body>
 </html>

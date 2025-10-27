@@ -352,3 +352,99 @@
     text-align: center;
 
 }
+
+.warehouse-low-stock-list {
+    padding: 0 1.5rem 1.5rem; /* Add some padding */
+}
+
+.warehouse-item {
+    margin-bottom: 1rem;
+    border: 1px solid #eee; /* Add a light border */
+    border-radius: 4px;
+    background-color: #fff; /* White background for item */
+}
+
+.warehouse-toggle {
+    display: flex;
+    align-items: center;
+    padding: 1.5rem; /* Increased padding */
+    cursor: pointer;
+    background-color: #f9f9f9; /* Slightly different background for header */
+    border-bottom: 1px solid #eee;
+    border-radius: 4px 4px 0 0; /* Rounded corners top */
+    transition: background-color 0.2s ease;
+}
+
+.warehouse-toggle:hover {
+    background-color: #f0f0f0;
+}
+
+.warehouse-toggle.active {
+     background-color: #e8f0fe; /* Light blue when active */
+     border-bottom-color: #e8f0fe;
+}
+
+
+.warehouse-icon {
+    font-size: 1.8rem;
+    color: #555;
+    margin-right: 1rem;
+    width: 20px; /* Fixed width for alignment */
+    text-align: center;
+}
+
+.warehouse-name {
+    font-size: 1.8rem; /* Larger font size */
+    font-weight: 600; /* Bolder name */
+    color: #333;
+    flex-grow: 1; /* Take remaining space */
+}
+
+.low-stock-count {
+    font-size: 1.4rem;
+    color: #e9010d; /* Red color for count */
+    margin-left: 1rem;
+    font-weight: 500;
+}
+
+.toggle-icon {
+    font-size: 1.4rem;
+    color: #555;
+    margin-left: 1rem;
+    transition: transform 0.2s ease;
+}
+
+.warehouse-toggle.active .toggle-icon {
+     transform: rotate(180deg); /* Rotate icon when active */
+}
+
+
+.low-stock-product-list {
+    display: none; /* Hidden by default */
+    padding: 0rem 1.5rem 1rem; /* Padding inside the list */
+    border-top: 1px solid #eee;
+}
+
+/* Adjust sub-header padding */
+.low-stock-product-list .content__warn-sub-header {
+    padding: 1rem 0;
+    border-bottom: 1px solid #eee; /* Ensure border */
+}
+
+/* Adjust product item padding */
+.low-stock-product-list .content__warn-product-item {
+     padding: 1rem 0; /* Slightly reduced padding */
+     border-bottom: 1px dashed #f0f0f0; /* Lighter separator */
+}
+.low-stock-product-list .content__warn-product-item:last-child {
+    border-bottom: none; /* Remove border for last item */
+}
+
+/* Ensure font sizes inside the list are consistent */
+.low-stock-product-list .content__warn-stt,
+.low-stock-product-list .content__warn-name,
+.low-stock-product-list .content__warn-remain {
+    font-size: 1.5rem; /* Slightly smaller font inside list */
+}
+
+/* === END NEW STYLES === */

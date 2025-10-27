@@ -10,7 +10,7 @@ class ProductViewSet(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
 
 # === Template Views ===
-@login_required
+# @login_required
 def product_page(request):
     # 1. Lấy tất cả sản phẩm từ database
     products = Product.objects.all()
@@ -23,7 +23,7 @@ def product_page(request):
     # 3. Gửi context đến template khi render
     return render(request, 'product.html', context)
 
-@login_required
+# @login_required
 def add_product(request):
     # Chỉ xử lý nếu phương thức là POST
     if request.method == 'POST':
@@ -51,7 +51,7 @@ def add_product(request):
     return redirect('inventory:product_page')
 
 # Thêm hàm mới để xóa sản phẩm
-@login_required
+# @login_required
 def delete_product(request, product_id):
     # Lấy sản phẩm cần xóa, nếu không tìm thấy sẽ báo lỗi 404
     product = get_object_or_404(Product, id=product_id)
@@ -63,7 +63,7 @@ def delete_product(request, product_id):
     return redirect('inventory:product_page')
 
 # inventory/views.py
-@login_required
+# @login_required
 def edit_product(request, product_id):
     product = get_object_or_404(Product, id=product_id)
 

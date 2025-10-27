@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.db import models
-from inventory.models import Product
+from inventory.models import Product, Warehouse
 from partners.models import Customer
 from transactions.models import ExportReceipt
 
@@ -49,17 +49,38 @@ def home_page(request):
     total_products = Product.objects.count()
     total_customers = Customer.objects.count()
     total_orders = ExportReceipt.objects.count()
-    low_stock_products = Product.objects.filter(quantity__lte=models.F('min_quantity'))
+    
+    # --- NEW: Count warehouses ---
+    total_warehouses = Warehouse.objects.count()
+
+    # --- NEW: Get low stock products grouped by warehouse ---
+    warehouses = Warehouse.objects.prefetch_related(
+        # Prefetch only low stock products for efficiency
+        models.Prefetch(
+            'products',
+            queryset=Product.objects.filter(quantity__lte=models.F('min_quantity')),
+            to_attr='low_stock_products_in_warehouse'
+        )
+    ).all()
+
+    # Filter out warehouses that don't have low stock items
+    warehouses_with_low_stock = [
+        wh for wh in warehouses if hasattr(wh, 'low_stock_products_in_warehouse') and wh.low_stock_products_in_warehouse
+    ]
+    
+    # Calculate total count of nearing out of stock products across all warehouses
+    products_nearing_out_of_stock = sum(len(wh.low_stock_products_in_warehouse) for wh in warehouses_with_low_stock)
+
 
     context = {
         'total_products': total_products,
         'total_customers': total_customers,
         'total_orders': total_orders,
-        'low_stock_products': low_stock_products,
-        'products_nearing_out_of_stock': low_stock_products.count()
+        'total_warehouses': total_warehouses, # Add total warehouses
+        'warehouses_with_low_stock': warehouses_with_low_stock, # Pass grouped data
+        'products_nearing_out_of_stock': products_nearing_out_of_stock # Pass the total count
     }
     return render(request, 'home.html', context)
-
 
 # Render forget password page
 def forget_page(request):
