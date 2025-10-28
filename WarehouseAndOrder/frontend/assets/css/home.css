@@ -354,24 +354,24 @@
 }
 
 .warehouse-low-stock-list {
-    padding: 0 1.5rem 1.5rem; /* Add some padding */
+    padding: 0 1.5rem 1.5rem; 
 }
 
 .warehouse-item {
     margin-bottom: 1rem;
-    border: 1px solid #eee; /* Add a light border */
+    border: 1px solid #eee;
     border-radius: 4px;
-    background-color: #fff; /* White background for item */
+    background-color: #fff; 
 }
 
 .warehouse-toggle {
     display: flex;
     align-items: center;
-    padding: 1.5rem; /* Increased padding */
+    padding: 1.5rem;
     cursor: pointer;
-    background-color: #f9f9f9; /* Slightly different background for header */
+    background-color: #f9f9f9; 
     border-bottom: 1px solid #eee;
-    border-radius: 4px 4px 0 0; /* Rounded corners top */
+    border-radius: 4px 4px 0 0; 
     transition: background-color 0.2s ease;
 }
 
@@ -380,7 +380,7 @@
 }
 
 .warehouse-toggle.active {
-     background-color: #e8f0fe; /* Light blue when active */
+     background-color: #e8f0fe;
      border-bottom-color: #e8f0fe;
 }
 
@@ -389,20 +389,20 @@
     font-size: 1.8rem;
     color: #555;
     margin-right: 1rem;
-    width: 20px; /* Fixed width for alignment */
+    width: 20px; 
     text-align: center;
 }
 
 .warehouse-name {
-    font-size: 1.8rem; /* Larger font size */
-    font-weight: 600; /* Bolder name */
+    font-size: 1.8rem; 
+    font-weight: 600; 
     color: #333;
-    flex-grow: 1; /* Take remaining space */
+    flex-grow: 1; 
 }
 
 .low-stock-count {
     font-size: 1.4rem;
-    color: #e9010d; /* Red color for count */
+    color: #e9010d; 
     margin-left: 1rem;
     font-weight: 500;
 }
@@ -415,36 +415,30 @@
 }
 
 .warehouse-toggle.active .toggle-icon {
-     transform: rotate(180deg); /* Rotate icon when active */
+     transform: rotate(180deg);
 }
 
 
 .low-stock-product-list {
-    display: none; /* Hidden by default */
-    padding: 0rem 1.5rem 1rem; /* Padding inside the list */
+    display: none; 
+    padding: 0rem 1.5rem 1rem; 
     border-top: 1px solid #eee;
 }
 
-/* Adjust sub-header padding */
 .low-stock-product-list .content__warn-sub-header {
     padding: 1rem 0;
-    border-bottom: 1px solid #eee; /* Ensure border */
+    border-bottom: 1px solid #eee;
 }
-
-/* Adjust product item padding */
 .low-stock-product-list .content__warn-product-item {
-     padding: 1rem 0; /* Slightly reduced padding */
-     border-bottom: 1px dashed #f0f0f0; /* Lighter separator */
+     padding: 1rem 0;
+     border-bottom: 1px dashed #f0f0f0; 
 }
 .low-stock-product-list .content__warn-product-item:last-child {
-    border-bottom: none; /* Remove border for last item */
+    border-bottom: none; 
 }
 
-/* Ensure font sizes inside the list are consistent */
 .low-stock-product-list .content__warn-stt,
 .low-stock-product-list .content__warn-name,
 .low-stock-product-list .content__warn-remain {
-    font-size: 1.5rem; /* Slightly smaller font inside list */
+    font-size: 1.5rem; 
 }
-
-/* === END NEW STYLES === */

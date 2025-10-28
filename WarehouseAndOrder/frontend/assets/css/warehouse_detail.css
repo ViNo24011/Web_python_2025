@@ -101,3 +101,30 @@ td.price {
 .content__list-operation {
     text-align: center;
 }
+
+.receipt-info {
+    font-size: 1.8rem; /* <<< TĂNG CỠ CHỮ CHUNG LÊN ĐÂY (ví dụ 1.8rem) */
+    line-height: 1.8;  /* <<< Tăng khoảng cách dòng tương ứng */
+    margin-bottom: 2rem;
+    padding: 2rem;
+    background-color: #f9f9f9;
+    border: 1px solid #eee;
+    border-radius: 5px;
+}
+.receipt-info p {
+    margin-bottom: 1rem; /* <<< Tăng khoảng cách giữa các dòng p */
+}
+.receipt-info p:last-child {
+    margin-bottom: 0;
+}
+.receipt-info strong {
+    display: inline-block;
+    min-width: 130px;
+    margin-right: 8px;
+    color: #555;
+    font-weight: 600;
+}
+.receipt-info .price {
+    font-weight: bold; 
+    color: var(--danger-color, #dc3545);
+}

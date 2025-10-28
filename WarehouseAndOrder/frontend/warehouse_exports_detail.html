@@ -15,7 +15,7 @@
     <div class="main">
         <div class="navbar">
             <a href="{% url 'users:home_page' %}" class="navbar__header">
-                <p class="navbar__header-logo">Warehourse</p>
+                <p class="navbar__header-logo">Warehouse</p>
                 <div class="navbar__header-wrapper">
                     <p class="navbar__header-text">Quản lý kho hàng</p>
                 </div>
@@ -148,9 +148,9 @@
                                 <td style="padding-left: 1rem; text-align: left;">{{ receipt.customer_address|default:""|truncatechars:50 }}</td> {# Truncate long address #}
                                 <td style="text-align: center;">{{ receipt.export_date|date:"d/m/Y H:i" }}</td>
                                 <td class="price" style="text-align: right; padding-right: 1rem;">{{ receipt.total_export_order|floatformat:0|intcomma }} đ</td>
-                                <td class="content__list-operation"> {# Đổi class để CSS riêng #}
-                                    <a href="{% url 'transactions:edit_export_receipt_page' receipt.export_id %}"
-                                       class="btn btn-sm btn-info">Xem chi tiết</a>
+                                <td class="content__list-operation">
+                                    <a href="{% url 'reports:export_receipt_detail' receipt.export_id %}"
+                                    class="btn btn-sm btn-info">Xem chi tiết</a>
                                 </td>
                             </tr>
                             {% endfor %}

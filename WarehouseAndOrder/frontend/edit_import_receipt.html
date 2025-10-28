@@ -13,7 +13,7 @@
     <div class="main">
         <div class="navbar">
             <a href="{% url 'users:home_page' %}" class="navbar__header">
-                <p class="navbar__header-logo">Warehourse</p>
+                <p class="navbar__header-logo">Warehouse</p>
                 <div class="navbar__header-wrapper">
                     <p class="navbar__header-text">Quản lý kho hàng</p>
                 </div>
@@ -162,15 +162,13 @@
             {% for product in products %}
             {
                 id: {{ product.id }},
-                // --- TRƯỜNG MỚI ---
                 warehouse_id: {{ product.warehouse.id|default:"null" }},
-                
                 code: 'SP{{ product.id|stringformat:"03d" }}',
                 name: '{{ product.name|escapejs }}',
-                price: {{ product.price }}, // Giá nhập
+                price: {{ product.price }},
                 unit: '{{ product.unit }}',
                 category: '{{ product.category_name }}',
-                quantity: {{ product.quantity }} // Số lượng tồn kho hiện tại
+                quantity: {{ product.quantity }} 
             },
             {% endfor %}
         ];

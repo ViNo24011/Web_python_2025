@@ -5,10 +5,9 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Sum, Count
 from django.db.models.functions import TruncMonth # Hàm cắt ngày thành tháng
 from django.utils import timezone
-from django.http import Http404, JsonResponse # Thêm JsonResponse nếu cần API sau này
-
+from django.http import Http404, JsonResponse 
+from transactions.models import ImportReceipt, ExportReceipt, ImportDetail, ExportDetail
 # Import models từ các app khác
-from transactions.models import ImportReceipt, ExportReceipt
 from inventory.models import Warehouse # Import Warehouse
 # Import Product và Customer nếu cần cho các báo cáo khác sau này
 # from inventory.models import Product
@@ -236,3 +235,77 @@ def warehouse_exports_detail(request, year, month, warehouse_id):
         'month': month,
     }
     return render(request, 'warehouse_exports_detail.html', context)
+
+# @login_required 
+def import_receipt_detail(request, import_id):
+    """
+    Hiển thị chi tiết các sản phẩm trong một phiếu nhập cụ thể.
+    """
+    # Lấy đối tượng Phiếu nhập, nếu không tìm thấy sẽ trả về lỗi 404
+    receipt = get_object_or_404(
+        ImportReceipt.objects.select_related('supplier', 'warehouse'), # Lấy luôn thông tin supplier và warehouse
+        import_id=import_id
+    )
+
+    # Lấy tất cả các chi tiết (sản phẩm) thuộc phiếu nhập này
+    # .all() sẽ tự động thực hiện query dựa trên ForeignKey
+    # receipt_details = receipt.import_details.all() # Cách lấy đơn giản
+
+    # Cách lấy tối ưu hơn nếu bạn cần truy cập thông tin gốc của Product sau này
+    receipt_details = receipt.import_details.select_related('product').all()
+
+
+    # Lấy thông tin tháng/năm/kho để tạo link Quay lại chính xác
+    # (Nếu người dùng đến từ trang warehouse_imports_detail)
+    try:
+        year = receipt.import_date.year
+        month = receipt.import_date.month
+        warehouse_id = receipt.warehouse.id if receipt.warehouse else None
+    except AttributeError: # Xử lý trường hợp phiếu nhập cũ không có kho
+        year = None
+        month = None
+        warehouse_id = None
+
+    context = {
+        'receipt': receipt, # Truyền đối tượng phiếu nhập
+        'receipt_details': receipt_details, # Truyền danh sách chi tiết sản phẩm
+        'year': year,       # Dùng cho link quay lại
+        'month': month,     # Dùng cho link quay lại
+        'warehouse_id': warehouse_id # Dùng cho link quay lại
+    }
+    return render(request, 'import_receipt_detail.html', context)
+
+
+# @login_required
+def export_receipt_detail(request, export_id):
+    """
+    Hiển thị chi tiết các sản phẩm trong một phiếu xuất cụ thể.
+    """
+    # Lấy đối tượng Phiếu xuất, nếu không tìm thấy sẽ trả về lỗi 404
+    receipt = get_object_or_404(
+        ExportReceipt.objects.select_related('warehouse'), # Lấy luôn thông tin kho
+        export_id=export_id
+    )
+
+    # Lấy tất cả các chi tiết (sản phẩm) thuộc phiếu xuất này
+    receipt_details = receipt.export_details.select_related('product').all()
+
+
+    # Lấy thông tin tháng/năm/kho để tạo link Quay lại chính xác
+    try:
+        year = receipt.export_date.year
+        month = receipt.export_date.month
+        warehouse_id = receipt.warehouse.id if receipt.warehouse else None
+    except AttributeError:
+        year = None
+        month = None
+        warehouse_id = None
+
+    context = {
+        'receipt': receipt, # Truyền đối tượng phiếu xuất
+        'receipt_details': receipt_details, # Truyền danh sách chi tiết sản phẩm
+        'year': year,       # Dùng cho link quay lại
+        'month': month,     # Dùng cho link quay lại
+        'warehouse_id': warehouse_id # Dùng cho link quay lại
+    }
+    return render(request, 'export_receipt_detail.html', context)
