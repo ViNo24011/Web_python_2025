@@ -1,0 +1,213 @@
+{% load static humanize %}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi tiết Doanh thu Tháng {{ target_date|date:"m/Y" }}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/themify-icons@0.1.2/css/themify-icons.css">
+    <link rel="stylesheet" href="{% static 'css/detail.css' %}">
+    {# Link shared CSS like product.css if button styles are there #}
+    <link rel="stylesheet" href="{% static 'css/product.css' %}">
+</head>
+<body>
+    <div class="main">
+        <div class="navbar">
+            <a href="{% url 'users:home_page' %}" class="navbar__header">
+                <p class="navbar__header-logo">Warehouse</p> {# Corrected spelling #}
+                <div class="navbar__header-wrapper">
+                    <p class="navbar__header-text">Quản lý kho hàng</p>
+                </div>
+            </a>
+            <div class="navbar__content">
+                <div class="navbar__content-item">
+                    <a href="{% url 'users:home_page' %}" class="navbar__content-item-link">
+                        <i class="fa-solid fa-chart-pie navbar__content-icon"></i>
+                        <p class="navbar__content-text">Thống kê</p>
+                    </a>
+                </div>
+                <div class="navbar__content-item">
+                    <a href="#" class="navbar__content-item-link">
+                        <i class="fa-solid fa-user-group navbar__content-icon"></i>
+                        <p class="navbar__content-text">Quản lý người dùng</p>
+                    </a>
+                </div>
+                <div class="navbar__content-item">
+                    <a href="{% url 'partners:customer_page' %}" class="navbar__content-item-link">
+                        <i class="fa-solid fa-users navbar__content-icon"></i>
+                        <p class="navbar__content-text">Quản lý khách hàng</p>
+                    </a>
+                </div>
+                <div class="navbar__content-item">
+                    <a href="{% url 'reports:revenue_page' %}" class="navbar__content-item-link navbar__content-item-choose">
+                        <i class="fa-solid fa-hand-holding-dollar navbar__content-icon"></i>
+                        <p class="navbar__content-text">Quản lý doanh thu</p>
+                    </a>
+                </div>
+                <div class="navbar__content-item">
+                    <div class="navbar__content-item-link navbar__content-item-parent">
+                        <i class="fa-solid fa-boxes-stacked navbar__content-icon"></i>
+                        <p class="navbar__content-text">Quản lý sản phẩm</p>
+                        <i class="fa-solid fa-angle-down navbar__content-sub-icon"></i>
+                    </div>
+                    <div class="navbar__content-sub">
+                        <a href="{% url 'partners:supplier_page' %}" class="navbar__content-item-link">
+                            <i class="fa-solid fa-truck-field navbar__content-icon"></i>
+                            <p class="navbar__content-text">Nhà cung cấp</p>
+                        </a>
+                        <a href="{% url 'inventory:product_page' %}" class="navbar__content-item-link">
+                            <i class="fa-solid fa-box navbar__content-icon"></i>
+                            <p class="navbar__content-text">Sản phẩm</p>
+                        </a>
+                    </div>
+                </div>
+                <div class="navbar__content-item">
+                    <div class="navbar__content-item-link navbar__content-item-parent">
+                        <i class="fa-solid fa-file-invoice-dollar navbar__content-icon"></i>
+                        <p class="navbar__content-text">Quản lý nhập xuất</p>
+                        <i class="fa-solid fa-angle-down navbar__content-sub-icon"></i>
+                    </div>
+                    <div class="navbar__content-sub">
+                        <a href="{% url 'transactions:import_receipt_page' %}" class="navbar__content-item-link">
+                            <i class="fa-solid fa-file-import fa-user-groug navbar__content-icon"></i>
+                            <p class="navbar__content-text">Nhập hàng</p>
+                        </a>
+                        <a href="{% url 'transactions:export_receipt_page' %}" class="navbar__content-item-link">
+                            <i class="fa-solid fa-file-export navbar__content-icon"></i>
+                            <p class="navbar__content-text">Xuất hàng</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="content__navbar">
+                 <a href="" class="content__navbar-notify"><i class="fa-solid fa-bell content__navbar-notify-icon"></i></a>
+                 <div class="content__navbar-account">
+                     <div class="content__navbar-account-name">
+                         <div class="content_navbar-img-wrapper">
+                             <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:AN9GcTr3jhpAFYpzxx39DRuXIYxNPXc0zI5F6IiMQ&s" class="content__navbar-account-img">
+                         </div>
+                         <p class="content__navbar-account-text">{{ user.get_full_name|default:user.username }}</p>
+                         <i class="fa-solid fa-chevron-down content__navbar-account-icon"></i>
+                     </div>
+                     <div class="content__navbar-account-sub">
+                        <a href="{% url 'users:logout' %}" class="content__navbar-account-item">
+                           <i class="fa-solid fa-right-from-bracket content__navbar-account-icon"></i>
+                           <p class="content__navbar-account-text">Đăng xuất</p>
+                         </a>
+                     </div>
+                 </div>
+            </div>
+
+            <div class="content__wrapper">
+                <div class="content__header" style="display: flex; align-items: center;">
+                    <p class="content__header-text">Chi tiết Doanh thu Tháng {{ target_date|date:"m/Y" }}</p>
+                    <a href="{% url 'reports:revenue_page' %}" class="btn btn-back" style="margin-left: auto;">← Quay lại</a>
+                </div>
+
+                <div class="content__detail">
+                    <table class="content__detail-table">
+                        <thead>
+                            <tr class="content__detail-header">
+                                <th class="content__detail-name">Tên kho hàng</th>
+                                <th class="content__detail-quantity">Số đơn nhập</th>
+                                <th class="content__detail-money">Tổng tiền nhập</th>
+                                <th class="content__detail-quantity">Số đơn xuất</th>
+                                <th class="content__detail-money">Tổng tiền xuất</th>
+                                <th class="content__detail-money">Lợi nhuận</th>
+                                <th class="content__detail-operation">Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for warehouse in warehouse_summary %}
+                            <tr class="content__detail-item">
+                                <td class="content__detail-name">{{ warehouse.name }}</td>
+                                <td class="content__detail-quantity">{{ warehouse.import_count|intcomma }}</td>
+                                <td class="content__detail-money">{{ warehouse.total_import|floatformat:0|intcomma }} đ</td>
+                                <td class="content__detail-quantity">{{ warehouse.export_count|intcomma }}</td>
+                                <td class="content__detail-money">{{ warehouse.total_export|floatformat:0|intcomma }} đ</td>
+                                <td class="content__detail-money {% if warehouse.profit < 0 %}text-danger{% endif %}">
+                                    {{ warehouse.profit|floatformat:0|intcomma }} đ
+                                </td>
+                                <td class="content__detail-operation">
+                                    <a href="{% url 'reports:warehouse_imports_detail' year=year month=month warehouse_id=warehouse.id %}"
+                                        class="content__detail-import">
+                                        Chi tiết nhập
+                                    </a>
+                                    <a href="{% url 'reports:warehouse_exports_detail' year=year month=month warehouse_id=warehouse.id %}"
+                                        class="content__detail-export">
+                                        Chi tiết xuất
+                                    </a>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="6" style="text-align: center; padding: 20px; font-size: 1.6rem;">
+                                    Không có dữ liệu kho cho tháng này.
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- JavaScript cho Navbar và Account Menu ---
+        document.querySelectorAll(".navbar__content-item .navbar__content-item-parent").forEach((title, index) => {
+            const key = "menuOpen" + index;
+            const child = title.nextElementSibling;
+
+            // Restore state
+            if (localStorage.getItem(key) === "true") {
+                child.style.display = "block";
+                title.classList.add("active");
+            } else {
+                 child.style.display = "none";
+                 title.classList.remove("active");
+            }
+
+            title.addEventListener("click", function(event) {
+                event.preventDefault();
+                const isOpen = child.style.display === "block";
+
+                // Close others first
+                 document.querySelectorAll(".navbar__content-sub").forEach((otherChild, otherIndex) => {
+                     if (otherChild !== child) {
+                         otherChild.style.display = "none";
+                         if (otherChild.previousElementSibling.classList.contains('navbar__content-item-parent')) {
+                             otherChild.previousElementSibling.classList.remove("active");
+                         }
+                         localStorage.setItem("menuOpen" + otherIndex, "false");
+                     }
+                 });
+
+                // Toggle current
+                child.style.display = isOpen ? "none" : "block";
+                this.classList.toggle("active", !isOpen);
+                localStorage.setItem(key, String(!isOpen));
+            });
+        });
+
+         // Script for account dropdown
+        const accountName = document.querySelector(".content__navbar-account-name");
+        const accountSub = document.querySelector(".content__navbar-account-sub");
+        if (accountName && accountSub) {
+             accountName.addEventListener("click", function() {
+                 const isOpen = accountSub.style.display === "block";
+                 accountSub.style.display = isOpen ? "none" : "block";
+             });
+             document.addEventListener('click', function(event) {
+                if (!accountName.contains(event.target) && !accountSub.contains(event.target)) {
+                    accountSub.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>

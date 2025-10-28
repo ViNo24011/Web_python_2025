@@ -1,0 +1,103 @@
+
+* { padding: 0px; border: 0px; margin: 0px; font-size: 62.5%; line-height: 1.6rem; box-sizing: border-box !important; line-height: 1.3; }
+:root { --white-color: #fff; --black-color: #000; --text-color: rgba(0, 0, 0, .8); --main-color: #1678ff; }
+body { background-color: #f1f2f6; }
+.main { position: relative; background-color: #f1f2f6; min-height: 100dvh; }
+
+.navbar { background-color: #00152a; width: 18%; height: 100dvh; color: var(--white-color); position: fixed; padding-top: 3rem; top: 0; left: 0; }
+.content { margin-left: 18%; padding-top: 5rem; }
+.content__navbar { height: 5rem; background-color: var(--white-color); display: flex; justify-content: right; align-items: center; padding: 0rem 1rem; position: fixed; width: 82%; top: 0; right: 0; z-index: 100; }
+
+.content__wrapper {
+    margin: 2rem 1.5rem;
+    background-color: var(--white-color);
+    border-radius: 0.8rem;
+    padding-bottom: 1.5rem;
+}
+
+.content__header {
+    padding: 2.5rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+}
+
+.content__header-text {
+    font-size: 2.4rem; /* Hơi nhỏ hơn trang detail chính */
+    font-weight: bold;
+}
+
+/* Styles cho nút Quay lại (cần class .btn và .btn-back từ product.css hoặc định nghĩa ở đây) */
+.btn { padding: 0.8rem 1.5rem; border: none; border-radius: 0.4rem; cursor: pointer; font-size: 1.6rem; text-decoration: none; display: inline-block; transition: all 0.3s; color: white; text-align: center; }
+.btn-back { background: #9e9e9e; }
+.btn-back:hover { background: #757575; }
+.btn-info { background: #17a2b8; } /* Màu cho nút xem chi tiết */
+.btn-info:hover { background: #138496; }
+.btn-sm { font-size: 1.4rem; padding: 0.5rem 1rem; } /* Class cho nút nhỏ hơn */
+
+/* --- Styles cho bảng danh sách phiếu --- */
+.content__list-container {
+    padding: 1.5rem;
+    overflow-x: auto; /* Cho phép cuộn ngang nếu bảng quá rộng */
+}
+
+.content__list-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+/* Header bảng */
+.content__list-table thead th {
+    border: 1px solid #ddd;
+    border-bottom-width: 2px;
+    font-size: 1.5rem;
+    text-align: center;
+    padding: 12px 10px;
+    height: auto;
+    background-color: #f8f9fa; /* Màu nền xám nhạt cho header */
+    color: var(--text-color); /* Màu chữ tối */
+    font-weight: 600;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+/* Các ô dữ liệu */
+.content__list-table tbody td {
+    border: 1px solid #ddd;
+    font-size: 1.5rem;
+    padding: 10px;
+    vertical-align: middle;
+    height: auto;
+    min-height: 5rem;
+    word-break: break-word;
+}
+
+.content__list-table tbody tr:nth-child(even) td {
+    background-color: #fdfdfd;
+}
+.content__list-table tbody tr:hover td {
+    background-color: #f1f1f1;
+}
+
+.content__list-table td[style*="text-align: left"] {
+     text-align: left; /* Đảm bảo ghi đè */
+}
+.content__list-table td[style*="text-align: right"] {
+     text-align: right; /* Đảm bảo ghi đè */
+}
+.content__list-table td[style*="padding-left"] {
+     padding-left: 1rem; /* Giữ padding */
+}
+.content__list-table td[style*="padding-right"] {
+     padding-right: 1rem; /* Giữ padding */
+}
+
+td.price {
+    color: #e74c3c; 
+    font-weight: 500;
+}
+
+.content__list-operation {
+    text-align: center;
+}

@@ -13,16 +13,11 @@ class ImportReceipt(models.Model):
         null=True,
         related_name='import_receipts'
     )
-    
-    # --- DÒNG MỚI ---
-    # Thêm liên kết đến kho
     warehouse = models.ForeignKey(
         Warehouse,
-        on_delete=models.PROTECT, # Không cho xóa kho nếu có phiếu nhập
+        on_delete=models.PROTECT,
         related_name='import_receipts'
     )
-    # --- KẾT THÚC DÒNG MỚI ---
-
     import_date = models.DateTimeField(default=timezone.now)
     total_import_order = models.DecimalField(
         max_digits=15, 

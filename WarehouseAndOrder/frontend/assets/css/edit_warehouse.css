@@ -225,7 +225,7 @@
     margin-right: 0.5rem;
 }
 
-/* product */
+/* import */
 .content__wrapper {
     margin: 2rem 1.5rem;
     background-color: var(--white-color);
@@ -246,7 +246,7 @@
 .content__header-add {
     display: flex;
     align-items: center;
-    background-color: #1678ff;
+    background-color: rgb(53 111 207);
     padding: 0.5rem 1rem;
     border-radius: 0.4rem;
 }
@@ -267,11 +267,11 @@
     color: var(--white-color);
 }
 
-.content__customer {
+.content__warehouse {
     padding: 0rem 1.5rem 1.5rem;
 }
 
-.content__customer-table {
+.content__warehouse-table {
     width: 100%;
     border-collapse: collapse;
 }
@@ -280,35 +280,37 @@ th, td {
     border: 0.1rem solid #ccc;
     font-size: 1.6rem;
     text-align: center;
+    padding: 0rem 0.8rem;
 }
 
-.content__customer-header {
+.content__warehouse-header {
     height: 4rem;
-    background-color: #f1f2f6;
+    background-color: rgb(53 111 207);
+    color: var(--white-color);
 }
 
-.content__customer-stt {
-    width: 5%;
+.content__warehouse-stt {
+    width: 8%;
     word-break: break-all;
 }
 
-.content__customer-operation {
-    width: 8%;
+.content__warehouse-operation {
+    width: 10%;
 }
 
-.content__customer-fix {
+.content__warehouse-fix {
     display: inline-block;
-    background-color: #1678ff;
+    background-color: rgb(53 111 207);
     padding: 0.4rem;
     border-radius: 0.4rem;
 }
 
-.content__customer-fix-icon {
+.content__warehouse-fix-icon, .content__warehouse-del-icon {
     font-size: 1.6rem;
     color: var(--white-color);
 }
 
-.content__customer-del {
+.content__warehouse-del {
     display: inline-block;
     background-color: #ff020f;
     padding: 0.4rem;
@@ -316,249 +318,33 @@ th, td {
     width: 2.4rem;
 }
 
-.content__customer-fix:hover, .content__customer-del:hover {
+.content__warehouse-fix:hover, .content__warehouse-del:hover {
     cursor: pointer;
     opacity: 0.7;
 }
 
-.content__customer-del-icon {
-    font-size: 1.6rem;
-    color: var(--white-color);
-}  
-
-.content__customer-img-wrapper {
-    width: 9%;
-    text-align: center;
-}
-
-.content__customer-img {
-    height: 6rem;
-    text-align: center;
-}
-
-.content__customer-id {
-    width: 13%;
-    text-align: center;
-    word-break: break-all;
-}
-
-.content__customer-name {
+.content__warehouse-id {
     width: 15%;
-    padding: 0rem 1rem;
-    word-break: keep-all;
-}
-
-.content__customer-phone {
-    width: 12%;
     word-break: break-all;
 }
 
-.content__customer-email {
-    width: 22%;
-    padding: 0rem 1rem;
-    word-break: break-all;
-}
-
-.content__customer-address {
-    text-align: center;
+.content__warehouse-address {
     word-break: keep-all;
 }
 
-.content__customer-item {
+.content__warehouse-name {
+    width: 20%;
+    word-break: keep-all;
+}
+
+.content__warehouse-item {
     height: 8rem;
 }
 
-/* add */
-.add {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.3);
-    align-items: center;
-    justify-content: center;
-    display: none;
-}
-
-.add.open {
-    display: flex;
-}
-
-.add__container {
-    width: 98rem;
-    background-color: #fff;
-    border-radius: 0.8rem;
-    position: relative;
-    animation: modalFadeIn ease 0.5s;
-}
-
-.add__close {
-    position: absolute;
-    right: 0;
-    top: 0;
-    padding: 1rem 2rem;
-    cursor: pointer;
-}
-
-.add__close:hover {
-    background-color: rgb(237, 14, 14);
-    color: var(--white-color);
-}
-
-.add__close-icon {
-    font-size: 1.8rem;
-}
-
-.add__header {
-    padding: 2.5rem 2.5rem 0rem;
-    font-size: 2.5rem;
-    font-weight: bold;
-}
-
-.add__form {
-    padding: 0rem 2.5rem 2.5rem;
-}
-
-.add_product-infor {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-}
-
-.add__customer-wrapper {
-    width: 48%;
-}
-
-.add__customer-text-wrapper {
-    display: flex;
-    margin-top: 2rem;
-}
-
-.add__customer-compulsory {
-    font-size: 1.8rem;
-    color: rgb(237, 14, 14);
-    margin-right: 0.32rem;
-}
-
-.add__customer-text {
-    font-size: 1.6rem;
-    font-weight: bold;
-}
-
-.add__customer-input-wrapper {
-    display: flex;
-}
-
-.add__customer-address {
-    width: 100%;
-}
-
-.add__supplier-address-input {
-    width: 100%;
-    font-size: 1.6rem;
-    padding: 0.8rem;
-    border: 0.1rem solid #ccc;
-    border-radius: 0.4rem;
-    word-break: keep-all;
-    resize: none;
-}
-
-.add__customer-input{
-    flex: 1;
-    font-size: 1.6rem;
-    height: 3.5rem;
-    padding-left: 0.8rem;
-    border: 0.1rem solid #ccc;
-    border-radius: 0.4rem;
-}
-
-.add__submit {
-    margin-top: 5rem;
-    text-align: center;
-}
-
-.add__submit-btn {
-    background-color: #1678ff;
-    width: 8rem;
-    height: 4rem;
-    border-radius: 0.4rem;
-}
-
-
-.add__submit-btn:hover {
-    cursor: pointer;
-    opacity: 0.7;
-}
-
-.add__submit-text {
-    font-size: 1.6rem;
-    color: var(--white-color);
-}
-
-.add__customer-input::-webkit-inner-spin-button,
-.add__customer-input::-webkit-outer-spin-button {
-    -webkit-appearance: none !important;
-    appearance: none !important;
-    margin: 0;
-}
-
-.add__customer-input {
-  -moz-appearance: textfield !important;
-  appearance: textfield !important;
-}
-
-@keyframes modalFadeIn {
-    from{
-        opacity: 0;
-        transform: translateY(-150px);
-    }
-    to{
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
 /* fix */
-.fix {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.3);
-    align-items: center;
-    justify-content: center;
-    display: none;
-}
-
-.fix.open {
-    display: flex;
-}
-
 .fix__container {
-    width: 98rem;
     background-color: #fff;
     border-radius: 0.8rem;
-    position: relative;
-    animation: modalFadeIn ease 0.5s;
-}
-
-.fix__close {
-    position: absolute;
-    right: 0;
-    top: 0;
-    padding: 1rem 2rem;
-    cursor: pointer;
-}
-
-.fix__close:hover {
-    background-color: rgb(237, 14, 14);
-    color: var(--white-color);
-}
-
-.fix__close-icon {
-    font-size: 1.8rem;
 }
 
 .fix__header {
@@ -567,55 +353,57 @@ th, td {
     font-weight: bold;
 }
 
+.fix__warehouse-add {
+    display: flex;
+    align-items: center;
+    background-color: rgb(53 111 207);
+    padding: 0.8rem 1rem;
+    margin-top: 2rem;
+    border-radius: 0.4rem;
+    width: 100%;
+    justify-content: center;
+}
+
+.fix__warehouse-add:hover {
+    cursor: pointer;
+    opacity: 0.7;
+}
+
 .fix__form {
     padding: 0rem 2.5rem 2.5rem;
 }
 
-.fix_product-infor {
+.fix_import-infor {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
 }
 
-.fix__customer-wrapper {
+.fix__warehouse-wrapper {
     width: 48%;
 }
 
-.fix__customer-text-wrapper {
+.fix__warehouse-text-wrapper {
     display: flex;
     margin-top: 2rem;
 }
 
-.fix__customer-compulsory {
+.fix__warehouse-compulsory {
     font-size: 1.8rem;
     color: rgb(237, 14, 14);
     margin-right: 0.32rem;
 }
 
-.fix__customer-text {
+.fix__warehouse-text {
     font-size: 1.6rem;
     font-weight: bold;
 }
 
-.fix__customer-input-wrapper {
+.fix__warehouse-input-wrapper {
     display: flex;
 }
 
-.fix__customer-address {
-    width: 100%;
-}
-
-.fix__supplier-address-input {
-    width: 100%;
-    font-size: 1.6rem;
-    padding: 0.8rem;
-    border: 0.1rem solid #ccc;
-    border-radius: 0.4rem;
-    word-break: keep-all;
-    resize: none;
-}
-
-.fix__customer-input{
+.fix__warehouse-input{
     flex: 1;
     font-size: 1.6rem;
     height: 3.5rem;
@@ -624,18 +412,32 @@ th, td {
     border-radius: 0.4rem;
 }
 
+.fix__warehouse-address {
+    width: 100%;
+    word-break: keep-all;
+}
+
+.fix__warehouse-address-input {
+    width: 100%;
+    font-size: 1.6rem;
+    border: 0.1rem solid #ccc;
+    border-radius: 0.4rem;
+    padding: 0.8rem;
+    margin-top: 0.2rem;
+    resize: none;
+}
+
 .fix__submit {
     margin-top: 5rem;
     text-align: center;
 }
 
 .fix__submit-btn {
-    background-color: #1678ff;
+    background-color: rgb(53 111 207);
     width: 8rem;
     height: 4rem;
     border-radius: 0.4rem;
 }
-
 
 .fix__submit-btn:hover {
     cursor: pointer;
@@ -647,25 +449,14 @@ th, td {
     color: var(--white-color);
 }
 
-.fix__customer-input::-webkit-inner-spin-button,
-.fix__customer-input::-webkit-outer-spin-button {
+.fix__warehouse-input::-webkit-inner-spin-button,
+.fix__warehouse-input::-webkit-outer-spin-button {
     -webkit-appearance: none !important;
     appearance: none !important;
     margin: 0;
 }
 
-.fix__customer-input {
+.fix__warehouse-input {
   -moz-appearance: textfield !important;
   appearance: textfield !important;
-}
-
-@keyframes modalFadeIn {
-    from{
-        opacity: 0;
-        transform: translateY(-150px);
-    }
-    to{
-        opacity: 1;
-        transform: translateY(0);
-    }
 }
