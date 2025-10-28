@@ -4,137 +4,151 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sản phẩm</title>
+    <title>Sản phẩm - Kho: {{ selected_warehouse.name }}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/themify-icons@0.1.2/css/themify-icons.css">
     <link rel="stylesheet" href="{% static 'css/product.css' %}">
+     <style>
+        .back-link { display: inline-block; margin-bottom: 1.5rem; font-size: 1.5rem; color: #3498db; text-decoration: none; }
+        .back-link i { margin-right: 0.5rem; }
+        .messages { list-style: none; padding: 0; margin-bottom: 1rem; }
+        .messages li { padding: 1rem 1.5rem; border-radius: 4px; margin-bottom: 0.5rem; font-size: 1.4rem; border: 1px solid transparent; }
+        .messages li.debug { background-color: #e7e7e7; color: #444; border-color: #dcdcdc; }
+        .messages li.info { background-color: #d1ecf1; color: #0c5460; border-color: #bee5eb; }
+        .messages li.success { background-color: #d4edda; color: #155724; border-color: #c3e6cb; }
+        .messages li.warning { background-color: #fff3cd; color: #856404; border-color: #ffeeba; }
+        .messages li.error { background-color: #f8d7da; color: #721c24; border-color: #f5c6cb; }
+    </style>
 </head>
 <body>
     <div class="main">
         <div class="navbar">
             <a href="{% url 'users:home_page' %}" class="navbar__header">
-                <p class="navbar__header-logo">Warehourse</p>
-                <div class="navbar__header-wrapper">
-                    <p class="navbar__header-text">Quản lý kho hàng</p>
-                </div>
+                <p class="navbar__header-logo">Warehouse</p> <!-- Sửa lỗi Warehourse -->
+                <div class="navbar__header-wrapper"><p class="navbar__header-text">Quản lý kho hàng</p></div>
             </a>
+            <!-- ===== BẮT ĐẦU SIDEBAR ĐÃ ĐỒNG BỘ ===== -->
             <div class="navbar__content">
-                <div class="navbar__content-item">
-                    <a href="{% url 'users:home_page' %}" class="navbar__content-item-link">
-                        <i class="fa-solid fa-chart-pie navbar__content-icon"></i>
-                        <p class="navbar__content-text">Thống kê</p>
-                    </a>
-                </div>
+                 {% with request.resolver_match.view_name as view_name %}
+                 <div class="navbar__content-item">
+                     <a href="{% url 'users:home_page' %}" class="navbar__content-item-link {% if 'users:home_page' in view_name %}navbar__content-item-choose{% endif %}">
+                         <i class="fa-solid fa-chart-pie navbar__content-icon"></i><p class="navbar__content-text">Thống kê</p>
+                     </a>
+                 </div>
+                 <div class="navbar__content-item">
+                     <a href="#" class="navbar__content-item-link"> <!-- Cần URL -->
+                         <i class="fa-solid fa-user-group navbar__content-icon"></i><p class="navbar__content-text">Quản lý người dùng</p>
+                     </a>
+                 </div>
+                 <div class="navbar__content-item">
+                    <a href="{% url 'partners:customer_page' %}" class="navbar__content-item-link {% if 'partners:customer_page' in view_name or 'partners:edit_customer' in view_name %}navbar__content-item-choose{% endif %}">
+                       <i class="fa-solid fa-users navbar__content-icon"></i><p class="navbar__content-text">Quản lý khách hàng</p>
+                     </a>
+                  </div>
+                  <!-- Thêm lại Quản lý Doanh thu -->
+                  <div class="navbar__content-item">
+                      <a href="{% url 'reports:revenue_page' %}" class="navbar__content-item-link {% if 'reports:revenue_page' in view_name %}navbar__content-item-choose{% endif %}">
+                          <i class="fa-solid fa-hand-holding-dollar navbar__content-icon"></i><p class="navbar__content-text">Quản lý doanh thu</p>
+                      </a>
+                  </div>
+                  <!-- Thêm lại Quản lý Kho hàng (đơn lẻ) -->
+                  <div class="navbar__content-item">
+                      <a href="{% url 'inventory:warehouse_page' %}" class="navbar__content-item-link {% if 'inventory:warehouse_page' in view_name or 'inventory:edit_warehouse' in view_name %}navbar__content-item-choose{% endif %}">
+                          <i class="fa-solid fa-warehouse navbar__content-icon"></i><p class="navbar__content-text">Quản lý kho hàng</p>
+                      </a>
+                  </div>
 
-                <div class="navbar__content-item">
-                    <a href="#" class="navbar__content-item-link">
-                        <i class="fa-solid fa-user-group navbar__content-icon"></i>
-                        <p class="navbar__content-text">Quản lý người dùng</p>
-                    </a>
-                </div>
-
-                <div class="navbar__content-item">
-                    <a href="{% url 'partners:customer_page' %}" class="navbar__content-item-link">
-                        <i class="fa-solid fa-users navbar__content-icon"></i>
-                        <p class="navbar__content-text">Quản lý khách hàng</p>
-                    </a>
-                </div>
-
-                <div class="navbar__content-item">
-                    <a href="{% url 'reports:revenue_page' %}" class="navbar__content-item-link">
-                        <i class="fa-solid fa-hand-holding-dollar navbar__content-icon"></i>
-                        <p class="navbar__content-text">Quản lý doanh thu</p>
-                    </a>
-                </div>
-
-                <div class="navbar__content-item">
-                    <a href="{% url 'inventory:warehouse_page' %}" class="navbar__content-item-link">
-                        <i class="fa-solid fa-warehouse navbar__content-icon"></i>
-                        <p class="navbar__content-text">Quản lý kho hàng</p>
-                    </a>
-                </div>
-
-                <div class="navbar__content-item">
-                    <div class="navbar__content-item-link  navbar__content-item-parent">
-                        <i class="fa-solid fa-boxes-stacked navbar__content-icon"></i>
-                        <p class="navbar__content-text">Quản lý sản phẩm</p>
-                        <i class="fa-solid fa-angle-down navbar__content-sub-icon"></i>
-                    </div>
-
-                    <div class="navbar__content-sub">
-                        <a href="{% url 'partners:supplier_page' %}" class="navbar__content-item-link">
-                            <i class="fa-solid fa-truck-field navbar__content-icon"></i>
-                            <p class="navbar__content-text">Nhà cung cấp</p>
-                        </a>
-
-                        <a href="{% url 'inventory:product_page' %}" class="navbar__content-item-link navbar__content-item-choose">
-                            <i class="fa-solid fa-box navbar__content-icon"></i>
-                            <p class="navbar__content-text">Sản phẩm</p>
-                        </a>
-                    </div>
-                </div>
-
-                <div class="navbar__content-item">
-                    <div class="navbar__content-item-link navbar__content-item-parent">
-                        <i class="fa-solid fa-file-invoice-dollar navbar__content-icon"></i>
-                        <p class="navbar__content-text">Quản lý nhập xuất</p>
-                        <i class="fa-solid fa-angle-down navbar__content-sub-icon"></i>
-                    </div>
-
-                    <div class="navbar__content-sub">
-                        <a href="{% url 'transactions:import_receipt_page' %}" class="navbar__content-item-link">
-                            <i class="fa-solid fa-file-import fa-user-groug navbar__content-icon"></i>
-                            <p class="navbar__content-text">Nhập hàng</p>
-                        </a>
-
-                        <a href="{% url 'transactions:export_receipt_page' %}" class="navbar__content-item-link">
-                            <i class="fa-solid fa-file-export navbar__content-icon"></i>
-                            <p class="navbar__content-text">Xuất hàng</p>
-                        </a>
-                    </div>
-                </div>
+                 <!-- Mục Quản lý sản phẩm -->
+                 <div class="navbar__content-item">
+                     <a href="#" class="navbar__content-item-link navbar__content-item-parent
+                         {% if 'partners:supplier_page' in view_name or 'inventory:select_warehouse' in view_name or 'inventory:product_list_by_warehouse' in view_name or 'partners:edit_supplier' in view_name or 'inventory:edit_product' in view_name %}active{% endif %}
+                     ">
+                         <i class="fa-solid fa-boxes-stacked navbar__content-icon"></i><p class="navbar__content-text">Quản lý sản phẩm</p><i class="fa-solid fa-angle-down navbar__content-sub-icon"></i>
+                     </a>
+                     <div class="navbar__content-sub"
+                         {% if 'partners:supplier_page' in view_name or 'inventory:select_warehouse' in view_name or 'inventory:product_list_by_warehouse' in view_name or 'partners:edit_supplier' in view_name or 'inventory:edit_product' in view_name %}style="display: block;"{% endif %}
+                     >
+                         <a href="{% url 'partners:supplier_page' %}" class="navbar__content-item-link {% if 'partners:supplier_page' in view_name or 'partners:edit_supplier' in view_name %}navbar__content-item-choose{% endif %}">
+                             <i class="fa-solid fa-truck-field navbar__content-icon"></i><p class="navbar__content-text">Nhà cung cấp</p>
+                         </a>
+                         <!-- Sửa link Sản phẩm + Highlight -->
+                         <a href="{% url 'inventory:select_warehouse' %}" class="navbar__content-item-link {% if 'inventory:select_warehouse' in view_name or 'inventory:product_list_by_warehouse' in view_name or 'inventory:edit_product' in view_name %}navbar__content-item-choose{% endif %}">
+                             <i class="fa-solid fa-box navbar__content-icon"></i><p class="navbar__content-text">Sản phẩm</p>
+                         </a>
+                     </div>
+                 </div>
+                 <!-- Thêm lại Quản lý nhập xuất -->
+                 <div class="navbar__content-item">
+                     <a href="#" class="navbar__content-item-link navbar__content-item-parent
+                         {% if 'transactions:import_receipt_page' in view_name or 'transactions:export_receipt_page' in view_name %}active{% endif %}"
+                     >
+                         <i class="fa-solid fa-file-invoice-dollar navbar__content-icon"></i><p class="navbar__content-text">Quản lý nhập xuất</p><i class="fa-solid fa-angle-down navbar__content-sub-icon"></i>
+                     </a>
+                     <div class="navbar__content-sub"
+                         {% if 'transactions:import_receipt_page' in view_name or 'transactions:export_receipt_page' in view_name %}style="display: block;"{% endif %}
+                     >
+                         <a href="{% url 'transactions:import_receipt_page' %}" class="navbar__content-item-link {% if 'transactions:import_receipt_page' in view_name %}navbar__content-item-choose{% endif %}">
+                             <i class="fa-solid fa-file-import navbar__content-icon"></i><p class="navbar__content-text">Nhập hàng</p>
+                         </a>
+                         <a href="{% url 'transactions:export_receipt_page' %}" class="navbar__content-item-link {% if 'transactions:export_receipt_page' in view_name %}navbar__content-item-choose{% endif %}">
+                             <i class="fa-solid fa-file-export navbar__content-icon"></i><p class="navbar__content-text">Xuất hàng</p>
+                         </a>
+                     </div>
+                 </div>
+                 {% endwith %}
             </div>
+            <!-- ===== KẾT THÚC SIDEBAR ĐÃ ĐỒNG BỘ ===== -->
         </div>
 
         <div class="content">
             <div class="content__navbar">
-                <a href="" class="content__navbar-notify"><i class="fa-solid fa-bell content__navbar-notify-icon"></i></a>
-                <div class="content__navbar-account">                   
-                    <div class="content__navbar-account-name">
-                        <div class="content_navbar-img-wrapper">
-                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTr3jhpAFYpzxx39DRuXIYxNPXc0zI5F6IiMQ&s" class="content__navbar-account-img">
-                        </div>
-                        <p class="content__navbar-account-text">{{ user.get_full_name|default:user.username }}</p>
-                        <i class="fa-solid fa-chevron-down content__navbar-account-icon"></i>
-                    </div>
-                    <div class="content__navbar-account-sub">
-                       <a href="{% url 'users:logout' %}" class="content__navbar-account-item">
-                          <i class="fa-solid fa-right-from-bracket content__navbar-account-icon"></i>
-                          <p class="content__navbar-account-text">Đăng xuất</p>
-                        </a>
-                    </div>
-                </div>
+                 <a href="" class="content__navbar-notify"><i class="fa-solid fa-bell content__navbar-notify-icon"></i></a>
+                 <div class="content__navbar-account">
+                     <div class="content__navbar-account-name">
+                         <div class="content_navbar-img-wrapper"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTr3jhpAFYpzxx39DRuXIYxNPXc0zI5F6IiMQ&s" class="content__navbar-account-img"></div>
+                         <p class="content__navbar-account-text">{{ user.get_full_name|default:user.username }}</p><i class="fa-solid fa-chevron-down content__navbar-account-icon"></i>
+                     </div>
+                     <div class="content__navbar-account-sub">
+                        <a href="{% url 'users:logout' %}" class="content__navbar-account-item"><i class="fa-solid fa-right-from-bracket content__navbar-account-icon"></i><p class="content__navbar-account-text">Đăng xuất</p></a>
+                     </div>
+                 </div>
             </div>
 
             <div class="content__wrapper">
+                 <!-- Nút quay lại trang chọn kho -->
+                 <a href="{% url 'inventory:select_warehouse' %}" class="back-link"><i class="fa-solid fa-arrow-left"></i> Quay lại chọn kho</a>
+
                 <div class="content__header">
-                    <p class="content__header-text">Sản phẩm</p>
-                    <button class="content__header-add">
+                    <!-- Tiêu đề động -->
+                    <p class="content__header-text">Sản phẩm - Kho: {{ selected_warehouse.name }}</p>
+                    <!-- Cập nhật class nút thêm -->
+                    <button type="button" class="content__header-add js-modal-open-btn">
                         <div class="fa-solid fa-plus content__header-add-icon"></div>
                         <div class="content__header-add-text">Thêm sản phẩm</div>
                     </button>
                 </div>
+
+                <!-- HIỂN THỊ MESSAGES -->
+                {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+
                 <div class="content__product">
                     <table class="content__product-table">
                         <thead>
                             <tr class="content__product-header">
                                 <th class="content__product-stt">STT</th>
                                 <th class="content__product-operation">Thao tác</th>
-                                <th class="content__product-id">Mã sản phẩm</th>
+                                <th class="content__product-id">Mã SP</th>
                                 <th class="content__product-name">Tên sản phẩm</th>
                                 <th class="content__product-category">Danh mục</th>
                                 <th class="content__product-unit">Đơn vị</th>
                                 <th class="content__product-price">Giá nhập</th>
+                                <!-- Bỏ cột Kho hàng -->
                                 <th class="content__product-inventory">Tồn kho</th>
                                 <th class="content__product-status">Trạng thái</th>
                             </tr>
@@ -147,10 +161,9 @@
                                   <a href="{% url 'inventory:edit_product' product.id %}" class="content__product-fix">
                                       <i class="fa-solid fa-pen content__product-fix-icon"></i>
                                   </a>
-
                                  <form action="{% url 'inventory:delete_product' product.id %}" method="post" style="display: inline;">
                                      {% csrf_token %}
-                                      <button type="submit" class="content__product-del" onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này không?');">
+                                      <button type="submit" class="content__product-del" onclick="return confirm('Xóa sản phẩm \'{{ product.name }}\'?');">
                                          <i class="fa-solid fa-trash content__product-del-icon"></i>
                                      </button>
                                  </form>
@@ -160,17 +173,18 @@
                                 <td class="content__product-category">{{ product.category_name }}</td>
                                 <td class="content__product-unit">{{ product.unit }}</td>
                                 <td class="content__product-price">{{ product.price|floatformat:0 }} VNĐ</td>
+                                <!-- Bỏ cột kho -->
                                 <td class="content__product-inventory">{{ product.quantity }}</td>
                                 <td class="content__product-status">
                                     {% if product.quantity <= product.min_quantity %}
-                                        <div class="content__product-status-out" style="display: block;"><p class="content__product-out-text">Sắp hết hàng</p></div>
+                                        <div class="content__product-status-out" style="display: block;"><p class="content__product-out-text">Sắp hết</p></div>
                                     {% else %}
                                         <div class="content__product-status-stable" style="display: block;"><p class="content__product-stable-text">Ổn định</p></div>
                                     {% endif %}
                                 </td>
                             </tr>
                             {% empty %}
-                            <tr><td colspan="9" style="text-align: center; padding: 20px;">Chưa có sản phẩm nào.</td></tr>
+                            <tr><td colspan="8" style="text-align: center; padding: 20px; font-size: 1.6rem; color:#555;">Kho này chưa có sản phẩm nào.</td></tr> <!-- Giảm colspan -->
                             {% endfor %}
                         </tbody>
                     </table>
@@ -179,82 +193,93 @@
         </div>
     </div>
 
+    <!-- MODAL THÊM SẢN PHẨM -->
     <div class="modal js-modal">
-    <div class="modal__container js-modal-container">
-        <div class="modal__close js-modal-close">
-            <i class="fa-solid fa-xmark modal__close-icon"></i>
+        <div class="modal__container js-modal-container">
+            <div class="modal__close js-modal-close">
+                <i class="fa-solid fa-xmark modal__close-icon"></i>
+            </div>
+            <header class="modal__header">Thêm sản phẩm vào Kho: {{ selected_warehouse.name }}</header>
+
+             <!-- CẬP NHẬT ACTION URL -->
+             <form action="{% url 'inventory:add_product_to_warehouse' warehouse_id=selected_warehouse.id %}" method="post" class="modal__form">
+                 {% csrf_token %}
+                 <div class="modal_product-infor">
+                     <!-- Trường Tên Sản phẩm (full-width) -->
+                     <div class="modal__product-wrapper full-width">
+                         <label for="name_add" class="modal__product-text-wrapper"><p class="modal__product-text">Tên sản phẩm</p></label>
+                         <div class="modal__product-input-wrapper"><input id="name_add" name="name" type="text" required placeholder="Nhập tên sản phẩm" class="modal__product-input"></div>
+                     </div>
+                     <!-- Các trường còn lại (2 cột) -->
+                     <div class="modal__product-wrapper">
+                         <label for="category_name_add" class="modal__product-text-wrapper"><p class="modal__product-text">Danh mục</p></label>
+                         <div class="modal__product-input-wrapper"><input id="category_name_add" name="category_name" type="text" required placeholder="Nhập danh mục" class="modal__product-input"></div>
+                     </div>
+                     <div class="modal__product-wrapper">
+                         <label for="unit_add" class="modal__product-text-wrapper"><p class="modal__product-text">Đơn vị</p></label>
+                         <div class="modal__product-input-wrapper"><input id="unit_add" name="unit" type="text" required placeholder="Nhập đơn vị" class="modal__product-input"></div>
+                     </div>
+                     <div class="modal__product-wrapper">
+                         <label for="price_add" class="modal__product-text-wrapper"><p class="modal__product-text">Giá nhập</p></label>
+                         <div class="modal__product-input-wrapper"><input id="price_add" name="price" type="number" step="any" required placeholder="Nhập giá nhập" class="modal__product-input"></div> <!-- Thêm step=any cho số thập phân -->
+                     </div>
+                      <!-- Ẩn trường Kho hàng hoặc khóa nó lại -->
+                     <div class="modal__product-wrapper" style="/* display: none; */"> <!-- Tạm thời không ẩn để xem -->
+                         <label for="warehouse_add_display" class="modal__product-text-wrapper"><p class="modal__product-text">Kho hàng</p></label>
+                         <div class="modal__product-input-wrapper">
+                             <input id="warehouse_add_display" type="text" value="{{ selected_warehouse.name }}" class="modal__product-input" disabled>
+                             <!-- Không cần thẻ select và không cần name="warehouse_id" ở đây nữa -->
+                         </div>
+                     </div>
+                     <div class="modal__product-wrapper">
+                         <label for="quantity_add" class="modal__product-text-wrapper"><p class="modal__product-text">Số lượng ban đầu</p></label>
+                         <div class="modal__product-input-wrapper"><input id="quantity_add" name="quantity" type="number" required placeholder="Nhập số lượng" class="modal__product-input"></div>
+                     </div>
+                     <div class="modal__product-wrapper">
+                         <label for="min_quantity_add" class="modal__product-text-wrapper"><p class="modal__product-text">Lượng cảnh báo</p></label>
+                         <div class="modal__product-input-wrapper"><input id="min_quantity_add" name="min_quantity" type="number" required placeholder="Nhập SL cảnh báo" class="modal__product-input"></div>
+                     </div>
+                 </div>
+                 <div class="modal__submit">
+                     <button type="submit" class="modal__submit-btn"><p class="modal__submit-text">Lưu</p></button>
+                 </div>
+             </form>
         </div>
-        <header class="modal__header">Thêm sản phẩm</header>
-        
-        <form action="{% url 'inventory:add_product' %}" method="post" class="modal__form">
-            {% csrf_token %}
-            
-            <div class="modal_product-infor">
-                <div class="modal__product-wrapper">
-                    <label for="name" class="modal__product-text-wrapper"><p class="modal__product-text">Tên sản phẩm</p></label>
-                    <div class="modal__product-input-wrapper"><input id="name" name="name" type="text" required placeholder="Nhập tên sản phẩm" class="modal__product-input"></div>
-                </div>
-                <div class="modal__product-wrapper">
-                    <label for="category_name" class="modal__product-text-wrapper"><p class="modal__product-text">Danh mục</p></label>
-                    <div class="modal__product-input-wrapper"><input id="category_name" name="category_name" type="text" required placeholder="Nhập danh mục" class="modal__product-input"></div>
-                </div>
-                <div class="modal__product-wrapper">
-                    <label for="unit" class="modal__product-text-wrapper"><p class="modal__product-text">Đơn vị</p></label>
-                    <div class="modal__product-input-wrapper"><input id="unit" name="unit" type="text" required placeholder="Nhập đơn vị" class="modal__product-input"></div>
-                </div>
-                <div class="modal__product-wrapper">
-                    <label for="price" class="modal__product-text-wrapper"><p class="modal__product-text">Giá nhập</p></label>
-                    <div class="modal__product-input-wrapper"><input id="price" name="price" type="number" required placeholder="Nhập giá nhập" class="modal__product-input"></div>
-                </div>
-                <div class="modal__product-wrapper">
-                    <label for="quantity" class="modal__product-text-wrapper"><p class="modal__product-text">Số lượng ban đầu</p></label>
-                    <div class="modal__product-input-wrapper"><input id="quantity" name="quantity" type="number" required placeholder="Nhập số lượng" class="modal__product-input"></div>
-                </div>
-                <div class="modal__product-wrapper">
-                    <label for="min_quantity" class="modal__product-text-wrapper"><p class="modal__product-text">Lượng cảnh báo</p></label>
-                    <div class="modal__product-input-wrapper"><input id="min_quantity" name="min_quantity" type="number" required placeholder="Nhập số lượng cảnh báo" class="modal__product-input"></div>
-                </div>
-            </div>
-            <div class="modal__submit">
-                <button type="submit" class="modal__submit-btn"><p class="modal__submit-text">Lưu</p></button>
-            </div>
-        </form>
     </div>
-</div>
 
     <script>
-        // Script cho menu xổ xuống
+        // Script cho menu xổ xuống (GIỮ NGUYÊN)
         document.querySelectorAll(".navbar__content-item .navbar__content-item-parent").forEach((title) => {
-            title.addEventListener("click", function(event) {
+             // ... Code cũ ...
+             title.addEventListener("click", function(event) {
                 event.preventDefault();
                 const child = this.nextElementSibling;
                 const isOpen = child.style.display === "block";
                 child.style.display = isOpen ? "none" : "block";
                 this.classList.toggle("active", !isOpen);
-            });
+             });
         });
 
-        // Script cho modal Thêm/Sửa sản phẩm
-        const addBtn = document.querySelector('.content__header-add');
+        // Script cho modal Thêm sản phẩm (CẬP NHẬT)
+        const addBtn = document.querySelector('.js-modal-open-btn'); // Sửa lại selector nút mở
         const modal = document.querySelector('.js-modal');
         const modalContainer = document.querySelector('.js-modal-container');
         const modalClose = document.querySelector('.js-modal-close');
 
-        function showModal(){ modal.classList.add('open'); }
-        function hideModal(){ modal.classList.remove('open'); }
+        // Hàm kiểm tra modal tồn tại trước khi thêm class
+        function showModal(){ if(modal) modal.classList.add('open'); }
+        function hideModal(){ if(modal) modal.classList.remove('open'); }
 
-        addBtn.addEventListener('click', showModal);
-        
-        // Cần thêm event listener cho các nút sửa sau khi dữ liệu được tải
-        document.querySelectorAll('.content__product-fix').forEach(fixBtn => {
-            fixBtn.addEventListener('click', showModal);
-        });
+        // Chỉ thêm listener nếu nút addBtn tồn tại (khi đã chọn kho)
+        if (addBtn) {
+             addBtn.addEventListener('click', showModal);
+        }
 
-        modalClose.addEventListener('click', hideModal);
-        modal.addEventListener('click', hideModal);
-        modalContainer.addEventListener('click', function(event){
-            event.stopPropagation();
-        });
+        // Chỉ thêm listener nếu các phần tử modal tồn tại
+        if (modalClose) { modalClose.addEventListener('click', hideModal); }
+        if (modal) { modal.addEventListener('click', hideModal); }
+        if (modalContainer) { modalContainer.addEventListener('click', function(event){ event.stopPropagation(); }); }
     </script>
 </body>
 </html>
+
