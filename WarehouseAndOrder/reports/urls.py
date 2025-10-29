@@ -18,4 +18,14 @@ urlpatterns = [
         views.warehouse_exports_detail,
         name='warehouse_exports_detail'
     ),
+    path(
+        'import-receipt/<int:import_id>/',
+        views.import_receipt_detail,
+        name='import_receipt_detail'
+    ),
+    path(
+        'export-receipt/<int:export_id>/',
+        views.export_receipt_detail,
+        name='export_receipt_detail'
+    ),
 ]

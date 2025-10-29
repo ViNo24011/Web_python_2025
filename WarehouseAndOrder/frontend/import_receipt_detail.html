@@ -1,19 +1,32 @@
 {% load static humanize %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Revenue</title>
+    <title>Chi tiết Phiếu nhập #{{ receipt.import_id }}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/themify-icons@0.1.2/css/themify-icons.css">
-    <link rel="stylesheet" href="{% static 'css/revenue.css' %}">
+    {# Link CSS cơ bản và CSS dùng chung (ví dụ warehouse_detail.css) #}
+    <link rel="stylesheet" href="{% static 'css/product.css' %}">
+    <link rel="stylesheet" href="{% static 'css/warehouse_detail.css' %}">
+    <style>
+        .receipt-info{
+            font-size: 3rem; line-height: 1;  margin-bottom: 2rem;
+            padding: 2rem;background-color: #f9f9f9;border: 1px solid #eee;border-radius: 5px;
+        }
+        .receipt-info p {margin-bottom: 1rem;display: flex; align-items: baseline; }
+        .receipt-info p:last-child {margin-bottom: 0;}
+        .receipt-info strong {display: inline-block;min-width: 140px;margin-right: 8px;color: #555;font-weight: 600;}
+        .receipt-info span { word-break: break-word; }
+        .receipt-info .price {font-weight: bold;color: var(--danger-color, #dc3545);}
+    </style>
 </head>
 <body>
     <div class="main">
         <div class="navbar">
             <a href="{% url 'users:home_page' %}" class="navbar__header">
-                <p class="navbar__header-logo">Warehourse</p>
+                <p class="navbar__header-logo">Warehouse</p>
                 <div class="navbar__header-wrapper">
                     <p class="navbar__header-text">Quản lý kho hàng</p>
                 </div>
@@ -27,7 +40,7 @@
                 </div>
 
                 <div class="navbar__content-item">
-                    <a href="{% url 'users:user_list_page' %}" class="navbar__content-item-link">
+                    <a href="#" class="navbar__content-item-link">
                         <i class="fa-solid fa-user-group navbar__content-icon"></i>
                         <p class="navbar__content-text">Quản lý người dùng</p>
                     </a>
@@ -118,80 +131,60 @@
 
             <div class="content__wrapper">
                 <div class="content__header">
-                    <p class="content__header-text">Doanh thu hàng tháng</p>
+                    <p class="content__header-text">Chi tiết Phiếu nhập #{{ receipt.import_id }}</p>
+                    {% if year and month and warehouse_id %}
+                    <a href="{% url 'reports:warehouse_imports_detail' year=year month=month warehouse_id=warehouse_id %}" class="btn btn-back" style="margin-left: auto;">← Quay lại danh sách</a>
+                    {% else %}
+                     <a href="{% url 'reports:revenue_page' %}" class="btn btn-back" style="margin-left: auto;">← Quay lại Báo cáo</a>
+                    {% endif %}
                 </div>
 
-                <div class="content__revenue">
-                    <table class="content__revenue-table">
-                        <thead> {# Sử dụng thead cho phần tiêu đề bảng #}
-                            <tr class="content__revenue-header">
-                                <th class="content__revenue-time">Tháng/năm</th>
-                                <th class="content__revenue-quantity">Số phiếu nhập</th>
-                                <th class="content__revenue-money">Tổng tiền nhập</th>
-                                <th class="content__revenue-quantity">Số phiếu xuất</th>
-                                <th class="content__revenue-money">Tổng tiền xuất</th>
-                                <th class="content__revenue-money">Lợi nhuận</th>
-                                <th class="content__revenue-operation">Thao tác</th>
+                {# --- Thông tin cơ bản của phiếu nhập --- #}
+                <div class="receipt-info">
+                    <p><strong>Nhà cung cấp:</strong> {{ receipt.supplier.supplier_name|default:"N/A" }}</p>
+                    <p><strong>Kho hàng:</strong> {{ receipt.warehouse.name|default:"N/A" }}</p>
+                    <p><strong>Ngày nhập:</strong> {{ receipt.import_date|date:"H:i - d/m/Y" }}</p>
+                     {% if receipt.note %}<p><strong>Ghi chú:</strong> {{ receipt.note }}</p>{% endif %}
+                    <p><strong>Tổng tiền:</strong> <span class="price">{{ receipt.total_import_order|floatformat:0|intcomma }} đ</span></p>
+                </div>
+
+                {# --- Bảng chi tiết sản phẩm --- #}
+                <div class="content__list-container">
+                    {% if receipt_details %}
+                    <table class="content__list-table">
+                        <thead>
+                            <tr class="content__list-header">
+                                <th style="width: 10%;">STT</th>
+                                <th style="width: 40%;">Tên sản phẩm</th>
+                                <th style="width: 15%; text-align: center;">Số lượng</th>
+                                <th style="width: 20%; text-align: right;">Giá nhập</th>
+                                <th style="width: 15%; text-align: right;">Thành tiền</th>
                             </tr>
                         </thead>
-                        <tbody> {# Sử dụng tbody cho các dòng dữ liệu #}
-                            {% for summary in monthly_summary %} {# --- Bắt đầu vòng lặp --- #}
-                            <tr class="content__revenue-item">
-                                {# Hiển thị tháng/năm #}
-                                <td class="content__revenue-time">{{ summary.month|date:"m/Y" }}</td>
-
-                                {# Hiển thị số phiếu nhập, dùng intcomma để có dấu chấm #}
-                                <td class="content__revenue-quantity">{{ summary.import_count|intcomma }}</td>
-
-                                {# Hiển thị tổng tiền nhập, bỏ số lẻ và dùng intcomma #}
-                                <td class="content__revenue-money">{{ summary.total_import|floatformat:0|intcomma }} đ</td>
-
-                                {# Hiển thị số phiếu xuất #}
-                                <td class="content__revenue-quantity">{{ summary.export_count|intcomma }}</td>
-
-                                {# Hiển thị tổng tiền xuất #}
-                                <td class="content__revenue-money">{{ summary.total_export|floatformat:0|intcomma }} đ</td>
-
-                                {# Hiển thị lợi nhuận, thêm class 'text-danger' nếu âm (bạn cần định nghĩa class này trong CSS) #}
-                                <td class="content__revenue-money {% if summary.profit < 0 %}text-danger{% endif %}">
-                                    {{ summary.profit|floatformat:0|intcomma }} đ
-                                </td>
-
-                                {# Tạo link "Xem chi tiết" đúng bằng thẻ url #}
-                                <td>
-                                    <a href="{% url 'reports:revenue_detail_page' year=summary.month.year month=summary.month.month %}"
-                                    class="content__revenue-detail btn btn-info"> {# Thêm class button cho đẹp #}
-                                        Xem chi tiết
-                                    </a>
-                                </td>
+                        <tbody>
+                            {% for detail in receipt_details %}
+                            <tr class="content__list-item">
+                                <td style="text-align: center;">{{ forloop.counter }}</td>
+                                <td style="text-align: left; padding-left: 1rem;">{{ detail.name }}</td> {# Lấy tên từ ImportDetail #}
+                                <td style="text-align: center;">{{ detail.quantity|intcomma }}</td>
+                                <td class="price" style="text-align: right; padding-right: 1rem;">{{ detail.price|floatformat:0|intcomma }} đ</td> {# Giá tại thời điểm nhập #}
+                                <td class="price" style="text-align: right; padding-right: 1rem;">{{ detail.get_subtotal|floatformat:0|intcomma }} đ</td> {# Tính thành tiền #}
                             </tr>
-                            {% empty %} {# --- Trường hợp không có dữ liệu --- #}
-                            <tr>
-                                <td colspan="7" style="text-align: center; padding: 20px; font-size: 1.6rem;">
-                                    Chưa có dữ liệu doanh thu.
-                                </td>
-                            </tr>
-                            {% endfor %} {# --- Kết thúc vòng lặp --- #}
+                            {% endfor %}
                         </tbody>
                     </table>
+                    {% else %}
+                    <div style="text-align: center; padding: 20px; font-size: 1.6rem;">
+                        Phiếu nhập này không có chi tiết sản phẩm.
+                    </div>
+                    {% endif %}
                 </div>
             </div>
+        </div>
+    </div>
 
     <script>
-        document.querySelectorAll(".navbar__content-item .navbar__content-item-parent").forEach((title, index) => {
-            const key = "menuOpen" + index;
-            const child = title.nextElementSibling;
-            title.addEventListener("click", function() {
-                const isOpen = child.style.display === "block";
-                child.style.display = isOpen ? "none" : "block";
-                this.classList.toggle("active", !isOpen);
-                localStorage.setItem(key, !isOpen);
-            })
-            if (localStorage.getItem(key) === "true") {
-                child.style.display = "block";
-                title.classList.add("active");
-            }
-        })
+         document.querySelectorAll(".navbar__content-item .navbar__content-item-parent").forEach((title, index) => { const key = "menuOpen" + index; const child = title.nextElementSibling; if (localStorage.getItem(key) === "true") { child.style.display = "block"; title.classList.add("active"); } else { child.style.display = "none"; title.classList.remove("active"); } title.addEventListener("click", function(event) { event.preventDefault(); const isOpen = child.style.display === "block"; document.querySelectorAll(".navbar__content-sub").forEach((otherChild, otherIndex) => { if (otherChild !== child) { otherChild.style.display = "none"; if (otherChild.previousElementSibling.classList.contains('navbar__content-item-parent')) { otherChild.previousElementSibling.classList.remove("active"); } localStorage.setItem("menuOpen" + otherIndex, "false"); } }); child.style.display = isOpen ? "none" : "block"; this.classList.toggle("active", !isOpen); localStorage.setItem(key, String(!isOpen)); }); }); const accountName = document.querySelector(".content__navbar-account-name"); const accountSub = document.querySelector(".content__navbar-account-sub"); if (accountName && accountSub) { accountName.addEventListener("click", function() { const isOpen = accountSub.style.display === "block"; accountSub.style.display = isOpen ? "none" : "block"; }); document.addEventListener('click', function(event) { if (!accountName.contains(event.target) && !accountSub.contains(event.target)) { accountSub.style.display = 'none'; } }); }
     </script>
 </body>
 </html>
