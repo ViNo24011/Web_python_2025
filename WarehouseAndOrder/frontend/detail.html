@@ -163,7 +163,6 @@
             const key = "menuOpen" + index;
             const child = title.nextElementSibling;
 
-            // Restore state
             if (localStorage.getItem(key) === "true") {
                 child.style.display = "block";
                 title.classList.add("active");
@@ -176,7 +175,6 @@
                 event.preventDefault();
                 const isOpen = child.style.display === "block";
 
-                // Close others first
                  document.querySelectorAll(".navbar__content-sub").forEach((otherChild, otherIndex) => {
                      if (otherChild !== child) {
                          otherChild.style.display = "none";
@@ -187,14 +185,13 @@
                      }
                  });
 
-                // Toggle current
                 child.style.display = isOpen ? "none" : "block";
                 this.classList.toggle("active", !isOpen);
                 localStorage.setItem(key, String(!isOpen));
             });
         });
 
-         // Script for account dropdown
+         // Script cho menu tài khoản
         const accountName = document.querySelector(".content__navbar-account-name");
         const accountSub = document.querySelector(".content__navbar-account-sub");
         if (accountName && accountSub) {

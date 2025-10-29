@@ -211,13 +211,12 @@
     </div>
 
     <script>
-        // --- SCRIPT FOR NAVBAR (Keep the existing one) ---
+     
         document.querySelectorAll(".navbar__content-item .navbar__content-item-parent").forEach((title, index) => {
-            // ... (your existing navbar script) ...
+
              const key = "menuOpen" + index;
              const child = title.nextElementSibling;
              
-             // Kiểm tra trạng thái đã lưu để hiển thị menu con
              if (localStorage.getItem(key) === "true") {
                  child.style.display = "block";
                  title.classList.add("active");
@@ -225,12 +224,10 @@
                  child.style.display = "none";
              }
 
-             // Thêm sự kiện click
              title.addEventListener("click", function(event) {
                  event.preventDefault();
                  const isOpen = child.style.display === "block";
                  
-                 // Close all other submenus first
                  document.querySelectorAll(".navbar__content-sub").forEach((sub, subIndex) => {
                     const subKey = "menuOpen" + subIndex;
                     if (sub !== child) {
@@ -240,15 +237,14 @@
                     }
                  });
 
-                 // Toggle current submenu
+              
                  child.style.display = isOpen ? "none" : "block";
                  this.classList.toggle("active", !isOpen);
-                 // Save state
+              
                  localStorage.setItem(key, !isOpen); 
              });
         });
         
-        // --- SCRIPT FOR ACCOUNT DROPDOWN (Keep the existing one) ---
         const accountName = document.querySelector(".content__navbar-account-name");
         const accountSub = document.querySelector(".content__navbar-account-sub");
         if (accountName && accountSub) {
@@ -256,7 +252,7 @@
                  const isOpen = accountSub.style.display === "block";
                  accountSub.style.display = isOpen ? "none" : "block";
              });
-             // Close dropdown if clicking outside
+     
              document.addEventListener('click', function(event) {
                 if (!accountName.contains(event.target) && !accountSub.contains(event.target)) {
                     accountSub.style.display = 'none';
@@ -265,7 +261,7 @@
         }
 
 
-        // --- NEW SCRIPT FOR WAREHOUSE TOGGLE ---
+
         document.querySelectorAll('.warehouse-toggle').forEach(button => {
             button.addEventListener('click', function() {
                 const targetId = this.getAttribute('data-target');
@@ -275,11 +271,11 @@
                 if (targetElement) {
                     const isVisible = targetElement.style.display === 'block';
                     
-                    // --- Accordion Logic: Close all others first ---
+      
                     document.querySelectorAll('.low-stock-product-list').forEach(list => {
                         if (list !== targetElement) {
                            list.style.display = 'none';
-                           // Reset other icons and active states
+            
                            const otherButton = document.querySelector(`[data-target="#${list.id}"]`);
                            if (otherButton) {
                                otherButton.classList.remove('active');
@@ -289,11 +285,9 @@
                            }
                         }
                     });
-                    // --- End Accordion Logic ---
-
-                    // Toggle the current one
+              
                     targetElement.style.display = isVisible ? 'none' : 'block';
-                    this.classList.toggle('active', !isVisible); // Add/remove active class on the button
+                    this.classList.toggle('active', !isVisible); 
                     if (icon) {
                         icon.classList.toggle('fa-chevron-down', isVisible);
                         icon.classList.toggle('fa-chevron-up', !isVisible);

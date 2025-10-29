@@ -163,7 +163,7 @@
     </div>
 
     <script>
-        // --- Copy JavaScript cho Navbar và Account Menu ---
+
          document.querySelectorAll(".navbar__content-item .navbar__content-item-parent").forEach((title, index) => { const key = "menuOpen" + index; const child = title.nextElementSibling; if (localStorage.getItem(key) === "true") { child.style.display = "block"; title.classList.add("active"); } else { child.style.display = "none"; title.classList.remove("active"); } title.addEventListener("click", function(event) { event.preventDefault(); const isOpen = child.style.display === "block"; document.querySelectorAll(".navbar__content-sub").forEach((otherChild, otherIndex) => { if (otherChild !== child) { otherChild.style.display = "none"; if (otherChild.previousElementSibling.classList.contains('navbar__content-item-parent')) { otherChild.previousElementSibling.classList.remove("active"); } localStorage.setItem("menuOpen" + otherIndex, "false"); } }); child.style.display = isOpen ? "none" : "block"; this.classList.toggle("active", !isOpen); localStorage.setItem(key, String(!isOpen)); }); }); const accountName = document.querySelector(".content__navbar-account-name"); const accountSub = document.querySelector(".content__navbar-account-sub"); if (accountName && accountSub) { accountName.addEventListener("click", function() { const isOpen = accountSub.style.display === "block"; accountSub.style.display = isOpen ? "none" : "block"; }); document.addEventListener('click', function(event) { if (!accountName.contains(event.target) && !accountSub.contains(event.target)) { accountSub.style.display = 'none'; } }); }
     </script>
 </body>

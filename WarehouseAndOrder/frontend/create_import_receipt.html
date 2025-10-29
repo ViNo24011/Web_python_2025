@@ -157,7 +157,7 @@
             {% for product in products %}
             {
                 id: {{ product.id }},
-                // --- TRƯỜNG MỚI ---
+                
                 warehouse_id: {{ product.warehouse.id|default:"null" }}, 
                 
                 code: 'SP{{ product.id|stringformat:"03d" }}',
@@ -165,12 +165,12 @@
                 price: {{ product.price }},
                 unit: '{{ product.unit }}',
                 category: '{{ product.category_name }}',
-                quantity: {{ product.quantity }} // Số lượng tồn kho hiện tại
+                quantity: {{ product.quantity }}
             },
             {% endfor %}
         ];
 
-        // --- HÀM MỚI ---
+        
         // Khi người dùng thay đổi kho, xóa các sản phẩm đã chọn
         function onWarehouseChange() {
             document.getElementById('productList').innerHTML = ''; // Xóa sạch list
@@ -181,18 +181,16 @@
             const addProductBtn = document.querySelector('button[onclick="addProductRow()"]');
             
             if (warehouseId) {
-                addProductBtn.disabled = false; // Kích hoạt nút
+                addProductBtn.disabled = false;
                 addProductRow(); // Tự động thêm 1 dòng mới
             } else {
-                addProductBtn.disabled = true; // Vô hiệu hóa nút
+                addProductBtn.disabled = true;
             }
         }
 
-        // --- HÀM CẬP NHẬT ---
         function addProductRow() {
             const selectedWarehouseId = document.getElementById('warehouse').value;
             
-            // Bắt buộc chọn kho trước
             if (!selectedWarehouseId) {
                 alert('Vui lòng chọn nhà kho trước khi thêm sản phẩm.');
                 return;
@@ -214,8 +212,6 @@
             const row = document.createElement('div');
             row.className = 'product-row';
             row.id = 'product-row-' + productIndex;
-            
-            // Tạo HTML cho các <option> từ danh sách đã lọc
             const productOptions = filteredProducts.map(p => 
                 `<option value="${p.id}">${p.code} - ${p.name}</option>`
             ).join('');
@@ -256,7 +252,7 @@
 
         function updateProductInfo(selectElement, index) {
             const productId = selectElement.value;
-            // Dùng productsData (toàn bộ) để tra cứu thông tin
+            
             const product = productsData.find(p => p.id == productId); 
             
             if (product) {
@@ -292,7 +288,7 @@
                 if (selectElement && quantityInput) {
                     const productId = selectElement.value;
                     const quantity = parseInt(quantityInput.value) || 0;
-                    // Dùng productsData (toàn bộ) để tra cứu
+                    
                     const product = productsData.find(p => p.id == productId);
                     
                     if (product && quantity > 0) {
@@ -309,14 +305,14 @@
         }
 
         function formatNumber(num) {
-            // Sửa dấu "," thành "." ở đây
+         
             return Math.round(num).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
         }
 
         document.addEventListener('DOMContentLoaded', function() {
-            // Vô hiệu hóa nút thêm sản phẩm ban đầu
+
             document.querySelector('button[onclick="addProductRow()"]').disabled = true;
-            // Không tự động thêm dòng, đợi người dùng chọn kho
+
         });
 
          // Script cho menu xổ xuống

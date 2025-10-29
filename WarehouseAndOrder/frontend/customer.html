@@ -268,9 +268,6 @@
         function showFix() { fixModal.classList.add('open'); }
         function hideFix() { fixModal.classList.remove('open'); }
 
-        // Lưu ý: Nút sửa giờ là thẻ <a> trỏ đến trang mới, 
-        // nên logic mở modal Sửa không còn cần thiết ở đây nữa.
-        // Tuy nhiên, ta vẫn giữ lại để tương thích với HTML gốc.
         
         fixClose.addEventListener('click', hideFix);
         fixModal.addEventListener('click', hideFix);

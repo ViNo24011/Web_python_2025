@@ -7,10 +7,9 @@
     <title>Chọn kho hàng</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/themify-icons@0.1.2/css/themify-icons.css">
-    <!-- Dùng chung CSS với product hoặc tạo CSS riêng nếu cần -->
     <link rel="stylesheet" href="{% static 'css/product.css' %}">
      <style>
-        /* CSS cho danh sách kho (lấy từ product.html cũ) */
+ 
         .warehouse-selection-list {
             list-style: none;
             padding: 2rem 0;
@@ -36,21 +35,21 @@
             box-shadow: 0 8px 15px rgba(0,0,0,0.1);
             color: #3498db;
         }
-        .warehouse-location { /* CSS cho địa chỉ kho */
+        .warehouse-location { 
             color: #57606f;
             font-size: 1.3rem;
-            font-weight: 400; /* Chữ thường */
-            margin-top: 0.5rem; /* Khoảng cách với tên kho */
-            display: block; /* Để nó xuống dòng */
+            font-weight: 400;
+            margin-top: 0.5rem; 
+            display: block; 
         }
     </style>
 </head>
 <body>
     <div class="main">
         <div class="navbar">
-             <!-- ===== BẮT ĐẦU SIDEBAR ĐÃ ĐỒNG BỘ (GIỐNG HOME.HTML) ===== -->
+        
              <a href="{% url 'users:home_page' %}" class="navbar__header">
-                 <p class="navbar__header-logo">Warehouse</p> <!-- Sửa lỗi Warehourse -->
+                 <p class="navbar__header-logo">Warehouse</p> 
                  <div class="navbar__header-wrapper"><p class="navbar__header-text">Quản lý kho hàng</p></div>
              </a>
              <div class="navbar__content">
@@ -61,7 +60,7 @@
                       </a>
                   </div>
                   <div class="navbar__content-item">
-                      <a href="{% url 'users:user_list_page' %}" class="navbar__content-item-link"> <!-- Cần URL -->
+                      <a href="{% url 'users:user_list_page' %}" class="navbar__content-item-link"> 
                           <i class="fa-solid fa-user-group navbar__content-icon"></i><p class="navbar__content-text">Quản lý người dùng</p>
                       </a>
                   </div>
@@ -70,20 +69,20 @@
                         <i class="fa-solid fa-users navbar__content-icon"></i><p class="navbar__content-text">Quản lý khách hàng</p>
                       </a>
                    </div>
-                   <!-- Thêm lại Quản lý Doanh thu -->
+            
                    <div class="navbar__content-item">
                        <a href="{% url 'reports:revenue_page' %}" class="navbar__content-item-link {% if 'reports:revenue_page' in view_name %}navbar__content-item-choose{% endif %}">
                            <i class="fa-solid fa-hand-holding-dollar navbar__content-icon"></i><p class="navbar__content-text">Quản lý doanh thu</p>
                        </a>
                    </div>
-                   <!-- Thêm lại Quản lý Kho hàng (đơn lẻ) -->
+         
                    <div class="navbar__content-item">
                        <a href="{% url 'inventory:warehouse_page' %}" class="navbar__content-item-link {% if 'inventory:warehouse_page' in view_name or 'inventory:edit_warehouse' in view_name %}navbar__content-item-choose{% endif %}">
                            <i class="fa-solid fa-warehouse navbar__content-icon"></i><p class="navbar__content-text">Quản lý kho hàng</p>
                        </a>
                    </div>
 
-                  <!-- Mục Quản lý sản phẩm (Đã sửa highlight) -->
+      
                   <div class="navbar__content-item">
                       <a href="#" class="navbar__content-item-link navbar__content-item-parent
                           {% if 'partners:supplier_page' in view_name or 'inventory:select_warehouse' in view_name or 'inventory:product_list_by_warehouse' in view_name or 'partners:edit_supplier' in view_name or 'inventory:edit_product' in view_name %}active{% endif %}
@@ -96,13 +95,13 @@
                           <a href="{% url 'partners:supplier_page' %}" class="navbar__content-item-link {% if 'partners:supplier_page' in view_name or 'partners:edit_supplier' in view_name %}navbar__content-item-choose{% endif %}">
                               <i class="fa-solid fa-truck-field navbar__content-icon"></i><p class="navbar__content-text">Nhà cung cấp</p>
                           </a>
-                          <!-- Sửa link Sản phẩm + Highlight -->
+                     
                           <a href="{% url 'inventory:select_warehouse' %}" class="navbar__content-item-link {% if 'inventory:select_warehouse' in view_name or 'inventory:product_list_by_warehouse' in view_name or 'inventory:edit_product' in view_name %}navbar__content-item-choose{% endif %}">
                               <i class="fa-solid fa-box navbar__content-icon"></i><p class="navbar__content-text">Sản phẩm</p>
                           </a>
                       </div>
                   </div>
-                  <!-- Thêm lại Quản lý nhập xuất -->
+           
                   <div class="navbar__content-item">
                       <a href="#" class="navbar__content-item-link navbar__content-item-parent
                           {% if 'transactions:import_receipt_page' in view_name or 'transactions:export_receipt_page' in view_name %}active{% endif %}"
@@ -122,7 +121,7 @@
                   </div>
                   {% endwith %}
              </div>
-             <!-- ===== KẾT THÚC SIDEBAR ĐÃ ĐỒNG BỘ ===== -->
+
         </div>
 
         <div class="content">
@@ -142,16 +141,16 @@
             <div class="content__wrapper">
                 <div class="content__header">
                     <p class="content__header-text">Chọn kho hàng để xem sản phẩm</p>
-                    <!-- Không có nút Thêm ở đây -->
+    
                 </div>
 
-                <!-- HIỂN THỊ DANH SÁCH KHO -->
+      
                 <ul class="warehouse-selection-list">
                     {% for w in warehouses_list %}
                     <li class="warehouse-selection-item">
                         <a href="{% url 'inventory:product_list_by_warehouse' warehouse_id=w.id %}">
                             {{ w.name }}
-                            <small class="warehouse-location">({{ w.location }})</small> <!-- Hiển thị địa chỉ -->
+                            <small class="warehouse-location">({{ w.location }})</small> 
                         </a>
                     </li>
                     {% empty %}
@@ -164,21 +163,19 @@
         </div>
     </div>
 
-    <!-- Script Sidebar (Giữ nguyên) -->
     <script>
         document.querySelectorAll(".navbar__content-item .navbar__content-item-parent").forEach((title) => {
              title.addEventListener("click", function(event) {
                 event.preventDefault();
                 const child = this.nextElementSibling;
-                // Thêm kiểm tra child có tồn tại không
+      
                 if (child && child.classList.contains('navbar__content-sub')) {
                     const isOpen = child.style.display === "block";
                     child.style.display = isOpen ? "none" : "block";
                     this.classList.toggle("active", !isOpen);
                 }
              });
-             // Mở menu con nếu trang hiện tại thuộc menu đó (logic này đã được xử lý bằng template tag)
-             // Có thể bỏ bớt logic JS localStorage nếu logic template tag đã đủ
+  
         });
     </script>
 </body>

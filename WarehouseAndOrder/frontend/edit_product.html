@@ -7,12 +7,12 @@
     <title>Sửa sản phẩm: {{ product.name }}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/themify-icons@0.1.2/css/themify-icons.css">
-    <link rel="stylesheet" href="{% static 'css/product.css' %}"> <!-- Dùng chung CSS -->
-    <style> /* CSS Nút quay lại và Form */
+    <link rel="stylesheet" href="{% static 'css/product.css' %}">
+    <style>
         .back-link { display: inline-block; margin-bottom: 1.5rem; font-size: 1.5rem; color: #3498db; text-decoration: none; }
         .back-link i { margin-right: 0.5rem; }
         .edit-form-container { background-color: #fff; border-radius: 8px; padding: 2.5rem; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-         /* CSS hiển thị messages */
+
          .messages { list-style: none; padding: 0; margin-bottom: 1rem; }
          .messages li { padding: 1rem 1.5rem; border-radius: 4px; margin-bottom: 0.5rem; font-size: 1.4rem; border: 1px solid transparent; }
          .messages li.debug { background-color: #e7e7e7; color: #444; border-color: #dcdcdc; }
@@ -25,7 +25,7 @@
 <body>
     <div class="main">
         <div class="navbar">
-             <!-- Sidebar (CẬP NHẬT LINK SẢN PHẨM) -->
+          
              <a href="{% url 'users:home_page' %}" class="navbar__header">
                  <p class="navbar__header-logo">Warehouse</p><div class="navbar__header-wrapper"><p class="navbar__header-text">Quản lý kho hàng</p></div>
              </a>
@@ -47,15 +47,15 @@
                       </a>
                   </div>
                   <div class="navbar__content-item">
-                      <!-- CẬP NHẬT: Mở và highlight menu sản phẩm -->
+                     
                       <a href="#" class="navbar__content-item-link navbar__content-item-parent active">
                           <i class="fa-solid fa-boxes-stacked navbar__content-icon"></i><p class="navbar__content-text">Quản lý sản phẩm</p><i class="fa-solid fa-angle-down navbar__content-sub-icon"></i>
                       </a>
-                      <div class="navbar__content-sub" style="display: block;"> <!-- Mở sẵn -->
+                      <div class="navbar__content-sub" style="display: block;">
                           <a href="{% url 'partners:supplier_page' %}" class="navbar__content-item-link {% if 'partners:supplier_page' in view_name %}navbar__content-item-choose{% endif %}">
                               <i class="fa-solid fa-truck-field navbar__content-icon"></i><p class="navbar__content-text">Nhà cung cấp</p>
                           </a>
-                          <!-- CẬP NHẬT: Link và highlight sản phẩm -->
+                          
                           <a href="{% url 'inventory:select_warehouse' %}" class="navbar__content-item-link navbar__content-item-choose">
                               <i class="fa-solid fa-box navbar__content-icon"></i><p class="navbar__content-text">Sản phẩm</p>
                           </a>
@@ -98,15 +98,14 @@
                      <p class="content__header-text">Sửa sản phẩm: {{ product.name }}</p>
                  </div>
 
-                 <!-- Nút quay lại -->
+              
                  {% if product.warehouse %}
                      <a href="{% url 'inventory:product_list_by_warehouse' warehouse_id=product.warehouse.id %}" class="back-link"><i class="fa-solid fa-arrow-left"></i> Quay lại danh sách sản phẩm</a>
                  {% else %}
-                     <!-- Nếu sản phẩm không có kho (trường hợp hiếm), quay lại trang chọn kho -->
+                   
                      <a href="{% url 'inventory:select_warehouse' %}" class="back-link"><i class="fa-solid fa-arrow-left"></i> Quay lại chọn kho</a>
                  {% endif %}
 
-                 <!-- HIỂN THỊ MESSAGES -->
                  {% if messages %}
                  <ul class="messages">
                      {% for message in messages %}
@@ -115,12 +114,12 @@
                  </ul>
                  {% endif %}
 
-                 <div class="edit-form-container"> <!-- Bọc form trong container -->
-                     <!-- Form sửa dùng class và cấu trúc giống modal -->
+                 <div class="edit-form-container"> 
+               
                      <form action="{% url 'inventory:edit_product' product.id %}" method="post" class="modal__form">
                          {% csrf_token %}
-                         <div class="modal_product-infor"> <!-- Dùng class modal_product-infor -->
-                             <!-- Các trường giống hệt modal Thêm -->
+                         <div class="modal_product-infor"> 
+                           
                              <div class="modal__product-wrapper full-width">
                                  <label for="name_edit" class="modal__product-text-wrapper"><p class="modal__product-text">Tên sản phẩm</p></label>
                                  <div class="modal__product-input-wrapper"><input id="name_edit" name="name" type="text" required value="{{ product.name }}" class="modal__product-input"></div>
@@ -137,7 +136,7 @@
                                  <label for="price_edit" class="modal__product-text-wrapper"><p class="modal__product-text">Giá nhập</p></label>
                                  <div class="modal__product-input-wrapper"><input id="price_edit" name="price" type="number" step="any" required value="{{ product.price }}" class="modal__product-input"></div> <!-- Thêm step=any -->
                              </div>
-                             <!-- Dropdown chọn kho -->
+                          
                              <div class="modal__product-wrapper">
                                  <label for="warehouse_edit_select" class="modal__product-text-wrapper"><p class="modal__product-text">Kho hàng</p></label>
                                  <div class="modal__product-input-wrapper">
@@ -160,7 +159,7 @@
                          </div>
                          <div class="modal__submit">
                              <button type="submit" class="modal__submit-btn"><p class="modal__submit-text">Cập nhật</p></button>
-                             <!-- SỬA LẠI LINK NÚT HỦY -->
+                     
                              {% if product.warehouse %}
                                  <a href="{% url 'inventory:product_list_by_warehouse' warehouse_id=product.warehouse.id %}" style="text-decoration: none; font-size: 1.6rem; margin-left: 10px; color: #57606f; padding: 1rem 1.5rem; border: 1px solid #ccc; border-radius: 5px; vertical-align: middle;">Hủy</a>
                              {% else %}
@@ -168,14 +167,14 @@
                              {% endif %}
                          </div>
                      </form>
-                 </div> <!-- Kết thúc edit-form-container -->
+                 </div>
             </div>
         </div>
     </div>
     <script>
-        // Script cho menu xổ xuống (GIỮ NGUYÊN)
+        // Script cho menu xổ xuống 
         document.querySelectorAll(".navbar__content-item .navbar__content-item-parent").forEach((title) => {
-             // ... Code cũ ...
+            
              title.addEventListener("click", function(event) {
                 event.preventDefault();
                 const child = this.nextElementSibling;

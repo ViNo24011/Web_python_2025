@@ -228,7 +228,6 @@
                 const child = this.nextElementSibling;
                 const isOpen = child.style.display === "block";
                 
-                // Đóng tất cả các menu con khác
                 document.querySelectorAll(".navbar__content-sub").forEach(sub => {
                     if (sub !== child) {
                         sub.style.display = "none";
@@ -236,13 +235,12 @@
                     }
                 });
 
-                // Mở/đóng menu hiện tại
+       
                 child.style.display = isOpen ? "none" : "block";
                 this.classList.toggle("active", !isOpen);
             });
         });
 
-        // Script cho menu tài khoản
         document.querySelector(".content__navbar-account-name").addEventListener("click", function() {
             const subMenu = this.nextElementSibling;
             const isOpen = subMenu.style.display === "block";

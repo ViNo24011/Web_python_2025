@@ -174,7 +174,7 @@
             {% for product in products %}
             {
                 id: {{ product.id }},
-                // --- TRƯỜNG MỚI ---
+                
                 warehouse_id: {{ product.warehouse.id|default:"null" }},
                 
                 code: 'SP{{ product.id|stringformat:"03d" }}',
@@ -188,9 +188,9 @@
             {% endfor %}
         ];
 
-        // --- HÀM MỚI ---
+       
         function onWarehouseChange() {
-            document.getElementById('productList').innerHTML = ''; // Xóa sạch list
+            document.getElementById('productList').innerHTML = '';
             productIndex = 0; // Reset bộ đếm
             calculateTotal(); // Tính lại tổng tiền (về 0)
             
@@ -198,14 +198,14 @@
             const addProductBtn = document.querySelector('button[onclick="addProductRow()"]');
             
             if (warehouseId) {
-                addProductBtn.disabled = false; // Kích hoạt nút
+                addProductBtn.disabled = false;
                 addProductRow(); // Tự động thêm 1 dòng mới
             } else {
-                addProductBtn.disabled = true; // Vô hiệu hóa nút
+                addProductBtn.disabled = true;
             }
         }
 
-        // --- HÀM CẬP NHẬT ---
+        
         function addProductRow() {
             const selectedWarehouseId = document.getElementById('warehouse').value;
             
@@ -231,7 +231,7 @@
             row.className = 'product-row';
             row.id = 'product-row-' + productIndex;
 
-            // Tạo HTML cho các <option> từ danh sách đã lọc
+            
             const productOptions = filteredProducts.map(p => 
                 `<option value="${p.id}">${p.code} - ${p.name}</option>`
             ).join('');
@@ -276,7 +276,7 @@
 
         function updateProductInfo(selectElement, index) {
             const productId = selectElement.value;
-            // Dùng productsData (toàn bộ) để tra cứu
+            
             const product = productsData.find(p => p.id == productId);
             
             if (product) {
@@ -350,12 +350,12 @@
         }
 
         function formatNumber(num) {
-            // Sửa dấu "," thành "." ở đây
+            
             return Math.round(num).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
         }
 
         document.getElementById('exportForm').addEventListener('submit', function(e) {
-            // Kiểm tra nhà kho đã được chọn
+            
             const warehouseId = document.getElementById('warehouse').value;
             if (!warehouseId) {
                 e.preventDefault();
@@ -397,14 +397,13 @@
             }
         });
 
-        // --- CẬP NHẬT DOMContentLoaded ---
+        
         document.addEventListener('DOMContentLoaded', function() {
-            // Vô hiệu hóa nút thêm sản phẩm ban đầu
+          
             document.querySelector('button[onclick="addProductRow()"]').disabled = true;
-            // Không tự động thêm dòng, đợi người dùng chọn kho
         });
 
-        // Script cho menu xổ xuống (giữ nguyên)
+        // Script cho menu xổ xuống 
         document.querySelectorAll(".navbar__content-item .navbar__content-item-parent").forEach((title) => {
             title.addEventListener("click", function(event) {
                 event.preventDefault();
