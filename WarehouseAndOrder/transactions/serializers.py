@@ -1,9 +1,7 @@
 from rest_framework import serializers
 from .models import ImportReceipt, ImportDetail, ExportReceipt, ExportDetail
-# CẬP NHẬT: Import thêm Warehouse
 from inventory.models import Product, Warehouse
 
-# ============= IMPORT SERIALIZERS =============
 class ImportDetailSerializer(serializers.ModelSerializer):
     subtotal = serializers.SerializerMethodField()
     
@@ -23,26 +21,23 @@ class ImportReceiptSerializer(serializers.ModelSerializer):
         read_only=True
     )
     
-    # --- DÒNG MỚI ---
+   
     warehouse_name = serializers.CharField(
         source='warehouse.name', 
         read_only=True
     )
-    # --- KẾT THÚC DÒNG MỚI ---
+    
     
     class Meta:
         model = ImportReceipt
-        # --- CẬP NHẬT FIELDS ---
         fields = [
             'import_id', 'supplier', 'supplier_name', 
             'warehouse', 'warehouse_name', # Thêm vào
             'import_date', 'total_import_order', 'note', 
             'is_confirmed', 'import_details'
         ]
-        # --- KẾT THÚC CẬP NHẬT ---
+   
 
-
-# ============= EXPORT SERIALIZERS =============
 class ExportDetailSerializer(serializers.ModelSerializer):
     subtotal = serializers.SerializerMethodField()
     
@@ -60,24 +55,21 @@ class ExportReceiptSerializer(serializers.ModelSerializer):
     delivery_status_display = serializers.CharField(
         source='get_delivery_status_display_custom',
         read_only=True
-    )
+    )    
     
-    # --- DÒNG MỚI ---
     warehouse_name = serializers.CharField(
         source='warehouse.name', 
         read_only=True
     )
-    # --- KẾT THÚC DÒNG MỚI ---
-    
+
     class Meta:
         model = ExportReceipt
-        # --- CẬP NHẬT FIELDS ---
+        
         fields = [
             'export_id', 
-            'warehouse', 'warehouse_name', # Thêm vào
+            'warehouse', 'warehouse_name', 
             'customer_name', 'customer_phone', 
             'customer_email', 'customer_address', 'export_date',
             'total_export_order', 'note', 'delivery_status', 
             'delivery_status_display', 'is_confirmed', 'export_details'
         ]
-        # --- KẾT THÚC CẬP NHẬT ---

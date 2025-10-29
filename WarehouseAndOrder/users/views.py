@@ -1,25 +1,20 @@
-# users/views.py
-
-from django.shortcuts import render, redirect, get_object_or_404 # <-- THÊM MỚI
+from django.shortcuts import render, redirect, get_object_or_404 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout, authenticate, login
 from django.db import models
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from django.contrib import messages # <-- THÊM MỚI
+from django.contrib import messages
 import json
-
 from inventory.models import Product, Warehouse
 from partners.models import Customer
 from transactions.models import ExportReceipt
-
-# Create your views here.
 from rest_framework import viewsets
 from rest_framework.permissions import BasePermission
 from .models import User
 from .serializers import UserSerializer
 
-# --- Custom Permission Class (cho API, giữ nguyên) ---
+# --- Custom Permission Class  ---
 class IsManagerUser(BasePermission):
     """
     Custom permission để chỉ cho phép user có username là 'manager'
@@ -29,13 +24,12 @@ class IsManagerUser(BasePermission):
         # Kiểm tra xem user đã đăng nhập VÀ username của họ có phải là 'manager' không
         return request.user and request.user.is_authenticated and request.user.username == 'manager'
 
-# --- ViewSet (cho API, giữ nguyên) ---
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all().order_by('-date_joined')
     serializer_class = UserSerializer
     permission_classes = [IsManagerUser]
 
-# --- Views xác thực (giữ nguyên) ---
+# --- Views xác thực ---
 @csrf_exempt
 def login_view(request):
     if request.method == 'POST':
@@ -61,7 +55,7 @@ def logout_view(request):
     logout(request)
     return redirect('users:login_page')
 
-# --- View trang chủ (giữ nguyên) ---
+# --- View trang chủ  ---
 @login_required
 def home_page(request):
     total_products = Product.objects.count()
@@ -92,9 +86,6 @@ def home_page(request):
         'products_nearing_out_of_stock': products_nearing_out_of_stock
     }
     return render(request, 'home.html', context)
-
-
-# --- THÊM MỚI: CRUD VIEWS CHO NGƯỜI DÙNG (Templates) ---
 
 @login_required
 def user_list_page(request):
@@ -132,7 +123,6 @@ def add_user(request):
         is_staff = 'is_staff' in request.POST
         is_superuser = 'is_superuser' in request.POST
 
-        # --- Validation ---
         if not username or not password or not password2:
             messages.error(request, 'Tên đăng nhập và mật khẩu là bắt buộc.')
             return redirect('users:user_list_page')
@@ -220,7 +210,6 @@ def edit_user(request, user_id):
         return redirect('users:user_list_page')
 
     # Nếu là GET, hiển thị trang edit
-    # (Bạn cần tạo template 'users/edit_user.html' tương tự 'edit_customer.html')
     return render(request, 'edit_user.html', {'user_obj': user_obj})
 
 

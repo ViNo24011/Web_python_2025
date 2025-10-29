@@ -1,5 +1,3 @@
-# reports/views.py
-
 from django.shortcuts import render, get_object_or_404, redirect # Thêm redirect nếu cần sau này
 from django.contrib.auth.decorators import login_required
 from django.db.models import Sum, Count
@@ -9,16 +7,10 @@ from django.http import Http404, JsonResponse
 from transactions.models import ImportReceipt, ExportReceipt, ImportDetail, ExportDetail
 # Import models từ các app khác
 from inventory.models import Warehouse # Import Warehouse
-# Import Product và Customer nếu cần cho các báo cáo khác sau này
-# from inventory.models import Product
-# from partners.models import Customer
 
 from decimal import Decimal
 import datetime
-
-# ============= REVENUE REPORT VIEWS =============
-
-# @login_required # Bỏ comment nếu muốn yêu cầu đăng nhập
+@login_required
 def revenue_page(request):
     """
     Hiển thị trang tóm tắt doanh thu hàng tháng.
@@ -97,7 +89,7 @@ def revenue_page(request):
     return render(request, 'revenue.html', context)
 
 
-# @login_required # Bỏ comment nếu muốn yêu cầu đăng nhập
+
 @login_required
 def revenue_detail_page(request, year, month):
     """
@@ -115,9 +107,8 @@ def revenue_detail_page(request, year, month):
     # Tạo dictionary để lưu trữ kết quả cho từng kho, key là ID kho
     warehouse_details = {
         wh.id: {
-            'id': wh.id, # Keep id for internal use if needed
+            'id': wh.id,
             'name': wh.name,
-            # 'location': wh.location, # No longer needed for display
             'import_count': 0, # --- THÊM: Khởi tạo số đơn nhập ---
             'total_import': Decimal(0),
             'export_count': 0, # --- THÊM: Khởi tạo số đơn xuất ---
@@ -180,7 +171,7 @@ def revenue_detail_page(request, year, month):
     return render(request, 'detail.html', context)
 
 
-    # @login_required # Bỏ comment nếu muốn yêu cầu đăng nhập
+@login_required
 def warehouse_imports_detail(request, year, month, warehouse_id):
     """
     Hiển thị danh sách phiếu nhập của một kho cụ thể trong tháng.
@@ -208,7 +199,7 @@ def warehouse_imports_detail(request, year, month, warehouse_id):
     return render(request, 'warehouse_imports_detail.html', context)
 
 
-# @login_required # Bỏ comment nếu muốn yêu cầu đăng nhập
+@login_required
 def warehouse_exports_detail(request, year, month, warehouse_id):
     """
     Hiển thị danh sách phiếu xuất (đã xác nhận) của một kho cụ thể trong tháng.
@@ -236,7 +227,7 @@ def warehouse_exports_detail(request, year, month, warehouse_id):
     }
     return render(request, 'warehouse_exports_detail.html', context)
 
-# @login_required 
+@login_required 
 def import_receipt_detail(request, import_id):
     """
     Hiển thị chi tiết các sản phẩm trong một phiếu nhập cụ thể.
@@ -276,7 +267,7 @@ def import_receipt_detail(request, import_id):
     return render(request, 'import_receipt_detail.html', context)
 
 
-# @login_required
+@login_required
 def export_receipt_detail(request, export_id):
     """
     Hiển thị chi tiết các sản phẩm trong một phiếu xuất cụ thể.

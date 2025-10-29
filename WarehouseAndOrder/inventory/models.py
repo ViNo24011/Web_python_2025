@@ -17,11 +17,10 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     unit = models.CharField(max_length=20)
     
-    # --- THÊM KHÓA NGOẠI TẠI ĐÂY ---
     warehouse = models.ForeignKey(
         Warehouse, 
-        on_delete=models.PROTECT,  
-        related_name="products",   
+        on_delete=models.PROTECT,  # Ngăn chặn việc xóa kho nếu còn sản phẩm liên quan
+        related_name="products",   # Tên liên kết ngược để truy cập các sản phẩm từ kho
         null=True,             
         blank=True                
     )

@@ -3,28 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Forget</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <title>Thông báo</title> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/themify-icons@0.1.2/css/themify-icons.css">
     <link rel="stylesheet" href="./assets/css/forget.css">
+    
+    <style>
+        .message-box {
+            /* Tái sử dụng một số kiểu từ form cũ nếu có */
+            background-color: #fff; 
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            overflow: hidden;
+            max-width: 500px; /* Giới hạn chiều rộng */
+            margin: auto; /* Căn giữa */
+        }
+        .message-content {
+            padding: 30px;
+            text-align: center;
+        }
+        .message-text {
+            font-size: 1.8rem; /* 18px */
+            color: #333;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+        .back-btn-wrapper {
+            text-align: center;
+        }
+        .back-btn {
+            /* Giả lập kiểu nút 'forget-btn' */
+            background-color: #1678ff; /* Màu xanh dương (có thể thay đổi) */
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.6rem;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: 500;
+        }
+        .back-btn:hover {
+            opacity: 0.8;
+        }
+        /* Giả sử .forget-form-header đã được định nghĩa trong forget.css */
+        .forget-form-header { 
+            padding: 20px;
+            background-color: #f7f7f7;
+            border-bottom: 1px solid #eee;
+        }
+        .header-text-wrapper { text-align: center; }
+        .header-text {
+            font-size: 2.2rem;
+            font-weight: 600;
+            color: #333;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <form method="POST" action="./forget" id="forget-form">
-            <div class="forget-form-header">
-                <div class="header-text-wrapper">
-                    <p class="header-text">Đặt lại mật khẩu</p>
+        
+        <div class="message-box">
+            <div class="forget-form-header"> <div class="header-text-wrapper">
+                    <p class="header-text">Thông báo cấp lại mật khẩu</p>
                 </div>
             </div>
-            <div class="forget-form-content">
-                <div class="content-text-wrapper">
-                    <input name="username" type="text" placeholder="Số điện thoại" class="content-text">
-                </div>
-                <div class="forget-btn-wrapper">
-                    <button class="forget-btn">Xác nhận</button>
+            <div class="message-content">
+                <p class="message-text">
+                    Vui lòng liên hệ <strong>Manager</strong> của bạn để được hỗ trợ cấp lại mật khẩu.
+                </p>
+                <div class="back-btn-wrapper">
+                    <a href="javascript:history.back()" class="back-btn">Quay lại</a>
                 </div>
             </div>
-        </form>
+        </div>
+        
     </div>
 </body>
 </html>

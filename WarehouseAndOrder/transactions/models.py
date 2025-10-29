@@ -1,10 +1,9 @@
 from django.db import models
 from django.utils import timezone
-# CẬP NHẬT: Import thêm Warehouse
 from inventory.models import Product, Warehouse 
 from partners.models import Supplier, Customer
 
-# --- IMPORT RECEIPT MODEL ---
+
 class ImportReceipt(models.Model):
     import_id = models.AutoField(primary_key=True)
     supplier = models.ForeignKey(
@@ -46,7 +45,6 @@ class ImportReceipt(models.Model):
         return total
 
 
-# --- IMPORT DETAIL MODEL ---
 class ImportDetail(models.Model):
     import_receipt = models.ForeignKey(
         ImportReceipt, 
@@ -70,25 +68,20 @@ class ImportDetail(models.Model):
         return self.quantity * self.price
 
 
-# --- EXPORT RECEIPT MODEL ---
 class ExportReceipt(models.Model):
     DELIVERY_STATUS_CHOICES = (
         ('pending', 'Chờ xác nhận'),
         ('shipping', 'Đang vận chuyển'),
         ('delivered', 'Đã giao'),
     )
-
     export_id = models.AutoField(primary_key=True)
-    
-    # --- DÒNG MỚI ---
-    # Thêm liên kết đến kho
+
     warehouse = models.ForeignKey(
         Warehouse,
         on_delete=models.PROTECT, # Không cho xóa kho nếu có phiếu xuất
         related_name='export_receipts'
     )
-    # --- KẾT THÚC DÒNG MỚI ---
-
+  
     customer_name = models.CharField(max_length=100)
     customer_phone = models.CharField(max_length=20)
     customer_email = models.EmailField(blank=True, null=True)
@@ -134,7 +127,6 @@ class ExportReceipt(models.Model):
         return status_map.get(self.delivery_status, self.delivery_status)
 
 
-# --- EXPORT DETAIL MODEL ---
 class ExportDetail(models.Model):
     export_receipt = models.ForeignKey(
         ExportReceipt, 

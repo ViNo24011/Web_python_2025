@@ -1,4 +1,4 @@
-from django.apps import AppConfig
+from django.apps import AppConfig # lớp gốc mà Django dùng để định nghĩa cấu hình của một app.
 
 
 class InventoryConfig(AppConfig):
