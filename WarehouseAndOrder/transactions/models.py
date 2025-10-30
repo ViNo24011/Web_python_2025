@@ -10,7 +10,8 @@ class ImportReceipt(models.Model):
         Supplier, 
         on_delete=models.SET_NULL, 
         null=True,
-        related_name='import_receipts'
+        related_name='import_receipts' # Thêm related_name để truy cập ngược từ Supplier đến ImportReceipt
+        
     )
     warehouse = models.ForeignKey(
         Warehouse,
@@ -48,7 +49,7 @@ class ImportReceipt(models.Model):
 class ImportDetail(models.Model):
     import_receipt = models.ForeignKey(
         ImportReceipt, 
-        on_delete=models.CASCADE,
+        on_delete=models.CASCADE, 
         related_name='import_details'
     )
     product = models.ForeignKey(
@@ -101,7 +102,7 @@ class ExportReceipt(models.Model):
     is_confirmed = models.BooleanField(default=False)
 
     class Meta:
-        ordering = ['-export_date']
+        ordering = ['-export_date'] # Sắp xếp theo ngày xuất giảm dần
 
     def __str__(self):
         warehouse_name = self.warehouse.name if self.warehouse else "N/A"

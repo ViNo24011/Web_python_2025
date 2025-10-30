@@ -7,7 +7,7 @@ from .models import ImportReceipt, ImportDetail, ExportReceipt, ExportDetail
 from .serializers import ImportReceiptSerializer, ExportReceiptSerializer
 from inventory.models import Product, Warehouse
 from partners.models import Supplier, Customer
-from decimal import Decimal
+from decimal import Decimal 
 
 class ImportReceiptViewSet(viewsets.ModelViewSet):
     queryset = ImportReceipt.objects.all().order_by('-import_date')
@@ -42,7 +42,11 @@ def create_import_receipt_page(request):
     return render(request, 'create_import_receipt.html', context)
 
 @login_required
-@transaction.atomic
+@transaction.atomic # Đảm bảo tính toàn vẹn dữ liệu. 
+
+# Tất cả các thao tác trong hàm (tạo, sửa, xóa DB) được gói trong một transaction duy nhất.
+# Nếu có lỗi xảy ra ở bất kỳ đâu, toàn bộ thay đổi trong DB sẽ bị rollback (hoàn tác).
+
 def add_import_receipt(request):
     """Xử lý thêm phiếu nhập mới"""
     if request.method == 'POST':

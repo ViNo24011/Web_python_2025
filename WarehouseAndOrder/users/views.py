@@ -3,14 +3,14 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout, authenticate, login
 from django.db import models
 from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import csrf_exempt # Để bỏ qua CSRF cho API login
 from django.contrib import messages
 import json
 from inventory.models import Product, Warehouse
 from partners.models import Customer
 from transactions.models import ExportReceipt
 from rest_framework import viewsets
-from rest_framework.permissions import BasePermission
+from rest_framework.permissions import BasePermission # Để tạo custom permission
 from .models import User
 from .serializers import UserSerializer
 
@@ -37,7 +37,7 @@ def login_view(request):
         username = data.get('username')
         password = data.get('password')
 
-        user = authenticate(request, username=username, password=password)
+        user = authenticate(request, username=username, password=password) # Xác thực người dùng
         if user is not None:
             login(request, user)
             return JsonResponse({'message': 'Login successful', 'username': user.username})
@@ -66,8 +66,8 @@ def home_page(request):
     warehouses = Warehouse.objects.prefetch_related(
         models.Prefetch(
             'products',
-            queryset=Product.objects.filter(quantity__lte=models.F('min_quantity')),
-            to_attr='low_stock_products_in_warehouse'
+            queryset=Product.objects.filter(quantity__lte=models.F('min_quantity')), # Sản phẩm sắp hết hàng
+            to_attr='low_stock_products_in_warehouse' # Lưu trữ kết quả truy vấn vào thuộc tính sắp hết hàng
         )
     ).all()
 

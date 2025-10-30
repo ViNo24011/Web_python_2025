@@ -99,5 +99,5 @@ def delete_supplier(request, supplier_id):
     if request.method == 'POST':
         supplier.delete()
         return redirect('partners:supplier_page')
-    # Chống xóa bằng GET request
+    
     return redirect('partners:supplier_page')

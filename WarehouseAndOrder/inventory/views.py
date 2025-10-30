@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404 
 from django.contrib import messages
-from django.db.models import ProtectedError
+from django.db.models import ProtectedError # Để xử lý lỗi khi xóa kho có sản phẩm liên kết
 from django.contrib.auth.decorators import login_required
 from .models import Product, Warehouse
+
 @login_required
 def select_warehouse(request):
     
@@ -10,12 +11,14 @@ def select_warehouse(request):
     context = {
         'warehouses_list': warehouses_list
     }
-    return render(request, 'select_warehouse.html', context)
+    return render(request, 'select_warehouse.html', context) # Hiển thị danh sách kho để chọn
+    # render(request, template_name, context=None, content_type=None, status=None, using=None)
+
 
 @login_required
 def product_list_by_warehouse(request, warehouse_id):
     
-    selected_warehouse = get_object_or_404(Warehouse, id=warehouse_id)
+    selected_warehouse = get_object_or_404(Warehouse, id=warehouse_id) 
     products = Product.objects.filter(warehouse=selected_warehouse).select_related('warehouse').order_by('name')
     # Lấy tất cả kho để dùng cho modal "Thêm" (nếu cần dropdown)
     all_warehouses = Warehouse.objects.all().order_by('name')
@@ -35,8 +38,7 @@ def product_list_by_warehouse(request, warehouse_id):
 @login_required
 def add_product_to_warehouse(request, warehouse_id):
     """
-    Handles the POST request from the 'Add Product' modal
-    on the product list page for a specific warehouse.
+    Xử lý việc thêm sản phẩm mới vào kho đã chọn.
     """
     selected_warehouse = get_object_or_404(Warehouse, id=warehouse_id)
     if request.method == 'POST':
@@ -94,6 +96,7 @@ def delete_product(request, product_id):
              return redirect('inventory:product_list_by_warehouse', warehouse_id=warehouse_id_to_redirect)
         else:
              return redirect('inventory:select_warehouse')
+    # nếu không phải POST (ấn hủy thay vì xác nhận), chuyển hướng về danh sách sản phẩm
     if warehouse_id_to_redirect:
         return redirect('inventory:product_list_by_warehouse', warehouse_id=warehouse_id_to_redirect)
     else:
@@ -157,13 +160,13 @@ def edit_product(request, product_id):
     storage = messages.get_messages(request)
     if storage:
         context['messages'] = storage
-    return render(request, 'edit_product.html', context) 
+    return render(request, 'edit_product.html', context) # Hiển thị form chỉnh sửa sản phẩm
 
 @login_required
 def warehouse_page(request):
     warehouses = Warehouse.objects.all().order_by('name')
     context = {'warehouses': warehouses}
-    storage = messages.get_messages(request)
+    storage = messages.get_messages(request) # Lấy tin nhắn từ hệ thống từ trước
     if storage:
         context['messages'] = storage
     return render(request, 'warehouse.html', context)

@@ -1,12 +1,11 @@
-from django.shortcuts import render, get_object_or_404, redirect # Thêm redirect nếu cần sau này
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.db.models import Sum, Count
 from django.db.models.functions import TruncMonth # Hàm cắt ngày thành tháng
 from django.utils import timezone
 from django.http import Http404, JsonResponse 
 from transactions.models import ImportReceipt, ExportReceipt, ImportDetail, ExportDetail
-# Import models từ các app khác
-from inventory.models import Warehouse # Import Warehouse
+from inventory.models import Warehouse
 
 from decimal import Decimal
 import datetime
@@ -19,7 +18,7 @@ def revenue_page(request):
 
     # --- Tổng hợp dữ liệu Nhập hàng theo Tháng ---
     # Sử dụng annotate -> values -> annotate để nhóm và tính toán
-    imports_monthly = ImportReceipt.objects.annotate(
+    imports_monthly = ImportReceipt.objects.annotate( # annotate để tạo trường mới
             month=TruncMonth('import_date') # Tạo trường 'month' từ 'import_date'
         ).values(
             'month' # Nhóm theo trường 'month' vừa tạo
@@ -193,7 +192,7 @@ def warehouse_imports_detail(request, year, month, warehouse_id):
         'warehouse': warehouse,
         'target_date': target_date,
         'import_receipts': import_receipts,
-        'year': year, # Truyền lại để dùng trong nút quay lại nếu cần
+        'year': year,
         'month': month,
     }
     return render(request, 'warehouse_imports_detail.html', context)
@@ -241,8 +240,6 @@ def import_receipt_detail(request, import_id):
     # Lấy tất cả các chi tiết (sản phẩm) thuộc phiếu nhập này
     # .all() sẽ tự động thực hiện query dựa trên ForeignKey
     # receipt_details = receipt.import_details.all() # Cách lấy đơn giản
-
-    # Cách lấy tối ưu hơn nếu bạn cần truy cập thông tin gốc của Product sau này
     receipt_details = receipt.import_details.select_related('product').all()
 
 
@@ -260,9 +257,9 @@ def import_receipt_detail(request, import_id):
     context = {
         'receipt': receipt, # Truyền đối tượng phiếu nhập
         'receipt_details': receipt_details, # Truyền danh sách chi tiết sản phẩm
-        'year': year,       # Dùng cho link quay lại
-        'month': month,     # Dùng cho link quay lại
-        'warehouse_id': warehouse_id # Dùng cho link quay lại
+        'year': year,       
+        'month': month,     
+        'warehouse_id': warehouse_id 
     }
     return render(request, 'import_receipt_detail.html', context)
 
@@ -295,8 +292,8 @@ def export_receipt_detail(request, export_id):
     context = {
         'receipt': receipt, # Truyền đối tượng phiếu xuất
         'receipt_details': receipt_details, # Truyền danh sách chi tiết sản phẩm
-        'year': year,       # Dùng cho link quay lại
-        'month': month,     # Dùng cho link quay lại
-        'warehouse_id': warehouse_id # Dùng cho link quay lại
+        'year': year,       
+        'month': month,     
+        'warehouse_id': warehouse_id 
     }
     return render(request, 'export_receipt_detail.html', context)

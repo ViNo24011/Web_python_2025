@@ -2,8 +2,10 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from . import views
 
-app_name = 'inventory'
+app_name = 'inventory' # Đặt namespace cho ứng dụng inventory, tránh trùng lặp tên với các ứng dụng khác
 
+# path(route, view, name=None)
+# name dùng để tham chiếu đến đường dẫn này trong các template và view khác thay vì phải viết lại toàn bộ URL
 
 
 urlpatterns = [
